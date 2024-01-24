@@ -1,0 +1,26 @@
+.header {
+  position: fixed;
+  top: 0;
+  height: 55px;
+  width: 100%;
+  z-index: 100;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
+  padding: 1rem;
+}
+
+.headerNav {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navLink {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.navLink:hover {
+}
