@@ -1,4 +1,4 @@
-/* GENERAL */
+/** GENERAL **/
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 
@@ -27,7 +27,12 @@ a {
   hyphens: auto;
 }
 
-a:hover {
+a {
+  text-decoration: none;
+}
+
+a:hover,
+button:hover {
   cursor: pointer;
 }
 
@@ -45,4 +50,28 @@ canvas,
 svg {
   display: block;
   max-width: 100%;
+}
+
+/** SPECIFICS **/
+.hover-link {
+  position: relative;
+}
+
+.hover-link:hover {
+  cursor: pointer;
+}
+
+.hover-link::after {
+  content: "";
+  position: absolute;
+  background-color: blue;
+  height: 1.5px;
+  width: 0;
+  bottom: 0;
+  left: 0;
+  transition: 0.2s;
+}
+
+.hover-link:hover::after {
+  width: 100%;
 }

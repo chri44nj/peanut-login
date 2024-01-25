@@ -6,7 +6,7 @@ function Header() {
   return (
     <header className={styles.header}>
       <nav className={styles.headerNav}>
-        <Link className={styles.navLink} href="https://planetpeanut.io/da/">
+        <Link className={styles.navLink} href="https://planetpeanut.io/da/" target="_blank">
           Planet Peanut
         </Link>
         <div>
