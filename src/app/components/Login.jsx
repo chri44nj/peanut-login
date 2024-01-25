@@ -32,13 +32,13 @@ function Login() {
         <h2>{loginType === "login" ? "Log ind" : "Opret en bruger"}</h2>
         <div className={styles.inputField}>
           <label htmlFor="email">Email-adresse</label>
-          <input type="email" id="email" name="email" required />
+          <input type="email" id="email" name="email" title="Indtast din email-adresse" required />
         </div>
 
         <div className={styles.inputField}>
           <label htmlFor="password">Adgangskode</label>
           <div className={styles.passwordContainer}>
-            <input type={passwordType} id="password" name="password" required />
+            <input type={passwordType} id="password" name="password" title={loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} required />
             <button type="button" className={styles.showPassword} onClick={showPassword}>
               {passwordType === "password" ? "Ø" : "O"} <span className={styles.passwordTooltip}>{tooltipText}</span>
             </button>
