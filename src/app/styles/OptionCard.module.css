@@ -1,0 +1,61 @@
+.optionCard {
+  display: flex;
+  align-items: center;
+  height: 5rem;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px;
+  background-color: transparent;
+}
+
+.optionCard:hover .topHalf,
+.optionCard:hover .bottomHalf {
+  background-color: rgb(5, 5, 219);
+  color: white;
+}
+
+.topHalf {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 5rem;
+  background-color: blue;
+  color: white;
+  transition: 0.2s;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.bottomHalf {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  transition: 0.2s;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+@media only screen and (min-width: 600px) {
+}
+
+/** LARGER SCREENS **/
+
+@media only screen and (min-width: 1200px) {
+  .optionCard {
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    height: 250px;
+    width: 200px;
+  }
+
+  .topHalf {
+    width: 100%;
+  }
+
+  .bottomHalf {
+  }
+}

@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import Contexts from "./components/Contexts";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Body from "./components/Body";
@@ -12,11 +13,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="dk">
-      <Body>
-        <Header />
-        {children}
-        <Footer />
-      </Body>
+      <Contexts>
+        <Body>
+          <Header />
+          {children}
+          <Footer />
+        </Body>
+      </Contexts>
     </html>
   );
 }
