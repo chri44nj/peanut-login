@@ -1,7 +1,7 @@
 .header {
   position: fixed;
   top: 0;
-  height: 55px;
+  height: 62px;
   width: 100%;
   z-index: 100;
   background-color: white;
@@ -20,7 +20,10 @@
   text-decoration: none;
   color: black;
   font-weight: bold;
+  transition: 0.2s;
+  color: blue;
 }
 
 .navLink:hover {
+  color: rgb(5, 5, 219);
 }

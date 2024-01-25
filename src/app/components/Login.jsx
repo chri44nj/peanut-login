@@ -52,6 +52,14 @@ function Login() {
     }
   }
 
+  /* Other Stuff */
+
+  const userIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+    </svg>
+  );
+
   return (
     <>
       {!testState && !signedIn ? (
@@ -97,6 +105,8 @@ function Login() {
             </div>
 
             <p className="hover-link">Fortsæt med Google</p>
+            <p className="hover-link">Fortsæt med Google</p>
+            <p className="hover-link">Fortsæt med Google</p>
           </form>
         </div>
       ) : (
@@ -109,9 +119,9 @@ function Login() {
             <div className={styles.chooseAccountContainer}>
               <h2>Hvilken type bruger beskriver dig bedst?</h2>
               <div className={styles.optionsContainer}>
-                <OptionCard onClick={() => chooseAccountType("lærer")} top="Hey" bottom="Lærer"></OptionCard>
-                <OptionCard onClick={() => chooseAccountType("forælder")} top="Hey" bottom="Forælder"></OptionCard>
-                <OptionCard onClick={() => chooseAccountType("elev")} top="Hey" bottom="Elev"></OptionCard>
+                <OptionCard onClick={() => chooseAccountType("lærer")} top={userIcon} bottom="Lærer"></OptionCard>
+                <OptionCard onClick={() => chooseAccountType("forælder")} top={userIcon} bottom="Forælder"></OptionCard>
+                <OptionCard onClick={() => chooseAccountType("elev")} top={userIcon} bottom="Elev"></OptionCard>
               </div>
               <div className={styles.switchButtonContainer}>
                 <p> {loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
@@ -171,6 +181,8 @@ function Login() {
                 <span className={styles.eller}>eller</span>
               </div>
 
+              <p className="hover-link">Fortsæt med Google</p>
+              <p className="hover-link">Fortsæt med Google</p>
               <p className="hover-link">Fortsæt med Google</p>
             </form>
           ) : (
