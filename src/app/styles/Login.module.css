@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  padding: 3rem 1rem;
 }
 
 .loginForm,
@@ -59,6 +59,7 @@
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
+  color: var(--accent-purple);
 }
 
 .passwordTooltip {
@@ -66,7 +67,7 @@
   visibility: hidden;
   width: 180px;
   background-color: #555;
-  color: #fff;
+  color: var(--background-color);
   text-align: center;
   padding: 0.5rem;
   border-radius: 4px;
@@ -105,13 +106,15 @@
   height: 2.5rem;
   border: none;
   border-radius: 4px;
-  background-color: blue;
-  color: white;
+  background-color: var(--accent-purple);
+  color: var(--background-color);
+  font-weight: bold;
+  transition: 0.2s;
 }
 
 .loginButton:hover {
   cursor: pointer;
-  background-color: rgb(5, 5, 219);
+  background-color: var(--accent-pink);
 }
 
 .switchButtonContainer {
@@ -125,11 +128,12 @@
 .switchButton {
   background-color: transparent;
   border: none;
-  color: blue;
+  color: var(--accent-purple);
+  transition: 0.2s;
 }
 
 .switchButton:hover {
-  color: rgb(5, 5, 219);
+  color: var(--accent-purple-dark);
 }
 
 .ellerContainer {
@@ -140,7 +144,8 @@
 
 .ellerLine {
   width: 100%;
-  border-top: solid 1px rgba(0, 0, 0, 0.15);
+  background-color: var(--text-color);
+  border-top: solid 1px var(--text-color);
   margin: 0;
 }
 
@@ -182,7 +187,7 @@
 }
 
 .accountType {
-  color: blue;
+  color: #5a31f2;
 }
 
 /** TABLET **/

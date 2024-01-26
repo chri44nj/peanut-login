@@ -63,7 +63,7 @@ function Login() {
   return (
     <>
       {!testState && !signedIn ? (
-        <div className={styles.loginFormContainer}>
+        <div id="loginForm" className={styles.loginFormContainer}>
           <form onSubmit={(e) => signIn(e)} className={styles.loginForm} action="">
             <h2>{loginType === "login" ? "Log ind" : "Opret en bruger"}</h2>
             <div className={styles.inputField}>
@@ -95,7 +95,7 @@ function Login() {
                   setAccountType("");
                 }}
               >
-                {loginType === "login" ? "Opret en" : "Log ind"}
+                {loginType === "login" ? "Opret nu" : "Log ind"}
               </button>
             </div>
 
@@ -103,7 +103,6 @@ function Login() {
               <hr className={styles.ellerLine} />
               <span className={styles.eller}>eller</span>
             </div>
-
             <p className="hover-link">Fortsæt med Google</p>
             <p className="hover-link">Fortsæt med Google</p>
             <p className="hover-link">Fortsæt med Google</p>
@@ -114,7 +113,7 @@ function Login() {
       )}
 
       {testState && !signedIn ? (
-        <div className={styles.createFormContainer}>
+        <div id="createForm" className={styles.createFormContainer}>
           {!accountType ? (
             <div className={styles.chooseAccountContainer}>
               <h2>Hvilken type bruger beskriver dig bedst?</h2>
@@ -126,7 +125,7 @@ function Login() {
               <div className={styles.switchButtonContainer}>
                 <p> {loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
                 <button type="button" className={`${styles.switchButton} hover-link`} onClick={switchLogin}>
-                  {loginType === "login" ? "Opret en" : "Log ind"}
+                  {loginType === "login" ? "Opret nu" : "Log ind"}
                 </button>
               </div>
             </div>
@@ -172,7 +171,7 @@ function Login() {
               <div className={styles.switchButtonContainer}>
                 <p> {loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
                 <button type="button" className={`${styles.switchButton} hover-link`} onClick={switchLogin}>
-                  {loginType === "login" ? "Opret en" : "Log ind"}
+                  {loginType === "login" ? "Opret nu" : "Log ind"}
                 </button>
               </div>
 

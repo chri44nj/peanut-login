@@ -1,10 +1,12 @@
+/** MOBILE **/
+
 .header {
   position: fixed;
   top: 0;
   height: 62px;
   width: 100%;
   z-index: 100;
-  background-color: white;
+  background-color: var(--background-color);
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
   padding: 1rem;
 }
@@ -18,12 +20,11 @@
 
 .navLink {
   text-decoration: none;
-  color: black;
   font-weight: bold;
   transition: 0.2s;
-  color: blue;
+  color: var(--accent-purple);
 }
 
 .navLink:hover {
-  color: rgb(5, 5, 219);
+  color: var(--accent-purple-dark);
 }

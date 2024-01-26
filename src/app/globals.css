@@ -2,6 +2,15 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 
+:root {
+  --background-color: #ffffff;
+  --background-color-alt: #f9f8ff;
+  --text-color: #38257d;
+  --accent-pink: #ff00d0;
+  --accent-purple: #5a31f2;
+  --accent-purple-dark: #3d23a1;
+}
+
 *,
 *::before,
 *::after {
@@ -22,9 +31,14 @@ h4,
 h5,
 h6,
 p,
-a {
+a,
+label,
+input,
+button,
+span {
   overflow-wrap: break-word;
   hyphens: auto;
+  color: var(--text-color);
 }
 
 a {
@@ -55,16 +69,19 @@ svg {
 /** SPECIFICS **/
 .hover-link {
   position: relative;
+  color: var(--accent-purple);
+  transition: 0.2s;
 }
 
 .hover-link:hover {
+  color: var(--accent-purple-dark);
   cursor: pointer;
 }
 
 .hover-link::after {
   content: "";
   position: absolute;
-  background-color: blue;
+  background-color: var(--accent-purple-dark);
   height: 1.5px;
   width: 0;
   bottom: 0;
@@ -73,5 +90,31 @@ svg {
 }
 
 .hover-link:hover::after {
+  width: 100%;
+}
+
+.hover-link-2 {
+  position: relative;
+  color: var(--background-color);
+  transition: 0.2s;
+}
+
+.hover-link-2:hover {
+  color: var(--accent-pink);
+  cursor: pointer;
+}
+
+.hover-link-2::after {
+  content: "";
+  position: absolute;
+  background-color: var(--accent-pink);
+  height: 1.5px;
+  width: 0;
+  bottom: 0;
+  left: 0;
+  transition: 0.2s;
+}
+
+.hover-link-2:hover::after {
   width: 100%;
 }
