@@ -104,17 +104,25 @@
   width: 100%;
   margin: 0px auto;
   height: 2.5rem;
-  border: none;
+  border: solid 1px var(--accent-purple);
   border-radius: 4px;
-  background-color: var(--accent-purple);
-  color: var(--background-color);
+  background-color: var(--background-color);
+  color: var(--accent-purple);
   font-weight: bold;
   transition: 0.2s;
 }
 
 .loginButton:hover {
+  cursor: not-allowed;
+}
+
+.validButton {
+  background-color: var(--accent-purple);
+  color: var(--background-color);
+}
+
+.validButton:hover {
   cursor: pointer;
-  background-color: var(--accent-pink);
 }
 
 .switchButtonContainer {

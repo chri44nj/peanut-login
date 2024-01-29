@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import styles from "../styles/Login.module.css";
 
-import { TestContext, SetTestContext } from "./Contexts";
+import { LoggedInContext, SetLoggedInContext } from "./Contexts";
 import OptionCard from "./OptionCard";
 
 function Login() {
   /* Contexts */
-  const testState = useContext(TestContext);
-  const testDispatch = useContext(SetTestContext);
+  const loggedInState = useContext(LoggedInContext);
+  const loggedInDispatch = useContext(SetLoggedInContext);
 
   /* States */
   const [passwordType, setPasswordType] = useState("password");
@@ -17,6 +17,18 @@ function Login() {
   const [loginType, setLoginType] = useState("login");
   const [accountType, setAccountType] = useState("");
   const [signedIn, setSignedIn] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+
+  /* Effects */
+  useEffect(() => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    setEmailValid(emailRegex.test(email));
+    setPasswordValid(passwordRegex.test(password));
+  }, [email, password]);
 
   /* Functions */
   function showPassword() {
@@ -30,16 +42,22 @@ function Login() {
   }
 
   function switchLogin() {
+    setEmail("");
+    setPassword("");
+    setEmailValid(false);
+    setPasswordValid(false);
     if (loginType === "login") {
       setLoginType("create");
-      testDispatch(true);
     } else {
       setLoginType("login");
-      testDispatch(false);
     }
   }
 
   function chooseAccountType(selectedType) {
+    setEmail("");
+    setPassword("");
+    setEmailValid(false);
+    setPasswordValid(false);
     setAccountType(selectedType);
   }
 
@@ -47,8 +65,10 @@ function Login() {
     e.preventDefault();
     if (!signedIn) {
       setSignedIn(true);
+      loggedInDispatch(true);
     } else {
       setSignedIn(false);
+      loggedInDispatch(false);
     }
   }
 
@@ -62,26 +82,26 @@ function Login() {
 
   return (
     <>
-      {!testState && !signedIn ? (
+      {loginType === "login" ? (
         <div id="loginForm" className={styles.loginFormContainer}>
           <form onSubmit={(e) => signIn(e)} className={styles.loginForm} action="">
             <h2>{loginType === "login" ? "Log ind" : "Opret en bruger"}</h2>
             <div className={styles.inputField}>
               <label htmlFor="email">Email-adresse</label>
-              <input type="email" id="email" name="email" title="Indtast din email-adresse" required />
+              <input type="email" id="email" name="email" title="Indtast din email-adresse" onChange={(e) => setEmail(e.target.value)} required />
             </div>
 
             <div className={styles.inputField}>
               <label htmlFor="password">Adgangskode</label>
               <div className={styles.passwordContainer}>
-                <input type={passwordType} id="password" name="password" title={loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} required />
+                <input type={passwordType} id="password" name="password" title={loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword(e.target.value)} required />
                 <button type="button" className={styles.showPassword} onClick={showPassword}>
                   {passwordType === "password" ? "Ø" : "O"} <span className={styles.passwordTooltip}>{tooltipText}</span>
                 </button>
               </div>
             </div>
 
-            <button className={styles.loginButton} type="submit">
+            <button className={`${styles.loginButton} ${emailValid && passwordValid ? styles.validButton : ""}`} type="submit" disabled={!emailValid || !passwordValid}>
               {loginType === "login" ? "Log ind" : "Opret"}
             </button>
 
@@ -112,7 +132,7 @@ function Login() {
         ""
       )}
 
-      {testState && !signedIn ? (
+      {loginType === "create" ? (
         <div id="createForm" className={styles.createFormContainer}>
           {!accountType ? (
             <div className={styles.chooseAccountContainer}>
@@ -141,7 +161,7 @@ function Login() {
               {accountType ? (
                 <div className={styles.switchButtonContainer}>
                   <p>Trykkede du forkert?</p>
-                  <button type="button" className={`${styles.switchButton} hover-link`} onClick={() => setAccountType("")}>
+                  <button type="button" className={`${styles.switchButton} hover-link`} onClick={() => chooseAccountType("")}>
                     Vælg anden type
                   </button>
                 </div>
@@ -151,20 +171,20 @@ function Login() {
 
               <div className={styles.inputField}>
                 <label htmlFor="email">Email-adresse</label>
-                <input type="email" id="email" name="email" title="Indtast din email-adresse" required />
+                <input type="email" id="email" name="email" title="Indtast din email-adresse" onChange={(e) => setEmail(e.target.value)} required />
               </div>
 
               <div className={styles.inputField}>
                 <label htmlFor="password">Adgangskode</label>
                 <div className={styles.passwordContainer}>
-                  <input type={passwordType} id="password" name="password" title={loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} required />
+                  <input type={passwordType} id="password" name="password" title={loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword(e.target.value)} required />
                   <button type="button" className={styles.showPassword} onClick={showPassword}>
                     {passwordType === "password" ? "Ø" : "O"} <span className={styles.passwordTooltip}>{tooltipText}</span>
                   </button>
                 </div>
               </div>
 
-              <button className={styles.loginButton} type="submit">
+              <button className={`${styles.loginButton} ${emailValid && passwordValid ? styles.validButton : ""}`} type="submit" disabled={!emailValid || !passwordValid}>
                 {loginType === "login" ? "Log ind" : "Opret"}
               </button>
 

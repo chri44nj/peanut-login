@@ -1,0 +1,33 @@
+.dashboardContainer {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 150px auto;
+  width: 100%;
+  position: relative;
+}
+
+.dashboardMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: var(--background-color);
+  padding: 3rem 1rem;
+  gap: 1rem;
+  position: fixed;
+  left: 0;
+  height: 100%;
+}
+
+.dashboardMenu button {
+  font-size: 1.5rem;
+  background-color: transparent;
+  border: none;
+}
+
+.dashboard {
+  padding: 3rem;
+  background-color: var(--background-alt);
+  width: 100%;
+  grid-column: 2;
+}

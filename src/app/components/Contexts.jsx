@@ -2,16 +2,16 @@
 
 import { createContext, useState } from "react";
 
-export const TestContext = createContext();
-export const SetTestContext = createContext();
+export const LoggedInContext = createContext();
+export const SetLoggedInContext = createContext();
 
 function Contexts({ children }) {
-  const [test, setTest] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
 
   return (
-    <SetTestContext.Provider value={setTest}>
-      <TestContext.Provider value={test}>{children}</TestContext.Provider>
-    </SetTestContext.Provider>
+    <SetLoggedInContext.Provider value={setLoggedIn}>
+      <LoggedInContext.Provider value={loggedIn}>{children}</LoggedInContext.Provider>
+    </SetLoggedInContext.Provider>
   );
 }
 

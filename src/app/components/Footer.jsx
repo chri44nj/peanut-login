@@ -1,23 +1,34 @@
-import Link from "next/link";
+"use client";
+import { useContext } from "react";
 
 import styles from "../styles/Footer.module.css";
 
-function Footer() {
-  return (
-    <footer className={styles.footer}>
-      <div className={styles.footerHero}>
-        <div className={styles.footerSignup}>
-          <h2 className={styles.cta}>Er du klar til at gøre matematik sjovt?</h2>
+import { LoggedInContext, SetLoggedInContext } from "./Contexts";
 
-          <div className={styles.footerButtons}>
-            <button className={styles.createButton} href="/#createForm">
-              Opret bruger gratis
-            </button>
-            <button className={styles.loginButton} href="/#loginForm">
-              Log ind
-            </button>
+function Footer() {
+  /* Contexts */
+  const loggedInState = useContext(LoggedInContext);
+  const loggedInDispatch = useContext(SetLoggedInContext);
+
+  return (
+    <footer anchor="main" className={styles.footer}>
+      <div className={styles.footerHero}>
+        {!loggedInState ? (
+          <div className={styles.footerSignup}>
+            <h2 className={styles.cta}>Er du klar til at gøre matematik sjovt?</h2>
+
+            <div className={styles.footerButtons}>
+              <a className={styles.createButton} href="#createForm">
+                Opret bruger gratis
+              </a>
+              <a className={styles.loginButton} href="#loginForm">
+                Log ind
+              </a>
+            </div>
           </div>
-        </div>
+        ) : (
+          ""
+        )}
       </div>
       <div className={styles.footerContent}>
         <div>
@@ -41,7 +52,6 @@ function Footer() {
           <p className="hover-link-2">Hjem</p>
           <p className="hover-link-2">Opret bruger</p>
           <p className="hover-link-2">Log ind</p>
-          <p className="hover-link-2">Planet Peanut</p>
         </div>
         <div className={styles.terms}>
           <h4>Betingelser</h4>
