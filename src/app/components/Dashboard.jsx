@@ -12,14 +12,51 @@ function Dashboard() {
   return (
     <div className={styles.dashboardContainer}>
       <div className={styles.dashboardMenu}>
-        <button>Hjem</button>
-        <button>Statistik</button>
-        <button>Klasser</button>
-        <button>Milepæle</button>
-        <button onClick={() => loggedInDispatch(false)}>Log ud</button>
+        <button>
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+              <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z" />
+            </svg>
+            Hjem
+          </div>
+        </button>
+        <button>
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pie-chart-fill" viewBox="0 0 16 16">
+              <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z" />
+            </svg>
+            Statistik
+          </div>
+        </button>
+        <button>
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+              <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+              <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z" />
+              <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+            </svg>
+            Klasser
+          </div>
+        </button>
+        <button>
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trophy-fill" viewBox="0 0 16 16">
+              <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935z" />
+            </svg>
+            Milepæle
+          </div>
+        </button>
+        <button onClick={() => loggedInDispatch(false)}>
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
+              <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
+            </svg>
+            Log ud
+          </div>
+        </button>
       </div>
       <div className={styles.dashboard}>
-        <h1>Menupunkt</h1>
+        <h1>Hjem</h1>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, eveniet ab nam, illo, incidunt perspiciatis nobis minus illum voluptate odio magnam impedit consequuntur libero rerum accusamus perferendis unde. Modi ea sequi suscipit tempora, distinctio at, expedita vero quis facilis quod laborum error est reprehenderit iusto temporibus voluptatem praesentium delectus magnam maxime, ducimus in cumque beatae aperiam tempore! Voluptatibus voluptates impedit libero iure omnis velit esse quas pariatur nobis facilis? Fugit, neque assumenda exercitationem atque porro eos cumque facilis iusto nam ipsum, rem natus corporis provident! Non, voluptatum. Sint amet repellat officia maxime architecto minus nobis. Nisi autem eius, similique cum sunt quidem quasi, tenetur mollitia
           consequuntur quos iusto voluptas animi iure tempore amet officia ullam laboriosam ab illum nihil. Recusandae, quo! Quod suscipit cum, vero quas tenetur repudiandae molestiae dignissimos esse dolor labore doloremque necessitatibus ex voluptatem debitis inventore vitae qui? Sunt excepturi atque quasi neque, sapiente laborum quisquam consequuntur incidunt. Expedita id itaque commodi quibusdam quia delectus ea similique incidunt a iste? Minima ducimus assumenda pariatur recusandae incidunt rerum reprehenderit molestias nisi praesentium, aliquid aut quisquam sapiente eaque adipisci enim tempora ipsum non sit labore repellat minus aspernatur! Explicabo, optio omnis accusamus labore nemo similique veritatis facilis vitae neque?

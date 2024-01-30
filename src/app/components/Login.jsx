@@ -80,6 +80,8 @@ function Login() {
     </svg>
   );
 
+  const buttonTooltip = !emailValid ? "Indtast en korrekt emailadresse (eks: planetpeanut@hotmail.com" : !passwordValid ? "Indtast en korrekt adgangskode (min. 8 karakterer, min. 1 stort bogstav, min. 1 tal)" : "";
+
   return (
     <>
       {loginType === "login" ? (
@@ -101,7 +103,7 @@ function Login() {
               </div>
             </div>
 
-            <button className={`${styles.loginButton} ${emailValid && passwordValid ? styles.validButton : ""}`} type="submit" disabled={!emailValid || !passwordValid}>
+            <button className={`${styles.loginButton} ${emailValid && passwordValid ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || !passwordValid}>
               {loginType === "login" ? "Log ind" : "Opret"}
             </button>
 
@@ -124,8 +126,8 @@ function Login() {
               <span className={styles.eller}>eller</span>
             </div>
             <p className="hover-link">Fortsæt med Google</p>
-            <p className="hover-link">Fortsæt med Google</p>
-            <p className="hover-link">Fortsæt med Google</p>
+            <p className="hover-link">Fortsæt med Facebook</p>
+            <p className="hover-link">Fortsæt med Apple</p>
           </form>
         </div>
       ) : (
@@ -184,7 +186,7 @@ function Login() {
                 </div>
               </div>
 
-              <button className={`${styles.loginButton} ${emailValid && passwordValid ? styles.validButton : ""}`} type="submit" disabled={!emailValid || !passwordValid}>
+              <button className={`${styles.loginButton} ${emailValid && passwordValid ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || !passwordValid}>
                 {loginType === "login" ? "Log ind" : "Opret"}
               </button>
 
@@ -201,8 +203,8 @@ function Login() {
               </div>
 
               <p className="hover-link">Fortsæt med Google</p>
-              <p className="hover-link">Fortsæt med Google</p>
-              <p className="hover-link">Fortsæt med Google</p>
+              <p className="hover-link">Fortsæt med Facebook</p>
+              <p className="hover-link">Fortsæt med Apple</p>
             </form>
           ) : (
             ""
