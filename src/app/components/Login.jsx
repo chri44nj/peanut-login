@@ -75,7 +75,7 @@ function Login() {
   /* Other Stuff */
 
   const userIcon = (
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
       <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
     </svg>
   );
@@ -83,7 +83,7 @@ function Login() {
   const buttonTooltip = !emailValid ? "Indtast en korrekt emailadresse (eks: planetpeanut@hotmail.com" : !passwordValid ? "Indtast en korrekt adgangskode (min. 8 karakterer, min. 1 stort bogstav, min. 1 tal)" : "";
 
   return (
-    <>
+    <div id="loginContainer">
       {loginType === "login" ? (
         <div id="loginForm" className={styles.loginFormContainer}>
           <form onSubmit={(e) => signIn(e)} className={styles.loginForm} action="">
@@ -213,7 +213,7 @@ function Login() {
       ) : (
         ""
       )}
-    </>
+    </div>
   );
 }
 

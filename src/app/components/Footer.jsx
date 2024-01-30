@@ -18,10 +18,10 @@ function Footer() {
             <h2 className={styles.cta}>Er du klar til at gøre matematik sjovt?</h2>
 
             <div className={styles.footerButtons}>
-              <a className={styles.createButton} href="#createForm">
+              <a className={styles.createButton} href="#loginContainer">
                 Opret bruger gratis
               </a>
-              <a className={styles.loginButton} href="#loginForm">
+              <a className={styles.loginButton} href="#loginContainer">
                 Log ind
               </a>
             </div>
