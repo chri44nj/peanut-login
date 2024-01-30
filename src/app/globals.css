@@ -20,6 +20,11 @@
   font-family: "Montserrat", sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 62px;
+}
+
 body {
   line-height: 1.5;
 }

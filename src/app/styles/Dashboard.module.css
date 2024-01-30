@@ -46,6 +46,7 @@
   padding: 1rem 0.5rem;
   gap: 0.5rem;
   z-index: 10;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
 }
 
 .dashboardBurger {
@@ -71,11 +72,16 @@
   color: var(--background-color);
 }
 
-.dashboardMenu button div {
+#activeDashboard * {
+  color: var(--background-color);
+}
+
+.dashboardMenu button a {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .dashboard {
@@ -89,12 +95,12 @@
 @media only screen and (min-width: 600px) {
   .dashboardContainer {
     display: grid;
-    grid-template-columns: 150px auto;
+    grid-template-columns: 175px auto;
   }
 
   .dashboardMenu {
     left: 0;
-    width: 150px;
+    width: 175px;
     padding: 3rem 0.5rem;
   }
 
