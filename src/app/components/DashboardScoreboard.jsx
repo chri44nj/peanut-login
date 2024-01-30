@@ -5,7 +5,7 @@ import styles from "../styles/DashboardScoreboard.module.css";
 
 function DashboardScoreboard() {
   /* States */
-  const [userNames, setUserNames] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   /* Other */
   useEffect(() => {
@@ -15,7 +15,12 @@ function DashboardScoreboard() {
         const res = await axios.get(`https://skillzy-node.fly.dev/api/get-leaderboard-players`, {
           params: info,
         });
-        setUserNames(res.data.map((user) => user.name));
+        const formattedData = res.data.map((user) => ({
+          name: user.name,
+          score: user.score,
+        }));
+        setUserData(formattedData);
+        console.log(formattedData);
       } catch (error) {
         console.error("Error fetching leaderboard data:", error);
       }
@@ -26,9 +31,9 @@ function DashboardScoreboard() {
 
   return (
     <div>
-      {userNames.map((name, index) => (
+      {userData.map((user, index) => (
         <p key={index}>
-          {index + 1} {name}
+          {index + 1} {user.name} {user.score}
         </p>
       ))}
     </div>
