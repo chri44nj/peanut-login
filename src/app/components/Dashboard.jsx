@@ -75,9 +75,9 @@ function Dashboard() {
       </div>
 
       <div className={styles.dashboard}>
-        <div className={styles.dashboardHeader}>
+        <div id="dashboardHeader" className={styles.dashboardHeader}>
           <h1>{dashboardType}</h1>
-          <button type="button" className={styles.burgerMenu} onClick={() => burgerMenuClicked()}>
+          <button anchor="dashboardHeader" type="button" className={styles.burgerMenu} onClick={() => burgerMenuClicked()}>
             <span></span>
             <span></span>
             <span></span>
