@@ -31,20 +31,22 @@ function DashboardScoreboard() {
   }, [amount]);
 
   return (
-    <div className={styles.scoreboardContainer}>
-      {userData.map((user, index) => (
-        <div className={styles.hamsterScore} key={index}>
-          <div className={styles.hamsterTop}>
-            <p>{index + 1}</p>
-            <p className={styles.hamsterName}>{user.name}</p>
+    <>
+      <div className={styles.scoreboardContainer}>
+        {userData.map((user, index) => (
+          <div className={styles.hamsterScore} key={index}>
+            <div className={styles.hamsterTop}>
+              <p>{index + 1}</p>
+              <p className={styles.hamsterName}>{user.name}</p>
+            </div>
+            <p>{user.score}</p>
           </div>
-          <p>{user.score}</p>
-        </div>
-      ))}
-      <button type="button" onClick={() => setAmount((old) => old + 10)}>
-        Indlæs 10 flere
+        ))}
+      </div>
+      <button className={styles.loadButton} type="button" onClick={() => setAmount((old) => old + 10)}>
+        Indlæs næste 10
       </button>
-    </div>
+    </>
   );
 }
 

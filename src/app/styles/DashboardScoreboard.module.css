@@ -28,3 +28,32 @@
 .hamsterName {
   text-transform: capitalize;
 }
+
+.loadButton {
+  background-color: var(--accent-purple);
+  color: var(--background-color);
+  border: none;
+  border-radius: 4px;
+  margin: 1rem auto;
+  height: 2.5rem;
+  width: 100%;
+  max-width: 350px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loadButton:hover {
+  background-color: var(--accent-purple-dark);
+}
+
+/** TABLET **/
+
+@media only screen and (min-width: 600px) {
+}
+
+/** LARGER SCREENS **/
+
+@media only screen and (min-width: 1200px) {
+}

@@ -1,0 +1,26 @@
+.classesContainer {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.classContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--accent-purple);
+  border-radius: 4px;
+  padding: 1rem;
+  text-align: center;
+  height: 150px;
+}
+
+.classContainer p {
+  color: var(--background-color);
+  font-weight: bold;
+}
+
+.class {
+  font-size: 2rem;
+}
