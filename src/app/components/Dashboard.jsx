@@ -64,8 +64,8 @@ function Dashboard() {
           </a>
         </button>
         <button
-          id={dashboardType === "Klasser" ? styles.activeDashboard : ""}
-          value="Klasser"
+          id={dashboardType === "Dine klasser" ? styles.activeDashboard : ""}
+          value="Dine klasser"
           onClick={(e) => {
             setDashboardType(e.currentTarget.value);
             burgerMenuClicked();
@@ -136,7 +136,7 @@ function Dashboard() {
         </div>
         {dashboardType === "Hjem" ? <DashboardHome /> : ""}
         {dashboardType === "Statistik" ? <DashboardStatistics /> : ""}
-        {dashboardType === "Klasser" ? <DashboardClasses /> : ""}
+        {dashboardType === "Dine klasser" ? <DashboardClasses /> : ""}
         {dashboardType === "Milepæle" ? <DashboardMilestones /> : ""}
         {dashboardType === "Scoreboard" ? <DashboardScoreboard /> : ""}
       </div>

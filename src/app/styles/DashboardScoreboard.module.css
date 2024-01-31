@@ -3,8 +3,7 @@
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
-  background-color: var(--accent-purple);
-  padding: 0.5rem;
+  background-color: var(--background-color-alt);
   border-radius: 4px;
 }
 
@@ -13,10 +12,27 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background-color: var(--background-color-alt);
+  background-color: var(--accent-purple);
   padding: 1rem;
   border-radius: 4px;
   font-weight: bold;
+}
+
+.hamsterScore p,
+.hamsterScore svg {
+  color: var(--background-color);
+}
+
+.hamsterScore:nth-child(1) svg {
+  color: gold;
+}
+
+.hamsterScore:nth-child(2) svg {
+  color: silver;
+}
+
+.hamsterScore:nth-child(3) svg {
+  color: #bb8f4c;
 }
 
 .hamsterTop {
@@ -27,6 +43,10 @@
 
 .hamsterName {
   text-transform: capitalize;
+}
+
+.points {
+  color: var(--background-color);
 }
 
 .loadButton {
