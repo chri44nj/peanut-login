@@ -6,7 +6,7 @@ export const LoggedInContext = createContext();
 export const SetLoggedInContext = createContext();
 
 function Contexts({ children }) {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
 
   return (
     <SetLoggedInContext.Provider value={setLoggedIn}>

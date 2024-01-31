@@ -6,11 +6,12 @@ import styles from "../styles/DashboardScoreboard.module.css";
 function DashboardScoreboard() {
   /* States */
   const [userData, setUserData] = useState([]);
+  const [amount, setAmount] = useState(10);
 
   /* Other */
   useEffect(() => {
     async function loadData() {
-      const info = { range: "today", n: 10 };
+      const info = { range: "today", n: amount };
       try {
         const res = await axios.get(`https://skillzy-node.fly.dev/api/get-leaderboard-players`, {
           params: info,
@@ -19,23 +20,30 @@ function DashboardScoreboard() {
           name: user.name,
           score: user.score,
         }));
-        setUserData(formattedData);
-        console.log(formattedData);
+        await setUserData((prevData) => [...prevData, ...formattedData]);
+        console.log(userData);
       } catch (error) {
         console.error("Error fetching leaderboard data:", error);
       }
     }
 
     loadData();
-  }, []);
+  }, [amount]);
 
   return (
-    <div>
+    <div className={styles.scoreboardContainer}>
       {userData.map((user, index) => (
-        <p key={index}>
-          {index + 1} {user.name} {user.score}
-        </p>
+        <div className={styles.hamsterScore} key={index}>
+          <div className={styles.hamsterTop}>
+            <p>{index + 1}</p>
+            <p className={styles.hamsterName}>{user.name}</p>
+          </div>
+          <p>{user.score}</p>
+        </div>
       ))}
+      <button type="button" onClick={() => setAmount((old) => old + 10)}>
+        Indlæs 10 flere
+      </button>
     </div>
   );
 }

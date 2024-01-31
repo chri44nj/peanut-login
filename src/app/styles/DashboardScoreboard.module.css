@@ -1,0 +1,30 @@
+.scoreboardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  background-color: var(--accent-purple);
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.hamsterScore {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: var(--background-color-alt);
+  padding: 1rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.hamsterTop {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hamsterName {
+  text-transform: capitalize;
+}
