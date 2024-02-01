@@ -10,6 +10,12 @@ function Contexts({ children }) {
     loggedIn: true,
     loginType: "login",
     dashboardType: "Hjem",
+    user: {
+      name: "Abraham",
+      lastName: "Lincoln",
+      email: "abe.lincoln@hotmail.com",
+      phone: 69420420,
+    },
   });
 
   return (
