@@ -33,10 +33,11 @@ function DashboardClasses() {
 
   return (
     <>
+      <p className={styles.classesNumber}>Antal klasser: {mineKlasser.length}</p>
       <button className={styles.addClassButton} type="button" onClick={() => setFormVisible((old) => !old)}>
         {formVisible ? "Luk" : "Tilføj klasse"}
       </button>
-      <p className={styles.classesNumber}>Antal klasser: {mineKlasser.length}</p>
+
       {formVisible && (
         <form anchor="addClass" className={styles.addClass} onSubmit={handleFormSubmit}>
           <div>

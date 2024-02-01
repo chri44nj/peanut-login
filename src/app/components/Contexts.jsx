@@ -2,16 +2,20 @@
 
 import { createContext, useState } from "react";
 
-export const LoggedInContext = createContext();
-export const SetLoggedInContext = createContext();
+export const MyContexts = createContext();
+export const SetMyContexts = createContext();
 
 function Contexts({ children }) {
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [myContexts, setMyContexts] = useState({
+    loggedIn: true,
+    loginType: "login",
+    dashboardType: "Hjem",
+  });
 
   return (
-    <SetLoggedInContext.Provider value={setLoggedIn}>
-      <LoggedInContext.Provider value={loggedIn}>{children}</LoggedInContext.Provider>
-    </SetLoggedInContext.Provider>
+    <SetMyContexts.Provider value={setMyContexts}>
+      <MyContexts.Provider value={myContexts}>{children}</MyContexts.Provider>
+    </SetMyContexts.Provider>
   );
 }
 

@@ -125,10 +125,6 @@
   color: var(--accent-purple);
 }
 
-/* #closeForm:hover path {
-  color: var(--background-color);
-} */
-
 .blurBackground {
   filter: blur(2px);
 }

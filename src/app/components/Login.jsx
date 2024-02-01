@@ -3,20 +3,18 @@
 import { useContext, useState, useEffect } from "react";
 import styles from "../styles/Login.module.css";
 
-import { LoggedInContext, SetLoggedInContext } from "./Contexts";
+import { MyContexts, SetMyContexts } from "./Contexts";
 import OptionCard from "./OptionCard";
 
 function Login() {
   /* Contexts */
-  const loggedInState = useContext(LoggedInContext);
-  const loggedInDispatch = useContext(SetLoggedInContext);
+  const myContexts = useContext(MyContexts);
+  const myContextsDispatch = useContext(SetMyContexts);
 
   /* States */
   const [passwordType, setPasswordType] = useState("password");
   const [tooltipText, setTooltipText] = useState("Vis adgangskode");
-  const [loginType, setLoginType] = useState("login");
   const [accountType, setAccountType] = useState("");
-  const [signedIn, setSignedIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailValid, setEmailValid] = useState(false);
@@ -46,10 +44,16 @@ function Login() {
     setPassword("");
     setEmailValid(false);
     setPasswordValid(false);
-    if (loginType === "login") {
-      setLoginType("create");
+    if (myContexts.loginType === "login") {
+      myContextsDispatch((old) => ({
+        ...old,
+        loginType: "create",
+      }));
     } else {
-      setLoginType("login");
+      myContextsDispatch((old) => ({
+        ...old,
+        loginType: "login",
+      }));
     }
   }
 
@@ -63,12 +67,16 @@ function Login() {
 
   function signIn(e) {
     e.preventDefault();
-    if (!signedIn) {
-      setSignedIn(true);
-      loggedInDispatch(true);
+    if (!myContexts.loggedIn) {
+      myContextsDispatch((old) => ({
+        ...old,
+        loggedIn: true,
+      }));
     } else {
-      setSignedIn(false);
-      loggedInDispatch(false);
+      myContextsDispatch((old) => ({
+        ...old,
+        loggedIn: false,
+      }));
     }
   }
 
@@ -98,10 +106,10 @@ function Login() {
 
   return (
     <div id="loginContainer">
-      {loginType === "login" ? (
+      {myContexts.loginType === "login" ? (
         <div id="loginForm" className={styles.loginFormContainer}>
           <form onSubmit={(e) => signIn(e)} className={styles.loginForm} action="">
-            <h2>{loginType === "login" ? "Log ind" : "Opret en bruger"}</h2>
+            <h2>{myContexts.loginType === "login" ? "Log ind" : "Opret en bruger"}</h2>
             <div className={styles.inputField}>
               <label htmlFor="email">Email-adresse</label>
               <input type="email" id="email" name="email" title="Indtast din email-adresse" onChange={(e) => setEmail(e.target.value)} required />
@@ -110,7 +118,7 @@ function Login() {
             <div className={styles.inputField}>
               <label htmlFor="password">Adgangskode</label>
               <div className={styles.passwordContainer}>
-                <input type={passwordType} id="password" name="password" title={loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword(e.target.value)} required />
+                <input type={passwordType} id="password" name="password" title={myContexts.loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword(e.target.value)} required />
                 <button type="button" className={styles.showPassword} onClick={showPassword}>
                   {passwordType === "password" ? notVisible : visible} <span className={styles.passwordTooltip}>{tooltipText}</span>
                 </button>
@@ -118,11 +126,11 @@ function Login() {
             </div>
 
             <button className={`${styles.loginButton} ${emailValid && passwordValid ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || !passwordValid}>
-              {loginType === "login" ? "Log ind" : "Opret"}
+              {myContexts.loginType === "login" ? "Log ind" : "Opret"}
             </button>
 
             <div className={styles.switchButtonContainer}>
-              <p> {loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
+              <p> {myContexts.loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
               <button
                 type="button"
                 className={`${styles.switchButton} hover-link`}
@@ -131,7 +139,7 @@ function Login() {
                   setAccountType("");
                 }}
               >
-                {loginType === "login" ? "Opret nu" : "Log ind"}
+                {myContexts.loginType === "login" ? "Opret nu" : "Log ind"}
               </button>
             </div>
 
@@ -148,7 +156,7 @@ function Login() {
         ""
       )}
 
-      {loginType === "create" ? (
+      {myContexts.loginType === "create" ? (
         <div id="createForm" className={styles.createFormContainer}>
           {!accountType ? (
             <div className={styles.chooseAccountContainer}>
@@ -159,9 +167,9 @@ function Login() {
                 <OptionCard onClick={() => chooseAccountType("elev")} top={userIcon} bottom="Elev"></OptionCard>
               </div>
               <div className={styles.switchButtonContainer}>
-                <p> {loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
+                <p> {myContexts.loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
                 <button type="button" className={`${styles.switchButton} hover-link`} onClick={switchLogin}>
-                  {loginType === "login" ? "Opret nu" : "Log ind"}
+                  {myContexts.loginType === "login" ? "Opret nu" : "Log ind"}
                 </button>
               </div>
             </div>
@@ -169,10 +177,10 @@ function Login() {
             ""
           )}
 
-          {accountType && !signedIn ? (
+          {accountType && !myContexts.loggedIn ? (
             <form onSubmit={(e) => signIn(e)} className={styles.createForm} action="">
               <h2>
-                {loginType === "login" ? "Log ind" : "Opret en bruger"} som <span className={styles.accountType}>{accountType}</span>
+                {myContexts.loginType === "login" ? "Log ind" : "Opret en bruger"} som <span className={styles.accountType}>{accountType}</span>
               </h2>
               {accountType ? (
                 <div className={styles.switchButtonContainer}>
@@ -193,7 +201,7 @@ function Login() {
               <div className={styles.inputField}>
                 <label htmlFor="password">Adgangskode</label>
                 <div className={styles.passwordContainer}>
-                  <input type={passwordType} id="password" name="password" title={loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword(e.target.value)} required />
+                  <input type={passwordType} id="password" name="password" title={myContexts.loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword(e.target.value)} required />
                   <button type="button" className={styles.showPassword} onClick={showPassword}>
                     {passwordType === "password" ? "Ø" : "O"} <span className={styles.passwordTooltip}>{tooltipText}</span>
                   </button>
@@ -201,13 +209,13 @@ function Login() {
               </div>
 
               <button className={`${styles.loginButton} ${emailValid && passwordValid ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || !passwordValid}>
-                {loginType === "login" ? "Log ind" : "Opret"}
+                {myContexts.loginType === "login" ? "Log ind" : "Opret"}
               </button>
 
               <div className={styles.switchButtonContainer}>
-                <p> {loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
+                <p> {myContexts.loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
                 <button type="button" className={`${styles.switchButton} hover-link`} onClick={switchLogin}>
-                  {loginType === "login" ? "Opret nu" : "Log ind"}
+                  {myContexts.loginType === "login" ? "Opret nu" : "Log ind"}
                 </button>
               </div>
 

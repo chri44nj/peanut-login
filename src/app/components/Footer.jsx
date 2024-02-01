@@ -3,25 +3,33 @@ import { useContext } from "react";
 
 import styles from "../styles/Footer.module.css";
 
-import { LoggedInContext, SetLoggedInContext } from "./Contexts";
+import { MyContexts, SetMyContexts } from "./Contexts";
 
 function Footer() {
   /* Contexts */
-  const loggedInState = useContext(LoggedInContext);
-  const loggedInDispatch = useContext(SetLoggedInContext);
+  const myContexts = useContext(MyContexts);
+  const myContextsDispatch = useContext(SetMyContexts);
+
+  /* Functions */
+  function switchLogin(loginType) {
+    myContextsDispatch((old) => ({
+      ...old,
+      loginType: loginType,
+    }));
+  }
 
   return (
     <footer anchor="main" className={styles.footer}>
       <div className={styles.footerHero}>
-        {!loggedInState ? (
+        {!myContexts.loggedIn ? (
           <div className={styles.footerSignup}>
             <h2 className={styles.cta}>Er du klar til at gøre matematik sjovt?</h2>
 
             <div className={styles.footerButtons}>
-              <a className={styles.createButton} href="#loginContainer">
+              <a className={styles.createButton} href="#loginContainer" onClick={() => switchLogin("create")}>
                 Opret bruger gratis
               </a>
-              <a className={styles.loginButton} href="#loginContainer">
+              <a className={styles.loginButton} href="#loginContainer" onClick={() => switchLogin("login")}>
                 Log ind
               </a>
             </div>
