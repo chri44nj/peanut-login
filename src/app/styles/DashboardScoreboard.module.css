@@ -50,14 +50,15 @@
 }
 
 .loadButton {
-  background-color: var(--accent-purple);
-  color: var(--background-color);
-  border: none;
-  border-radius: 4px;
-  margin: 1rem auto;
-  height: 2.5rem;
   width: 100%;
-  max-width: 350px;
+  padding: 0.5rem 1rem;
+  border: solid 1px var(--accent-purple);
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: var(--accent-purple);
+  font-weight: bold;
+  transition: 0.2s;
+  margin: 1rem auto;
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -66,11 +67,16 @@
 
 .loadButton:hover {
   background-color: var(--accent-purple-dark);
+  border-color: var(--accent-purple-dark);
+  color: var(--background-color);
 }
 
 /** TABLET **/
 
 @media only screen and (min-width: 600px) {
+  .loadButton {
+    max-width: 300px;
+  }
 }
 
 /** LARGER SCREENS **/
