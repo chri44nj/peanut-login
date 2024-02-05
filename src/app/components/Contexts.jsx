@@ -16,6 +16,14 @@ function Contexts({ children }) {
       email: "abe.lincoln@hotmail.com",
       phone: 69420420,
     },
+    classes: [
+      { class: "4.a", school: "Jyderup Skole", students: 24, bestSubject: "Brøker", worstSubject: "Division" },
+      { class: "4.b", school: "Jyderup Skole", students: 23, bestSubject: "Division", worstSubject: "Brøker" },
+      { class: "4.c", school: "Jyderup Skole", students: 28, bestSubject: "Addition", worstSubject: "Subtraktion" },
+      { class: "5.b", school: "Jyderup Skole", students: 32, bestSubject: "Subtraktion", worstSubject: "Division" },
+      { class: "6.a", school: "Jyderup Skole", students: 30, bestSubject: "Brøker", worstSubject: "Division" },
+    ],
+    chosenClass: "",
   });
 
   return (

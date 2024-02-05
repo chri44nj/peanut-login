@@ -62,7 +62,12 @@
 
 .classesNumber {
   font-weight: bold;
+  font-size: 1.25rem;
   margin-bottom: 1rem;
+}
+
+.classesNumber:hover {
+  background-color: red;
 }
 
 .addClass {

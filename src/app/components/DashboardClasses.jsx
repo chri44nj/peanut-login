@@ -1,20 +1,27 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styles from "../styles/DashboardClasses.module.css";
+import { MyContexts, SetMyContexts } from "./Contexts";
 
 function DashboardClasses() {
+  /* Contexts */
+  const myContexts = useContext(MyContexts);
+  const myContextsDispatch = useContext(SetMyContexts);
+
+  /* States */
   const [formVisible, setFormVisible] = useState(false);
   const [newClass, setNewClass] = useState({
-    klasse: "",
-    skole: "",
-    elever: "",
+    class: "",
+    school: "",
+    students: "",
   });
-  const [mineKlasser, setMineKlasser] = useState([
-    { klasse: "4.a", skole: "Jyderup Skole", elever: 24 },
-    { klasse: "4.b", skole: "Jyderup Skole", elever: 23 },
-    { klasse: "4.c", skole: "Jyderup Skole", elever: 28 },
-    { klasse: "5.b", skole: "Jyderup Skole", elever: 32 },
-    { klasse: "6.a", skole: "Jyderup Skole", elever: 30 },
-  ]);
+
+  /* Functions */
+  const handleClassClick = (className) => {
+    myContextsDispatch((prevContexts) => ({
+      ...prevContexts,
+      chosenClass: className,
+    }));
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -26,14 +33,17 @@ function DashboardClasses() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    setMineKlasser((prevClasses) => [...prevClasses, newClass]);
-    setNewClass({ klasse: "", skole: "", elever: "" });
+    myContextsDispatch((prevContexts) => ({
+      ...prevContexts,
+      classes: [...prevContexts.classes, newClass],
+    }));
+    setNewClass({ class: "", school: "", students: "" });
     setFormVisible(false);
   };
 
   return (
     <>
-      <p className={styles.classesNumber}>Antal klasser: {mineKlasser.length}</p>
+      <p className={styles.classesNumber}>{myContexts.classes.length} klasser </p>
       <button className={styles.addClassButton} type="button" onClick={() => setFormVisible((old) => !old)}>
         {formVisible ? "Luk" : "Tilføj klasse"}
       </button>
@@ -42,15 +52,15 @@ function DashboardClasses() {
         <form anchor="addClass" className={styles.addClass} onSubmit={handleFormSubmit}>
           <div>
             <label htmlFor="className">Klasse</label>
-            <input id="className" name="klasse" type="text" value={newClass.klasse} onChange={handleInputChange} />
+            <input id="className" name="class" type="text" value={newClass.class} onChange={handleInputChange} />
           </div>
           <div>
             <label htmlFor="school">Skole</label>
-            <input id="school" name="skole" type="text" value={newClass.skole} onChange={handleInputChange} />
+            <input id="school" name="school" type="text" value={newClass.school} onChange={handleInputChange} />
           </div>
           <div>
             <label htmlFor="students">Antal elever</label>
-            <input id="students" name="elever" type="number" value={newClass.elever} onChange={handleInputChange} />
+            <input id="students" name="students" type="number" value={newClass.students} onChange={handleInputChange} />
           </div>
           <button id={styles.closeForm} type="button" onClick={() => setFormVisible((old) => !old)}>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
@@ -61,13 +71,13 @@ function DashboardClasses() {
         </form>
       )}
       <div id="addClass" className={`${styles.classesContainer} ${formVisible ? styles.blurBackground : ""}`}>
-        {mineKlasser.map((klasse, index) => (
-          <div className={styles.classContainer} key={index}>
+        {myContexts.classes.map((theclass, index) => (
+          <div className={styles.classContainer} key={index} onClick={() => handleClassClick(theclass.class)}>
             <div>
-              <p className={styles.class}>{klasse.klasse}</p>
-              <p className={styles.school}>{klasse.skole}</p>
+              <p className={styles.class}>{theclass.class}</p>
+              <p className={styles.school}>{theclass.school}</p>
             </div>
-            <p className={styles.students}>{klasse.elever} elever</p>
+            <p className={styles.students}>{theclass.students} elever</p>
           </div>
         ))}
       </div>
