@@ -1,6 +1,8 @@
 /** MOBILE **/
-
 .classesContainer {
+}
+
+.classesGrid {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -17,6 +19,7 @@
   text-align: center;
   height: 150px;
   transition: 0.2s;
+  margin-bottom: 1rem;
 }
 
 .classContainer:hover {
@@ -51,7 +54,6 @@
   color: var(--accent-purple);
   font-weight: bold;
   transition: 0.2s;
-  margin-bottom: 1rem;
 }
 
 .addClassButton:hover {
@@ -62,12 +64,8 @@
 
 .classesNumber {
   font-weight: bold;
-  font-size: 1.25rem;
+  font-size: var(--font-medium);
   margin-bottom: 1rem;
-}
-
-.classesNumber:hover {
-  background-color: red;
 }
 
 .addClass {

@@ -7,6 +7,11 @@
   border-radius: 4px;
 }
 
+.scoreboardContainer h2 {
+  font-size: var(--font-medium);
+  margin-bottom: 1rem;
+}
+
 .hamsterScore {
   display: flex;
   align-items: center;

@@ -42,12 +42,8 @@ function DashboardClasses() {
   };
 
   return (
-    <>
-      <p className={styles.classesNumber}>{myContexts.classes.length} klasser </p>
-      <button className={styles.addClassButton} type="button" onClick={() => setFormVisible((old) => !old)}>
-        {formVisible ? "Luk" : "Tilføj klasse"}
-      </button>
-
+    <div className={styles.classesContainer}>
+      <h2 className={styles.classesNumber}>{myContexts.classes.length} klasser </h2>
       {formVisible && (
         <form anchor="addClass" className={styles.addClass} onSubmit={handleFormSubmit}>
           <div>
@@ -70,7 +66,7 @@ function DashboardClasses() {
           <button type="submit">Tilføj</button>
         </form>
       )}
-      <div id="addClass" className={`${styles.classesContainer} ${formVisible ? styles.blurBackground : ""}`}>
+      <div id="addClass" className={`${styles.classesGrid} ${formVisible ? styles.blurBackground : ""}`}>
         {myContexts.classes.map((theclass, index) => (
           <div className={styles.classContainer} key={index} onClick={() => handleClassClick(theclass.class)}>
             <div>
@@ -81,7 +77,10 @@ function DashboardClasses() {
           </div>
         ))}
       </div>
-    </>
+      <button className={styles.addClassButton} type="button" onClick={() => setFormVisible((old) => !old)}>
+        {formVisible ? "Luk" : "Tilføj klasse"}
+      </button>
+    </div>
   );
 }
 

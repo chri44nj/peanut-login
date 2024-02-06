@@ -33,6 +33,7 @@ function DashboardScoreboard() {
   return (
     <>
       <div className={styles.scoreboardContainer}>
+        <h2>Seneste 24 timer</h2>
         {userData.map((user, index) => (
           <div className={styles.hamsterScore} key={index}>
             <div className={styles.hamsterTop}>

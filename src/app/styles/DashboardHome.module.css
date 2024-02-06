@@ -1,2 +1,7 @@
 .homeContainer {
 }
+
+.homeContainer h2 {
+  font-size: var(--font-medium);
+  margin-bottom: 1rem;
+}

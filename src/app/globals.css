@@ -3,12 +3,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 
 :root {
+  /* Colors */
   --background-color: #ffffff;
   --background-color-alt: #f9f8ff;
   --text-color: #38257d;
   --accent-pink: #ff00d0;
   --accent-purple: #5a31f2;
   --accent-purple-dark: #3d23a1;
+
+  /* Font-Sizes */
+  --font-small: 1rem;
+  --font-medium: 1.5rem;
+  --font-large: 2rem;
 }
 
 *,
