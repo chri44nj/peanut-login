@@ -17,15 +17,16 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background-color: var(--accent-purple);
+  background-color: var(--background-color);
   padding: 1rem;
   border-radius: 4px;
   font-weight: bold;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
 }
 
 .hamsterScore p,
 .hamsterScore svg {
-  color: var(--background-color);
+  color: var(--text-color);
 }
 
 .hamsterScore:nth-child(1) svg {

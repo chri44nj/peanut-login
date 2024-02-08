@@ -28,8 +28,7 @@ function DashboardMilestones() {
   return (
     <div className={styles.milestonesContainer}>
       <div className={styles.classes}>
-        <h2 className={styles.chooseClass}>Vælg klasse</h2>
-        <select className={styles.classesDropdown} id="classes" name="classes" value={myContexts.chosenClass} onChange={handleClassChange}>
+        <select className={styles.dropdown} id="classes" name="classes" value={myContexts.chosenClass} onChange={handleClassChange}>
           {myContexts.classes.map((theclass, index) => (
             <option className={styles.dropdownClass} key={index} value={theclass.class}>
               {theclass.class}

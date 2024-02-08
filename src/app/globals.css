@@ -111,14 +111,13 @@ svg {
 }
 
 .hover-link-2:hover {
-  color: var(--accent-pink);
   cursor: pointer;
 }
 
 .hover-link-2::after {
   content: "";
   position: absolute;
-  background-color: var(--accent-pink);
+  background-color: var(--background-color);
   height: 1.5px;
   width: 0;
   bottom: 0;

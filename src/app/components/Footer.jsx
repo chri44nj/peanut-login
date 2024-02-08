@@ -27,7 +27,7 @@ function Footer() {
 
             <div className={styles.footerButtons}>
               <a className={styles.createButton} href="#loginContainer" onClick={() => switchLogin("create")}>
-                Opret bruger gratis
+                Opret bruger
               </a>
               <a className={styles.loginButton} href="#loginContainer" onClick={() => switchLogin("login")}>
                 Log ind
