@@ -94,7 +94,7 @@
 }
 
 :nth-child(1 of .overviewBottomFlex2) {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .overviewBottomGrid {
@@ -160,6 +160,10 @@
 
   .biggerStat {
     font-size: 2.5rem;
+  }
+
+  :nth-child(1 of .overviewBottomFlex2) {
+    margin-bottom: 2rem;
   }
 }
 
