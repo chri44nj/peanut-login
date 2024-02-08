@@ -99,21 +99,21 @@ function DashboardStatistics() {
             <p className={styles.marginTop}>Altid</p>
             <div className={styles.overviewBottomFlex2}>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.biggerStat}`}>{chosenClass.students * 50}</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 50}</p>
                 <div className={styles.overviewFlex2}>
                   {pen16}
                   <p>Opgaver</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.biggerStat}`}>{chosenClass.students * 23}</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 23}</p>
                 <div className={styles.overviewFlex2}>
                   {clock16}
                   <p>Minutter</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.biggerStat}`}>{chosenClass.students * 3}%</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 3}%</p>
                 <div className={styles.overviewFlex2}>
                   {thumbs16}
                   <p>Korrekt</p>
@@ -123,21 +123,21 @@ function DashboardStatistics() {
             <p>Seneste 7 dage</p>
             <div className={styles.overviewBottomFlex2}>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.biggerStat}`}>{chosenClass.students * 10}</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 10}</p>
                 <div className={styles.overviewFlex2}>
                   {pen16}
                   <p>Opgaver</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.biggerStat}`}>{chosenClass.students * 3}</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 3}</p>
                 <div className={styles.overviewFlex2}>
                   {clock16}
                   <p>Minutter</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.biggerStat}`}>86%</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>86%</p>
                 <div className={styles.overviewFlex2}>
                   {thumbs16}
                   <p>Korrekt</p>

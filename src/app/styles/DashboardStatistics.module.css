@@ -34,8 +34,10 @@
 .chosenClassContainer {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 2rem;
   width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .chosenClassContainer * {
@@ -64,7 +66,7 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   width: 100%;
-  height: 3rem;
+  height: 2.5rem;
   background-color: var(--text-color);
   display: flex;
   justify-content: center;
@@ -76,7 +78,7 @@
 }
 
 .overviewBottomFlex {
-  margin-top: 3rem;
+  margin-top: 2.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -90,11 +92,11 @@
 }
 
 .marginTop {
-  margin-top: 3rem;
+  margin-top: 2.5rem;
 }
 
 :nth-child(1 of .overviewBottomFlex2) {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .overviewBottomGrid {
@@ -129,15 +131,14 @@
   font-size: 2rem;
 }
 
-.biggerStat {
-  font-size: 2rem;
-}
-
 /** TABLET **/
 
 @media only screen and (min-width: 1000px) {
   .chosenClassContainer {
     grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0rem;
   }
 
   .overviewClass {
@@ -156,10 +157,6 @@
   .overviewBottomGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-  }
-
-  .biggerStat {
-    font-size: 2.5rem;
   }
 
   :nth-child(1 of .overviewBottomFlex2) {
