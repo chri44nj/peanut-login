@@ -24,21 +24,8 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
 }
 
-.hamsterScore p,
-.hamsterScore svg {
+.hamsterScore p {
   color: var(--text-color);
-}
-
-.hamsterScore:nth-child(1) svg {
-  color: gold;
-}
-
-.hamsterScore:nth-child(2) svg {
-  color: silver;
-}
-
-.hamsterScore:nth-child(3) svg {
-  color: #bb8f4c;
 }
 
 .hamsterTop {

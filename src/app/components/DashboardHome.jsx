@@ -16,6 +16,12 @@ function DashboardHome() {
       </h2>
       <p>{myContexts.user.email}</p>
       <p>+45 {myContexts.user.phone}</p>
+      <p>{myContexts.user.school}</p>
+      <p>
+        {myContexts.user.subjects.map((subject, index) => (
+          <span key={index}>{subject.name} </span>
+        ))}
+      </p>
     </div>
   );
 }

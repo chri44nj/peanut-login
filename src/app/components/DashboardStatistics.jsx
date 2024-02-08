@@ -99,21 +99,21 @@ function DashboardStatistics() {
             <p className={styles.marginTop}>Altid</p>
             <div className={styles.overviewBottomFlex2}>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.biggerStat}`}>1658</p>
+                <p className={`${styles.bold} ${styles.biggerStat}`}>{chosenClass.students * 50}</p>
                 <div className={styles.overviewFlex2}>
                   {pen16}
                   <p>Opgaver</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.biggerStat}`}>405</p>
+                <p className={`${styles.bold} ${styles.biggerStat}`}>{chosenClass.students * 23}</p>
                 <div className={styles.overviewFlex2}>
                   {clock16}
                   <p>Minutter</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.biggerStat}`}>83%</p>
+                <p className={`${styles.bold} ${styles.biggerStat}`}>{chosenClass.students * 3}%</p>
                 <div className={styles.overviewFlex2}>
                   {thumbs16}
                   <p>Korrekt</p>
@@ -123,14 +123,14 @@ function DashboardStatistics() {
             <p>Seneste 7 dage</p>
             <div className={styles.overviewBottomFlex2}>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.biggerStat}`}>240</p>
+                <p className={`${styles.bold} ${styles.biggerStat}`}>{chosenClass.students * 10}</p>
                 <div className={styles.overviewFlex2}>
                   {pen16}
                   <p>Opgaver</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.biggerStat}`}>189</p>
+                <p className={`${styles.bold} ${styles.biggerStat}`}>{chosenClass.students * 3}</p>
                 <div className={styles.overviewFlex2}>
                   {clock16}
                   <p>Minutter</p>
@@ -188,7 +188,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students - 2}</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students - 3}</p>
                   <p>Aktive elever</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
@@ -223,7 +223,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>78%</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 2.5}</p>
                   <p>Korrekt</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
@@ -244,7 +244,7 @@ function DashboardStatistics() {
                   <div>
                     <br />
                     <p>152</p>
-                    <p>1</p>
+                    <p>97</p>
                   </div>
                 </div>
               </div>
@@ -258,7 +258,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>47%</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 1.5}</p>
                   <p>Korrekt</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>

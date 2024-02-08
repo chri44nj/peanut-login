@@ -15,6 +15,8 @@ function Contexts({ children }) {
       lastName: "Lincoln",
       email: "abe.lincoln@hotmail.com",
       phone: 69420420,
+      school: "Jyderup Skole",
+      subjects: [{ name: "Matematik" }, { name: "Fysik" }, { name: "Biologi" }],
     },
     classes: [
       { class: "4.a", school: "Jyderup Skole", students: 24, bestSubject: "Brøker", worstSubject: "Division" },
