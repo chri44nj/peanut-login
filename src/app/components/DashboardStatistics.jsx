@@ -1,3 +1,4 @@
+"use client";
 import { useContext, useState, useEffect } from "react";
 import styles from "../styles/DashboardStatistics.module.css";
 import { MyContexts, SetMyContexts } from "./Contexts";

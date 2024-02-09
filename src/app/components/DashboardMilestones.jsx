@@ -1,3 +1,4 @@
+"use client";
 import { useState, useContext, useEffect } from "react";
 import styles from "../styles/DashboardMilestones.module.css";
 import { MyContexts, SetMyContexts } from "./Contexts";
