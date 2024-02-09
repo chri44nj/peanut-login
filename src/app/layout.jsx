@@ -4,6 +4,7 @@ import Contexts from "./components/Contexts";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Body from "./components/Body";
+import { AuthProvider } from "./Providers";
 
 export const metadata = {
   title: "Planet Peanut",
@@ -14,11 +15,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="dk">
       <Contexts>
-        <Body>
-          <Header />
-          {children}
-          <Footer />
-        </Body>
+        <AuthProvider>
+          <Body>
+            <Header />
+            {children}
+            <Footer />
+          </Body>
+        </AuthProvider>
       </Contexts>
     </html>
   );

@@ -1,9 +1,9 @@
 "use client";
 
 import { useContext, useState, useEffect } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import styles from "../styles/Login.module.css";
-
 import { MyContexts, SetMyContexts } from "./Contexts";
 import OptionCard from "./OptionCard";
 
@@ -16,10 +16,12 @@ function Login() {
   const [passwordType, setPasswordType] = useState("password");
   const [tooltipText, setTooltipText] = useState("Vis adgangskode");
   const [accountType, setAccountType] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
+  const [error, setError] = useState("");
 
   /* Effects */
   useEffect(() => {
@@ -66,21 +68,86 @@ function Login() {
     setAccountType(selectedType);
   }
 
-  function signIn(e) {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    if (!myContexts.loggedIn) {
-      myContextsDispatch((old) => ({
-        ...old,
-        loggedIn: true,
-      }));
-      router.push("/pages/dashboard");
-    } else {
-      myContextsDispatch((old) => ({
-        ...old,
-        loggedIn: false,
-      }));
+
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (res.error) {
+        setError("Invalid Credentials");
+        return;
+      }
+
+      if (!myContexts.loggedIn) {
+        myContextsDispatch((old) => ({
+          ...old,
+          loggedIn: true,
+        }));
+      } else {
+        myContextsDispatch((old) => ({
+          ...old,
+          loggedIn: false,
+        }));
+      }
+
+      router.replace("/pages/dashboard");
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
+
+  const handleCreateLogin = async (e) => {
+    e.preventDefault();
+
+    if (!name || !email || !password) {
+      setError("All fields are necessary.");
+      return;
+    }
+
+    try {
+      const resUserExists = await fetch("api/userExists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const { user } = await resUserExists.json();
+
+      if (user) {
+        setError("User already exists.");
+        return;
+      }
+
+      const res = await fetch("api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      if (res.ok) {
+        const form = e.target;
+        form.reset();
+        router.push("/pages/dashboard");
+      } else {
+        console.log("User registration failed.");
+      }
+    } catch (error) {
+      console.log("Error during registration: ", error);
+    }
+  };
 
   /* Other Stuff */
 
@@ -112,7 +179,7 @@ function Login() {
     <div id="loginContainer">
       {myContexts.loginType === "login" ? (
         <div id="loginForm" className={styles.loginFormContainer}>
-          <form onSubmit={(e) => signIn(e)} className={styles.loginForm} action="">
+          <form onSubmit={handleSignIn} className={styles.loginForm} action="">
             <h2>{myContexts.loginType === "login" ? "Log ind" : "Opret en bruger"}</h2>
             <div className={styles.inputField}>
               <label htmlFor="email">Email-adresse</label>
@@ -128,6 +195,8 @@ function Login() {
                 </button>
               </div>
             </div>
+
+            {error && <p>{error}</p>}
 
             <button className={`${styles.loginButton} ${emailValid && passwordValid ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || !passwordValid}>
               {myContexts.loginType === "login" ? "Log ind" : "Opret"}
@@ -182,7 +251,7 @@ function Login() {
           )}
 
           {accountType && !myContexts.loggedIn ? (
-            <form onSubmit={(e) => signIn(e)} className={styles.createForm} action="">
+            <form onSubmit={(e) => handleCreateLogin(e)} className={styles.createForm} action="">
               <h2>
                 {myContexts.loginType === "login" ? "Log ind" : "Opret en bruger"} som <span className={styles.accountType}>{accountType}</span>
               </h2>
@@ -196,6 +265,11 @@ function Login() {
               ) : (
                 ""
               )}
+
+              <div className={styles.inputField}>
+                <label htmlFor="email">Fulde navn</label>
+                <input type="name" id="name" name="name" title="Indtast dit fulde navn" onChange={(e) => setName(e.target.value)} required />
+              </div>
 
               <div className={styles.inputField}>
                 <label htmlFor="email">Email-adresse</label>

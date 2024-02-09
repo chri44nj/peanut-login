@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useSession } from "next-auth/react";
 
 import styles from "../styles/DashboardHome.module.css";
 
@@ -9,12 +10,13 @@ function DashboardHome() {
   const myContexts = useContext(MyContexts);
   const myContextsDispatch = useContext(SetMyContexts);
 
+  /* Other */
+  const { data: session } = useSession();
+
   return (
     <div className={styles.homeContainer}>
-      <h2>
-        Velkommen tilbage, {myContexts.user.name} {myContexts.user.lastName}!
-      </h2>
-      <p>{myContexts.user.email}</p>
+      <h2>Velkommen tilbage, {session?.user?.name}!</h2>
+      <p>{session?.user?.email}</p>
       <p>+45 {myContexts.user.phone}</p>
       <p>{myContexts.user.school}</p>
       <p>

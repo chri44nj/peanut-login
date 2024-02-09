@@ -1,6 +1,7 @@
 "use client";
 import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
 import styles from "../styles/Dashboard.module.css";
 import { MyContexts, SetMyContexts } from "./Contexts";
@@ -37,6 +38,7 @@ function Dashboard() {
   }
 
   /* Other */
+  const { data: session } = useSession();
   const router = useRouter();
 
   return (
@@ -92,7 +94,7 @@ function Dashboard() {
               loginType: "login",
               dashboardType: "Hjem",
             }));
-            router.push("/");
+            signOut();
             burgerMenuClicked();
           }}
         >
