@@ -1,6 +1,7 @@
 "use client";
 
 import { useContext, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import styles from "../styles/Login.module.css";
 
 import { MyContexts, SetMyContexts } from "./Contexts";
@@ -72,6 +73,7 @@ function Login() {
         ...old,
         loggedIn: true,
       }));
+      router.push("/pages/dashboard");
     } else {
       myContextsDispatch((old) => ({
         ...old,
@@ -81,6 +83,8 @@ function Login() {
   }
 
   /* Other Stuff */
+
+  const router = useRouter();
 
   const userIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
