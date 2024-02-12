@@ -26,6 +26,16 @@
   text-align: center;
 }
 
+.passwordCriteria {
+  width: 100%;
+}
+
+.passwordCriteria div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .inputField {
   width: 100%;
   display: flex;

@@ -28,6 +28,7 @@ export const authOptions = {
             return null;
           }
 
+          console.log("Al min data fisk", teacher);
           return teacher;
         } catch (error) {
           console.log("Error: ", error);

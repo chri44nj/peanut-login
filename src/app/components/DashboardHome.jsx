@@ -13,7 +13,7 @@ function DashboardHome() {
 
   /* Other */
   const { data: session } = useSession();
-
+  console.log("Session:", session);
   return (
     <div className={styles.homeContainer}>
       <h2>Velkommen tilbage, {session?.user?.name}!</h2>

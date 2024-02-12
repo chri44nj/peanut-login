@@ -21,6 +21,8 @@ function Login() {
   const [password, setPassword] = useState("");
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
+  const [passwordCriteria, setPasswordCriteria] = useState(false);
+  const [passwordCriteria2, setPasswordCriteria2] = useState(false);
   const [error, setError] = useState("");
 
   /* Effects */
@@ -29,6 +31,10 @@ function Login() {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     setEmailValid(emailRegex.test(email));
     setPasswordValid(passwordRegex.test(password));
+
+    const capitalNumber = /^(?=.*[A-Z])(?=.*\d)/.test(password);
+    setPasswordCriteria(capitalNumber);
+    setPasswordCriteria2(password.length >= 8);
   }, [email, password]);
 
   /* Functions */
@@ -47,6 +53,7 @@ function Login() {
     setPassword("");
     setEmailValid(false);
     setPasswordValid(false);
+    setError("");
     if (myContexts.loginType === "login") {
       myContextsDispatch((old) => ({
         ...old,
@@ -79,7 +86,7 @@ function Login() {
       });
 
       if (res.error) {
-        setError("Invalid Credentials");
+        setError("Forkert email eller adgangskode");
         return;
       }
 
@@ -105,7 +112,7 @@ function Login() {
     e.preventDefault();
 
     if (!name || !email || !password) {
-      setError("All fields are necessary.");
+      setError("Udfyld alle felter");
       return;
     }
 
@@ -121,7 +128,7 @@ function Login() {
       const { user } = await resUserExists.json();
 
       if (user) {
-        setError("User already exists.");
+        setError("Email allerede brugt");
         return;
       }
 
@@ -188,6 +195,18 @@ function Login() {
     </svg>
   );
 
+  const cross = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ff3333" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+    </svg>
+  );
+
+  const checkMark = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4BB543" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+    </svg>
+  );
+
   const buttonTooltip = !emailValid ? "Indtast en korrekt emailadresse (eks: planetpeanut@hotmail.com" : !passwordValid ? "Indtast en korrekt adgangskode (min. 8 karakterer, min. 1 stort bogstav, min. 1 tal)" : "";
 
   return (
@@ -213,7 +232,7 @@ function Login() {
 
             {error && <p>{error}</p>}
 
-            <button className={`${styles.loginButton} ${emailValid && passwordValid ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || !passwordValid}>
+            <button className={`${styles.loginButton} ${emailValid && password.length > 0 ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || password.length === 0}>
               {myContexts.loginType === "login" ? "Log ind" : "Opret"}
             </button>
 
@@ -296,10 +315,23 @@ function Login() {
                 <div className={styles.passwordContainer}>
                   <input type={passwordType} id="password" name="password" title={myContexts.loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword(e.target.value)} required />
                   <button type="button" className={styles.showPassword} onClick={showPassword}>
-                    {passwordType === "password" ? "Ø" : "O"} <span className={styles.passwordTooltip}>{tooltipText}</span>
+                    {passwordType === "password" ? notVisible : visible} <span className={styles.passwordTooltip}>{tooltipText}</span>
                   </button>
                 </div>
               </div>
+
+              <div className={styles.passwordCriteria}>
+                <div>
+                  {passwordCriteria ? checkMark : cross}
+                  <p className={passwordCriteria ? "valid" : ""}>Minimum 1 stort bogstav og 1 tal</p>
+                </div>
+                <div>
+                  {passwordCriteria2 ? checkMark : cross}
+                  <p>Minimum 8 karakterer langt</p>
+                </div>
+              </div>
+
+              {error && <p>{error}</p>}
 
               <button className={`${styles.loginButton} ${emailValid && passwordValid ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || !passwordValid}>
                 {myContexts.loginType === "login" ? "Log ind" : "Opret"}
