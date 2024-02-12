@@ -9,27 +9,27 @@ function DashboardMilestones() {
   const myContextsDispatch = useContext(SetMyContexts);
 
   /* States */
-  const [chosenClass, setChosenClass] = useState("");
+  const [selectedClass, setSelectedClass] = useState("");
 
   /* Effects */
   useEffect(() => {
-    const findChosenClass = myContexts.classes.find((theclass) => theclass.class === myContexts.chosenClass);
-    setChosenClass(findChosenClass || null);
-  }, [myContexts.chosenClass]);
+    const findSelectedClass = myContexts.classes.find((theclass) => theclass.class === myContexts.selectedClass);
+    setSelectedClass(findSelectedClass || null);
+  }, [myContexts.selectedClass]);
 
   /* Functions */
   const handleClassChange = (event) => {
     const className = event.target.value;
     myContextsDispatch((prevContexts) => ({
       ...prevContexts,
-      chosenClass: className,
+      selectedClass: className,
     }));
   };
 
   return (
     <div className={styles.milestonesContainer}>
       <div className={styles.classes}>
-        <select className={styles.dropdown} id="classes" name="classes" value={myContexts.chosenClass} onChange={handleClassChange}>
+        <select className={styles.dropdown} id="classes" name="classes" value={myContexts.selectedClass} onChange={handleClassChange}>
           {myContexts.classes.map((theclass, index) => (
             <option className={styles.dropdownClass} key={index} value={theclass.class}>
               {theclass.class}

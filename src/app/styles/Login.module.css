@@ -18,7 +18,7 @@
   width: 100%;
   max-width: 30rem;
   background-color: white;
-  border-radius: 4px;
+  border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px;
 }
 
@@ -39,7 +39,7 @@
 .inputField input {
   height: 2.5rem;
   width: 100%;
-  border-radius: 4px;
+  border-radius: 10px;
   border: solid 1px rgba(0, 0, 0, 0.15);
   padding-inline: 1rem;
 }
@@ -70,7 +70,7 @@
   color: var(--background-color);
   text-align: center;
   padding: 0.5rem;
-  border-radius: 4px;
+  border-radius: 10px;
 
   /* Position the tooltip text */
   position: absolute;
@@ -105,7 +105,7 @@
   margin: 0px auto;
   height: 2.5rem;
   border: solid 1px var(--accent-purple);
-  border-radius: 4px;
+  border-radius: 10px;
   background-color: var(--background-color);
   color: var(--accent-purple);
   font-weight: bold;
@@ -177,7 +177,7 @@
   width: 100%;
   max-width: fit-content;
   background-color: white;
-  border-radius: 4px;
+  border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px;
 }
 

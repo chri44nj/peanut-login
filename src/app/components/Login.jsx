@@ -125,6 +125,11 @@ function Login() {
         return;
       }
 
+      // Default values for additional fields
+      const phone = 31929302; // Set default value for phone
+      const school = "Ikke specificeret"; // Set default value for school
+      const subjects = ["Matematik"]; // Set default value for subjects
+
       const res = await fetch("api/register", {
         method: "POST",
         headers: {
@@ -134,13 +139,23 @@ function Login() {
           name,
           email,
           password,
+          phone,
+          school,
+          subjects,
         }),
       });
 
+      console.log("name: ", name);
+      console.log("email: ", email);
+      console.log("password: ", password);
+      console.log("phone: ", phone);
+      console.log("school: ", school);
+      console.log("subjects: ", subjects);
+
       if (res.ok) {
         const form = e.target;
-        form.reset();
-        router.push("/pages/dashboard");
+
+        handleSignIn(e);
       } else {
         console.log("User registration failed.");
       }

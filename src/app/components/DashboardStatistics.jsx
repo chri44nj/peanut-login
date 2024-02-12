@@ -9,25 +9,25 @@ function DashboardStatistics() {
   const myContextsDispatch = useContext(SetMyContexts);
 
   /* States */
-  const [chosenClass, setChosenClass] = useState("");
+  const [selectedClass, setSelectedClass] = useState("");
   const [chosenSubject, setChosenSubject] = useState("Alle emner");
 
   /* Effects */
   useEffect(() => {
-    if (myContexts.chosenClass) {
-      const findChosenClass = myContexts.classes.find((theclass) => theclass.class === myContexts.chosenClass);
-      setChosenClass(findChosenClass || null);
+    if (myContexts.selectedClass) {
+      const findSelectedClass = myContexts.classes.find((theclass) => theclass.class === myContexts.selectedClass);
+      setSelectedClass(findSelectedClass || null);
     } else {
-      setChosenClass(myContexts.classes.length > 0 ? myContexts.classes[0] : null);
+      setSelectedClass(myContexts.classes.length > 0 ? myContexts.classes[0] : null);
     }
-  }, [myContexts.chosenClass]);
+  }, [myContexts.selectedClass]);
 
   /* Functions */
   const handleClassChange = (event) => {
     const className = event.target.value;
     myContextsDispatch((prevContexts) => ({
       ...prevContexts,
-      chosenClass: className,
+      selectedClass: className,
     }));
   };
 
@@ -71,7 +71,7 @@ function DashboardStatistics() {
     <div className={styles.statisticsContainer}>
       <div className={styles.classes}>
         <div>
-          <select className={styles.dropdown} id="classes" name="classes" value={myContexts.chosenClass} onChange={handleClassChange}>
+          <select className={styles.dropdown} id="classes" name="classes" value={myContexts.selectedClass} onChange={handleClassChange}>
             {myContexts.classes.map((theclass, index) => (
               <option className={styles.dropdownClass} key={index} value={theclass.class}>
                 {theclass.class}
@@ -91,8 +91,8 @@ function DashboardStatistics() {
         </div>
       </div>
 
-      {chosenClass ? (
-        <div className={styles.chosenClassContainer}>
+      {selectedClass ? (
+        <div className={styles.selectedClassContainer}>
           <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
             <div className={styles.overviewTop}>
               <h2>{chosenSubject}</h2>
@@ -100,21 +100,21 @@ function DashboardStatistics() {
             <p className={styles.marginTop}>Altid</p>
             <div className={styles.overviewBottomFlex2}>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 50}</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 50}</p>
                 <div className={styles.overviewFlex2}>
                   {pen16}
                   <p>Opgaver</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 23}</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 23}</p>
                 <div className={styles.overviewFlex2}>
                   {clock16}
                   <p>Minutter</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 3}%</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 3}%</p>
                 <div className={styles.overviewFlex2}>
                   {thumbs16}
                   <p>Korrekt</p>
@@ -124,14 +124,14 @@ function DashboardStatistics() {
             <p>Seneste 7 dage</p>
             <div className={styles.overviewBottomFlex2}>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 10}</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 10}</p>
                 <div className={styles.overviewFlex2}>
                   {pen16}
                   <p>Opgaver</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 3}</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 3}</p>
                 <div className={styles.overviewFlex2}>
                   {clock16}
                   <p>Minutter</p>
@@ -154,7 +154,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students}</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students}</p>
                   <p>Elever</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
@@ -189,7 +189,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students - 3}</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students - 3}</p>
                   <p>Aktive elever</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
@@ -224,14 +224,14 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 2.5}</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 2.5}</p>
                   <p>Korrekt</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
                   <div>
                     <div className={styles.overviewFlex2}>
                       {book16}
-                      <p>{chosenClass.bestSubject}</p>
+                      <p>{selectedClass.bestSubject}</p>
                     </div>
                     <div className={styles.overviewFlex2}>
                       {pen16}
@@ -259,14 +259,14 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{chosenClass.students * 1.5}</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 1.5}</p>
                   <p>Korrekt</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
                   <div>
                     <div className={styles.overviewFlex2}>
                       {book16}
-                      <p>{chosenClass.worstSubject}</p>
+                      <p>{selectedClass.worstSubject}</p>
                     </div>
                     <div className={styles.overviewFlex2}>
                       {pen16}

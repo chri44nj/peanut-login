@@ -31,7 +31,7 @@
   cursor: pointer;
 }
 
-.chosenClassContainer {
+.selectedClassContainer {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
@@ -40,7 +40,7 @@
   margin-bottom: 1rem;
 }
 
-.chosenClassContainer * {
+.selectedClassContainer * {
   color: var(--text-color);
 }
 
@@ -134,7 +134,7 @@
 /** TABLET **/
 
 @media only screen and (min-width: 1000px) {
-  .chosenClassContainer {
+  .selectedClassContainer {
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
     margin-top: 1rem;
@@ -167,7 +167,7 @@
 /** LARGER SCREENS **/
 
 @media only screen and (min-width: 1200px) {
-  .chosenClassContainer {
+  .selectedClassContainer {
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   }
 }

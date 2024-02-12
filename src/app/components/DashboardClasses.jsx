@@ -20,7 +20,7 @@ function DashboardClasses() {
   const handleClassClick = (className) => {
     myContextsDispatch((prevContexts) => ({
       ...prevContexts,
-      chosenClass: className,
+      clickedClass: className,
     }));
   };
 
@@ -42,9 +42,18 @@ function DashboardClasses() {
     setFormVisible(false);
   };
 
+  /* Other */
+
   return (
     <div className={styles.classesContainer}>
-      <h2 className={styles.classesNumber}>{myContexts.classes.length} klasser </h2>
+      <select className={styles.dropdown} id="classes" name="classes" value={myContexts.clickedClass} onChange={(e) => handleClassClick(e.target.value)}>
+        <option value="Alle klasser">Alle klasser</option>
+        {myContexts.classes.map((theclass, index) => (
+          <option className={styles.dropdownClass} key={index} value={theclass.class}>
+            {theclass.class}
+          </option>
+        ))}
+      </select>
       {formVisible && (
         <form anchor="addClass" className={styles.addClass} onSubmit={handleFormSubmit}>
           <div>
@@ -67,20 +76,45 @@ function DashboardClasses() {
           <button type="submit">Tilføj</button>
         </form>
       )}
-      <div id="addClass" className={`${styles.classesGrid} ${formVisible ? styles.blurBackground : ""}`}>
-        {myContexts.classes.map((theclass, index) => (
-          <div className={styles.classContainer} key={index} onClick={() => handleClassClick(theclass.class)}>
-            <div>
-              <p className={styles.class}>{theclass.class}</p>
-              <p className={styles.school}>{theclass.school}</p>
-            </div>
-            <p className={styles.students}>{theclass.students} elever</p>
+
+      {myContexts.clickedClass === "Alle klasser" && (
+        <>
+          <div className={`${styles.classesGrid} ${formVisible ? styles.blurBackground : ""}`}>
+            {myContexts.classes.map((theclass, index) => (
+              <div className={styles.classContainer} key={index} onClick={() => handleClassClick(theclass.class)}>
+                <div>
+                  <p className={styles.class}>{theclass.class}</p>
+                  <p className={styles.school}>{theclass.school}</p>
+                </div>
+                <p className={styles.students}>{theclass.students} elever</p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <button className={styles.addClassButton} type="button" onClick={() => setFormVisible((old) => !old)}>
-        {formVisible ? "Luk" : "Tilføj klasse"}
-      </button>
+          <button className={styles.addClassButton} type="button" onClick={() => setFormVisible((old) => !old)}>
+            {formVisible ? "Luk" : "Tilføj klasse"}
+          </button>
+        </>
+      )}
+
+      {myContexts.clickedClass !== "Alle klasser" && (
+        <>
+          {myContexts.classes.map((theclass, index) => {
+            if (theclass.class === myContexts.clickedClass)
+              return (
+                <div className={styles.singleClassDetails} key={index}>
+                  <div>
+                    <p className={styles.class}>{theclass.class}</p>
+                    <p className={styles.school}>{theclass.school}</p>
+                  </div>
+                  <p className={styles.students}>{theclass.students} Pishoveder</p>
+                </div>
+              );
+            else {
+              return null;
+            }
+          })}
+        </>
+      )}
     </div>
   );
 }

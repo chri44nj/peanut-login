@@ -33,6 +33,7 @@ function Dashboard() {
     myContextsDispatch((old) => ({
       ...old,
       dashboardType: dashboardType,
+      clickedClass: "Alle klasser",
     }));
     burgerMenuClicked();
   }
@@ -52,14 +53,6 @@ function Dashboard() {
             Hjem
           </a>
         </button>
-        <button id={myContexts.dashboardType === "Statistik" ? styles.activeDashboard : ""} value="Statistik" onClick={() => switchDashboardType("Statistik")}>
-          <a href="#dashboardContainer">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pie-chart-fill" viewBox="0 0 16 16">
-              <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z" />
-            </svg>
-            Statistik
-          </a>
-        </button>
         <button id={myContexts.dashboardType === "Dine klasser" ? styles.activeDashboard : ""} value="Dine klasser" onClick={() => switchDashboardType("Dine klasser")}>
           <a href="#dashboardContainer">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
@@ -68,6 +61,14 @@ function Dashboard() {
               <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
             </svg>
             Klasser
+          </a>
+        </button>
+        <button id={myContexts.dashboardType === "Statistik" ? styles.activeDashboard : ""} value="Statistik" onClick={() => switchDashboardType("Statistik")}>
+          <a href="#dashboardContainer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pie-chart-fill" viewBox="0 0 16 16">
+              <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z" />
+            </svg>
+            Statistik
           </a>
         </button>
         <button id={myContexts.dashboardType === "Milepæle" ? styles.activeDashboard : ""} value="Milepæle" onClick={() => switchDashboardType("Milepæle")}>

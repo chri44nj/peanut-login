@@ -18,6 +18,18 @@ const teacherSchema = new Schema(
       required: true,
       trim: true,
     },
+    phone: {
+      type: Number,
+      trim: true,
+    },
+    school: {
+      type: String,
+      trim: true,
+    },
+    subjects: {
+      type: [String],
+      trim: true,
+    },
   },
   { timestamps: true }
 );

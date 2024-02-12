@@ -25,7 +25,8 @@ function Contexts({ children }) {
       { class: "5.b", school: "Jyderup Skole", students: 32, bestSubject: "Subtraktion", worstSubject: "Division" },
       { class: "6.a", school: "Jyderup Skole", students: 30, bestSubject: "Brøker", worstSubject: "Division" },
     ],
-    chosenClass: "",
+    selectedClass: "",
+    clickedClass: "Alle klasser",
   });
 
   return (

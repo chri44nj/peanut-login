@@ -18,13 +18,17 @@ function DashboardHome() {
     <div className={styles.homeContainer}>
       <h2>Velkommen tilbage, {session?.user?.name}!</h2>
       <p>{session?.user?.email}</p>
-      <p>+45 {myContexts.user.phone}</p>
-      <p>{myContexts.user.school}</p>
-      <p>
-        {myContexts.user.subjects.map((subject, index) => (
-          <span key={index}>{subject.name} </span>
-        ))}
-      </p>
+      <p>+45 {session?.user?.phone}</p>
+      <p>{session?.user?.school}</p>
+      {session?.user?.subjects ? (
+        <p>
+          {session?.user?.subjects.map((subject, index) => (
+            <span key={index}>{subject.name} </span>
+          ))}
+        </p>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

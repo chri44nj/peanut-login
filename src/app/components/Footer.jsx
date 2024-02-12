@@ -1,5 +1,6 @@
 "use client";
 import { useContext } from "react";
+import { useSession } from "next-auth/react";
 
 import styles from "../styles/Footer.module.css";
 
@@ -18,10 +19,13 @@ function Footer() {
     }));
   }
 
+  /* Other */
+  const { data: session } = useSession();
+
   return (
     <footer anchor="main" className={styles.footer}>
       <div className={styles.footerHero}>
-        {!myContexts.loggedIn ? (
+        {!session ? (
           <div className={styles.footerSignup}>
             <h2 className={styles.cta}>Er du klar til at gøre matematik sjovt?</h2>
 
