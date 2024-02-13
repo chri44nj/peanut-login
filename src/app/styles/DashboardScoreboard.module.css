@@ -45,10 +45,10 @@
 .loadButton {
   width: 100%;
   padding: 0.5rem 1rem;
-  border: solid 1px var(--accent-purple);
+  border: solid 1px var(--accent-purple-dark);
   border-radius: 10px;
   background-color: var(--background-color);
-  color: var(--accent-purple);
+  color: var(--accent-purple-dark);
   font-weight: bold;
   transition: 0.2s;
   margin: 1rem auto;

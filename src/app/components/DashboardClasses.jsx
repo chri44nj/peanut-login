@@ -38,7 +38,7 @@ function DashboardClasses() {
       ...prevContexts,
       classes: [...prevContexts.classes, newClass],
     }));
-    setNewClass({ class: "", school: "", students: "" });
+    setNewClass({ class: "", school: "" });
     setFormVisible(false);
   };
 
@@ -63,10 +63,6 @@ function DashboardClasses() {
           <div>
             <label htmlFor="school">Skole</label>
             <input id="school" name="school" type="text" value={newClass.school} onChange={handleInputChange} />
-          </div>
-          <div>
-            <label htmlFor="students">Antal elever</label>
-            <input id="students" name="students" type="number" value={newClass.students} onChange={handleInputChange} />
           </div>
           <button id={styles.closeForm} type="button" onClick={() => setFormVisible((old) => !old)}>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
@@ -102,9 +98,32 @@ function DashboardClasses() {
             if (theclass.class === myContexts.clickedClass)
               return (
                 <div className={styles.singleClassDetails} key={index}>
-                  <p>{theclass.class}</p>
-                  <p>{theclass.school}</p>
-                  <p>{theclass.students} elever</p>
+                  <h2>
+                    <span className={styles.school}>{theclass.school}</span>, {theclass.class}
+                  </h2>
+                  <h3>Klassekode: {theclass.joinCode}</h3>
+                  <section className={styles.studentsList}>
+                    <h3>{theclass.allStudents ? "Alle " + theclass.allStudents.length : 0} elever</h3>
+                    {theclass.allStudents ? (
+                      theclass.allStudents.map((student, index) => {
+                        return (
+                          <p className={styles.singleStudent} key={index}>
+                            {student.name}
+                          </p>
+                        );
+                      })
+                    ) : (
+                      <p>Du har endnu ikke tilføjet elever til din klasse.</p>
+                    )}
+                    <div className={styles.classButtons}>
+                      <button className={styles.addStudentsButton} type="button">
+                        Tilføj elev
+                      </button>
+                      <button className={styles.addStudentsButton} type="button">
+                        Fjern elev
+                      </button>
+                    </div>
+                  </section>
                 </div>
               );
             else {

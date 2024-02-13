@@ -50,18 +50,50 @@
   text-transform: lowercase;
 }
 
+.addClass button {
+  width: 75%;
+  background-color: var(--background-color);
+  color: var(--accent-purple-dark);
+  border: none;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
 .addClassButton {
   width: 100%;
   padding: 0.5rem 1rem;
-  border: solid 1px var(--accent-purple);
+  border: solid 1px var(--accent-purple-dark);
   border-radius: 10px;
   background-color: var(--background-color);
-  color: var(--accent-purple);
+  color: var(--accent-purple-dark);
   font-weight: bold;
   transition: 0.2s;
+  margin: 1rem auto;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.addClassButton:hover {
+.addStudentsButton {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: solid 1px var(--accent-purple-dark);
+  border-radius: 10px;
+  background-color: var(--background-color);
+  color: var(--accent-purple-dark);
+  font-weight: bold;
+  transition: 0.2s;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addClassButton:hover,
+.addStudentsButton:hover {
   background-color: var(--accent-purple-dark);
   border-color: var(--accent-purple-dark);
   color: var(--background-color);
@@ -111,17 +143,6 @@
   padding-inline: 1rem;
 }
 
-.addClass button {
-  width: 75%;
-  background-color: var(--background-color);
-  color: var(--accent-purple);
-  border: none;
-  border-radius: 10px;
-  padding: 0.5rem 1rem;
-  font-weight: bold;
-  margin-top: 0.5rem;
-}
-
 .addClass div {
   display: flex;
   flex-direction: column;
@@ -140,7 +161,7 @@
 }
 
 #closeForm:hover {
-  color: var(--accent-purple);
+  color: var(--accent-purple-dark);
 }
 
 .blurBackground {
@@ -150,15 +171,55 @@
 .singleClassDetails {
 }
 
+.singleClassDetails h2 {
+  font-size: 2rem;
+}
+
+.studentsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.singleStudent {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--background-color);
+  border-radius: 10px;
+  color: var(--text-color);
+  font-weight: bold;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
+}
+
+.singleStudent:hover {
+  cursor: pointer;
+  background-color: var(--accent-purple-dark);
+  color: var(--background-color);
+}
+
+.classButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-block: 1rem;
+}
 /** TABLET **/
 
 @media only screen and (min-width: 600px) {
-  .addClassButton {
+  .addClassButton,
+  .addStudentsButton {
     max-width: 300px;
   }
 
   .addClass {
     margin: auto 35%;
+  }
+
+  .classButtons {
+    flex-direction: row;
   }
 }
 
