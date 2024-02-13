@@ -102,11 +102,9 @@ function DashboardClasses() {
             if (theclass.class === myContexts.clickedClass)
               return (
                 <div className={styles.singleClassDetails} key={index}>
-                  <div>
-                    <p className={styles.class}>{theclass.class}</p>
-                    <p className={styles.school}>{theclass.school}</p>
-                  </div>
-                  <p className={styles.students}>{theclass.students} Pishoveder</p>
+                  <p>{theclass.class}</p>
+                  <p>{theclass.school}</p>
+                  <p>{theclass.students} elever</p>
                 </div>
               );
             else {

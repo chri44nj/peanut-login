@@ -147,6 +147,9 @@
   filter: blur(2px);
 }
 
+.singleClassDetails {
+}
+
 /** TABLET **/
 
 @media only screen and (min-width: 600px) {
