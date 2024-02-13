@@ -49,6 +49,7 @@ function Login() {
   }
 
   function switchLogin() {
+    setName("");
     setEmail("");
     setPassword("");
     setEmailValid(false);
@@ -68,6 +69,7 @@ function Login() {
   }
 
   function chooseAccountType(selectedType) {
+    setName("");
     setEmail("");
     setPassword("");
     setEmailValid(false);
@@ -333,7 +335,7 @@ function Login() {
 
               {error && <p>{error}</p>}
 
-              <button className={`${styles.loginButton} ${emailValid && passwordValid ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || !passwordValid}>
+              <button className={`${styles.loginButton} ${emailValid && passwordValid && name ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || !passwordValid}>
                 {myContexts.loginType === "login" ? "Log ind" : "Opret"}
               </button>
 
