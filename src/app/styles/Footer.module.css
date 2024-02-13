@@ -101,6 +101,11 @@
   color: var(--background-color);
 }
 
+.navTerms {
+  display: flex;
+  gap: 3rem;
+}
+
 .navigation {
   display: flex;
   flex-direction: column;

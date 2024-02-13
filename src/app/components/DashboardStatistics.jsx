@@ -224,7 +224,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 2.5}</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 2.5}%</p>
                   <p>Korrekt</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
@@ -259,7 +259,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 1.5}</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 1.5}%</p>
                   <p>Korrekt</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>

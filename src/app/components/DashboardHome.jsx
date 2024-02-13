@@ -16,7 +16,7 @@ function DashboardHome() {
   console.log("Session:", session);
   return (
     <div className={styles.homeContainer}>
-      <h2>Velkommen tilbage, {session?.user?.name}!</h2>
+      <h2>Velkommen hjem, {session?.user?.name}!</h2>
       <p>{session?.user?.email}</p>
       <p>+45 {session?.user?.phone}</p>
       <p>{session?.user?.school}</p>

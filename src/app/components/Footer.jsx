@@ -59,17 +59,32 @@ function Footer() {
             </svg>
           </a>
         </div>
-        <div className={styles.navigation}>
-          <h4>Navigation</h4>
-          <p className="hover-link-2">Hjem</p>
-          <p className="hover-link-2">Opret bruger</p>
-          <p className="hover-link-2">Log ind</p>
-        </div>
-        <div className={styles.terms}>
-          <h4>Betingelser</h4>
-          <p className="hover-link-2">Vilkår og betingelser</p>
-          <p className="hover-link-2">Fortrolighedserklæring</p>
-          <p className="hover-link-2">Elevernes privatliv</p>
+        <div className={styles.navTerms}>
+          <div className={styles.navigation}>
+            <h4>Navigation</h4>
+            <a className="hover-link-2" href="/">
+              Hjem
+            </a>
+            {!session ? (
+              <>
+                {" "}
+                <a className="hover-link-2" href="#loginContainer" onClick={() => switchLogin("create")}>
+                  Opret bruger
+                </a>
+                <a className="hover-link-2" href="#loginContainer" onClick={() => switchLogin("login")}>
+                  Log ind
+                </a>
+              </>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className={styles.terms}>
+            <h4>Betingelser</h4>
+            <p className="hover-link-2">Vilkår og betingelser</p>
+            <p className="hover-link-2">Fortrolighedserklæring</p>
+            <p className="hover-link-2">Elevernes privatliv</p>
+          </div>
         </div>
       </div>
     </footer>
