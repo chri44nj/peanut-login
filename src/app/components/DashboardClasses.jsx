@@ -13,7 +13,9 @@ function DashboardClasses() {
   const [newClass, setNewClass] = useState({
     class: "",
     school: "",
-    students: "",
+    students: 0,
+    allStudents: [],
+    joinCode: "",
   });
 
   /* Functions */
@@ -42,13 +44,29 @@ function DashboardClasses() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    const updatedNewClass = {
+      ...newClass,
+      joinCode: generateJoinCode(8),
+    };
     myContextsDispatch((prevContexts) => ({
       ...prevContexts,
-      classes: [...prevContexts.classes, newClass],
+      classes: [...prevContexts.classes, updatedNewClass],
     }));
-    setNewClass({ class: "", school: "" });
+    setNewClass({ class: "", school: "", joinCode: "" });
     setFormVisible(false);
   };
+
+  function generateJoinCode(length) {
+    let joinCode = "";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      joinCode += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return joinCode;
+  }
+
+  console.log(generateJoinCode(10));
 
   /* Other */
 
@@ -78,7 +96,7 @@ function DashboardClasses() {
         )}
       </div>
       {formVisible && (
-        <form anchor="addClass" className={styles.addClass} onSubmit={handleFormSubmit}>
+        <form className={styles.addClass} onSubmit={handleFormSubmit}>
           <div>
             <label htmlFor="className">Klasse</label>
             <input id="className" name="class" type="text" value={newClass.class} onChange={handleInputChange} />
@@ -109,9 +127,11 @@ function DashboardClasses() {
               </div>
             ))}
           </div>
-          <button className={styles.addClassButton} type="button" onClick={() => setFormVisible((old) => !old)}>
-            {formVisible ? "Luk" : "Tilføj klasse"}
-          </button>
+          <div className={styles.buttonContainer}>
+            <button className={styles.addClassButton} type="button" onClick={() => setFormVisible((old) => !old)}>
+              {formVisible ? "Luk" : "Tilføj klasse"}
+            </button>
+          </div>
         </>
       )}
 
@@ -124,28 +144,27 @@ function DashboardClasses() {
                   <h2>
                     <span className={styles.school}>{theclass.school}</span>, {theclass.class}
                   </h2>
-                  <h3>Klassekode: {theclass.joinCode}</h3>
+                  {myContexts.selectedStudent === "Alle elever" ? <p>Klassekode: {theclass.joinCode}</p> : ""}
                   <section className={styles.studentsList}>
-                    <h3>{theclass.allStudents ? "Alle " + theclass.allStudents.length : 0} elever</h3>
-                    {theclass.allStudents ? (
-                      theclass.allStudents.map((student, index) => {
-                        return (
-                          <p className={styles.singleStudent} key={index} onClick={() => handleSelectStudent(student.name)}>
-                            {student.name}
-                          </p>
-                        );
-                      })
-                    ) : (
-                      <p>Du har endnu ikke tilføjet elever til din klasse.</p>
+                    {myContexts.selectedStudent === "Alle elever" ? <h3>{theclass.allStudents.length > 0 ? "Alle " + theclass.allStudents.length : 0} elever</h3> : <h3>{myContexts.selectedStudent}</h3>}
+
+                    {theclass.allStudents && myContexts.selectedStudent === "Alle elever"
+                      ? theclass.allStudents.map((student, index) => {
+                          return (
+                            <div className={styles.singleStudent} key={index} onClick={() => handleSelectStudent(student.name)}>
+                              {student.name}
+                            </div>
+                          );
+                        })
+                      : ""}
+                    {theclass.allStudents.length === 0 ? <p>Klik på knappen herunder eller del din klassekode med eleverne, for at tilføje dem til klassen.</p> : ""}
+                    {myContexts.selectedStudent === "Alle elever" && (
+                      <div className={styles.buttonContainer}>
+                        <button className={styles.addStudentsButton} type="button">
+                          Tilføj elev
+                        </button>
+                      </div>
                     )}
-                    <div className={styles.classButtons}>
-                      <button className={styles.addStudentsButton} type="button">
-                        Tilføj elev
-                      </button>
-                      <button className={styles.addStudentsButton} type="button">
-                        Fjern elev
-                      </button>
-                    </div>
                   </section>
                 </div>
               );

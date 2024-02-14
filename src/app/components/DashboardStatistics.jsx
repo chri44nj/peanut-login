@@ -100,7 +100,7 @@ function DashboardStatistics() {
             <div className={styles.overviewTop}>
               <h2>{chosenSubject}</h2>
             </div>
-            <p className={styles.marginTop}>Altid</p>
+            <p className={`${styles.marginTop} ${styles.overviewTimespan}`}>Altid</p>
             <div className={styles.overviewBottomFlex2}>
               <div className={styles.overviewFlex}>
                 <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 50}</p>
@@ -124,7 +124,7 @@ function DashboardStatistics() {
                 </div>
               </div>
             </div>
-            <p>Seneste 7 dage</p>
+            <p className={styles.overviewTimespan}>Seneste 7 dage</p>
             <div className={styles.overviewBottomFlex2}>
               <div className={styles.overviewFlex}>
                 <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 10}</p>

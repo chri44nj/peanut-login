@@ -12,9 +12,11 @@
   --accent-purple-dark: #3d23a1;
 
   /* Font-Sizes */
-  --font-small: 1rem;
+  --font-smaller: 1rem;
+  --font-small: 1.25rem;
   --font-medium: 1.5rem;
-  --font-large: 2rem;
+  --font-large: 1.75rem;
+  --font-larger: 2rem;
 }
 
 *,
@@ -50,6 +52,10 @@ span {
   overflow-wrap: break-word;
   hyphens: auto;
   color: var(--text-color);
+}
+
+p {
+  max-width: 60ch;
 }
 
 a {
