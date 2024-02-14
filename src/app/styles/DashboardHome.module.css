@@ -1,7 +1,25 @@
 .homeContainer {
 }
 
-.homeContainer h2 {
-  font-size: var(--font-medium);
+.name {
+  font-size: var(--font-large);
+  text-transform: capitalize;
+}
+
+.school {
+  font-weight: bold;
+  font-size: var(--font-small);
+}
+
+.school,
+.subjects {
+  text-transform: capitalize;
+}
+
+.phone {
   margin-bottom: 1rem;
+}
+
+.lowercase {
+  text-transform: lowercase;
 }

@@ -54,6 +54,10 @@
   padding-inline: 1rem;
 }
 
+#email input {
+  text-transform: lowercase;
+}
+
 .passwordContainer {
   position: relative;
 }

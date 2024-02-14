@@ -11,24 +11,39 @@ function DashboardHome() {
   const myContexts = useContext(MyContexts);
   const myContextsDispatch = useContext(SetMyContexts);
 
+  /* Functions */
+  function switchDashboardType(dashboardType) {
+    myContextsDispatch((old) => ({
+      ...old,
+      dashboardType: dashboardType,
+      clickedClass: "Alle klasser",
+    }));
+    burgerMenuClicked();
+  }
+
   /* Other */
   const { data: session } = useSession();
   console.log("Session:", session);
   return (
     <div className={styles.homeContainer}>
-      <h2>Velkommen hjem, {session?.user?.name}!</h2>
+      <h2 className={styles.name}>{session?.user?.name}</h2>
       <p>{session?.user?.email}</p>
-      <p>+45 {session?.user?.phone}</p>
-      <p>{session?.user?.school}</p>
-      {session?.user?.subjects ? (
-        <p>
-          {session?.user?.subjects.map((subject, index) => (
+      <p className={styles.phone}>+45 {myContexts.user.phone}</p>
+      <p className={styles.school}>
+        {myContexts.user.accountType} <span className={styles.lowercase}>på</span> {myContexts.user.school}
+      </p>
+      {myContexts.user.subjects ? (
+        <p className={styles.subjects}>
+          {myContexts.user.subjects.map((subject, index) => (
             <span key={index}>{subject.name} </span>
           ))}
         </p>
       ) : (
         ""
       )}
+      <a className="hover-link" href="#dashboardContainer" onClick={() => switchDashboardType("Dine klasser")}>
+        {myContexts.classes.length} klasser
+      </a>
     </div>
   );
 }

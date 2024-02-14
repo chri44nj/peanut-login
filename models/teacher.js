@@ -30,6 +30,11 @@ const teacherSchema = new Schema(
       type: [String],
       trim: true,
     },
+    accountType: {
+      type: String,
+      trim: true,
+      required: true,
+    },
   },
   { timestamps: true }
 );

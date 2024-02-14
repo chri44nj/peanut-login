@@ -116,17 +116,20 @@ function DashboardClasses() {
 
       {myContexts.clickedClass === "Alle klasser" && (
         <>
-          <div className={`${styles.classesGrid} ${formVisible ? styles.blurBackground : ""}`}>
-            {myContexts.classes.map((theclass, index) => (
-              <div className={styles.classContainer} key={index} onClick={() => handleClassClick(theclass.class)}>
-                <div>
-                  <p className={styles.class}>{theclass.class}</p>
-                  <p className={styles.school}>{theclass.school}</p>
+          {myContexts.classes && (
+            <div className={`${styles.classesGrid} ${formVisible ? styles.blurBackground : ""}`}>
+              {myContexts.classes.map((theclass, index) => (
+                <div className={styles.classContainer} key={index} onClick={() => handleClassClick(theclass.class)}>
+                  <div>
+                    <p className={styles.class}>{theclass.class}</p>
+                    <p className={styles.school}>{theclass.school}</p>
+                  </div>
+                  <p className={styles.students}>{theclass.students} elever</p>
                 </div>
-                <p className={styles.students}>{theclass.students} elever</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
+          {myContexts.classes === 0 ? <p>Klik på knappen herunder for at tilføje en klasse.</p> : ""}
           <div className={styles.buttonContainer}>
             <button className={styles.addClassButton} type="button" onClick={() => setFormVisible((old) => !old)}>
               {formVisible ? "Luk" : "Tilføj klasse"}

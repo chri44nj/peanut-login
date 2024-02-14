@@ -11,14 +11,15 @@ function Contexts({ children }) {
   const [myContexts, setMyContexts] = useState({
     loggedIn: false,
     loginType: "login",
-    dashboardType: "Hjem",
+    dashboardType: "Velkommen hjem",
     user: {
-      name: "Abraham",
-      lastName: "Lincoln",
+      accountType: "lærer",
+      name: "abraham",
+      lastName: "aincoln",
       email: "abe.lincoln@hotmail.com",
       phone: 69420420,
-      school: "Jyderup Skole",
-      subjects: [{ name: "Matematik" }, { name: "Fysik" }, { name: "Biologi" }],
+      school: "jyderup skole",
+      subjects: [{ name: "matematik" }, { name: "fysik" }, { name: "biologi" }],
     },
     classes: [
       { class: "4.a", school: "Jyderup Skole", joinCode: "34JKS5OS", students: 24, allStudents: listOfStudents, bestSubject: "Brøker", worstSubject: "Division" },

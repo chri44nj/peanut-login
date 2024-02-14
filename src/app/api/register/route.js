@@ -5,11 +5,11 @@ import Teacher from "../../../../models/teacher";
 
 export async function POST(req) {
   try {
-    const { name, email, password, phone, school, subjects } = await req.json();
-    console.log("Received request with additional fields:", { name, email, password, phone, school, subjects });
+    const { name, email, password, phone, school, subjects, accountType } = await req.json();
+    console.log("Received request with additional fields:", { name, email, password, phone, school, subjects, accountType });
     const hashedPassword = await bcrypt.hash(password, 10);
     await connectMongoDB();
-    await Teacher.create({ name, email, password: hashedPassword, phone, school, subjects });
+    await Teacher.create({ name, email, password: hashedPassword, phone, school, subjects, accountType });
 
     return NextResponse.json({ message: "Teacher registered." }, { status: 201 });
   } catch (error) {

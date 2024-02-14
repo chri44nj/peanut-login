@@ -135,9 +135,9 @@ function Login() {
       }
 
       // Default values for additional fields
-      const phone = 31929302; // Set default value for phone
-      const school = "Ikke specificeret"; // Set default value for school
-      const subjects = ["Matematik"]; // Set default value for subjects
+      const phone = 11111111; // Set default value for phone
+      const school = "ikke specificeret"; // Set default value for school
+      const subjects = ["matematik"]; // Set default value for subjects
 
       const res = await fetch("api/register", {
         method: "POST",
@@ -151,15 +151,9 @@ function Login() {
           phone,
           school,
           subjects,
+          accountType,
         }),
       });
-
-      console.log("name: ", name);
-      console.log("email: ", email);
-      console.log("password: ", password);
-      console.log("phone: ", phone);
-      console.log("school: ", school);
-      console.log("subjects: ", subjects);
 
       if (res.ok) {
         const form = e.target;
@@ -219,7 +213,7 @@ function Login() {
             <h2>{myContexts.loginType === "login" ? "Log ind" : "Opret en bruger"}</h2>
             <div className={styles.inputField}>
               <label htmlFor="email">Email-adresse</label>
-              <input type="email" id="email" name="email" title="Indtast din email-adresse" onChange={(e) => setEmail(e.target.value)} required />
+              <input type="email" id="email" name="email" title="Indtast din email-adresse" onChange={(e) => setEmail(e.target.value.toLowerCase())} required />
             </div>
 
             <div className={styles.inputField}>
@@ -304,12 +298,12 @@ function Login() {
 
               <div className={styles.inputField}>
                 <label htmlFor="email">Fulde navn</label>
-                <input type="name" id="name" name="name" title="Indtast dit fulde navn" onChange={(e) => setName(e.target.value)} required />
+                <input type="name" id="name" name="name" title="Indtast dit fulde navn" onChange={(e) => setName(e.target.value.toLowerCase())} required />
               </div>
 
               <div className={styles.inputField}>
                 <label htmlFor="email">Email-adresse</label>
-                <input type="email" id="email" name="email" title="Indtast din email-adresse" onChange={(e) => setEmail(e.target.value)} required />
+                <input type="email" id="email" name="email" title="Indtast din email-adresse" onChange={(e) => setEmail(e.target.value.toLowerCase())} required />
               </div>
 
               <div className={styles.inputField}>
