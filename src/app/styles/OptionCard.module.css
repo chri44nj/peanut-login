@@ -13,7 +13,7 @@
 
 .optionCard:hover .topHalf,
 .optionCard:hover .bottomHalf {
-  background-color: rgb(5, 5, 219);
+  background-color: var(--accent-purple-dark);
   color: white;
 }
 
@@ -23,7 +23,7 @@
   align-items: center;
   height: 100%;
   width: 5rem;
-  background-color: blue;
+  background-color: var(--accent-purple-dark);
   color: white;
   transition: 0.2s;
   border-top-left-radius: 4px;

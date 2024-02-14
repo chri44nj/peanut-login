@@ -21,6 +21,14 @@ function DashboardClasses() {
     myContextsDispatch((prevContexts) => ({
       ...prevContexts,
       clickedClass: className,
+      selectedStudent: "Alle elever",
+    }));
+  };
+
+  const handleSelectStudent = (studentName) => {
+    myContextsDispatch((prevContexts) => ({
+      ...prevContexts,
+      selectedStudent: studentName,
     }));
   };
 
@@ -46,14 +54,29 @@ function DashboardClasses() {
 
   return (
     <div className={styles.classesContainer}>
-      <select className={styles.dropdown} id="classes" name="classes" value={myContexts.clickedClass} onChange={(e) => handleClassClick(e.target.value)}>
-        <option value="Alle klasser">Alle klasser</option>
-        {myContexts.classes.map((theclass, index) => (
-          <option className={styles.dropdownClass} key={index} value={theclass.class}>
-            {theclass.class}
-          </option>
-        ))}
-      </select>
+      <div className={styles.dropdownsContainer}>
+        <select className={styles.dropdown} id="classes" name="classes" value={myContexts.clickedClass} onChange={(e) => handleClassClick(e.target.value)}>
+          <option value="Alle klasser">Alle klasser</option>
+          {myContexts.classes.map((theclass, index) => (
+            <option className={styles.dropdownClass} key={index} value={theclass.class}>
+              {theclass.class}
+            </option>
+          ))}
+        </select>
+        {myContexts.clickedClass !== "Alle klasser" && (
+          <select className={styles.dropdown} id="students" name="students" value={myContexts.selectedStudent} onChange={(e) => handleSelectStudent(e.target.value)}>
+            <option className={styles.dropdownClass}>Alle elever</option>
+            {myContexts.clickedClass !== "Alle klasser" &&
+              myContexts.classes
+                .find((specificClass) => specificClass.class === myContexts.clickedClass)
+                .allStudents.map((student, index) => (
+                  <option className={styles.dropdownClass} key={index} value={student.name}>
+                    {student.name}
+                  </option>
+                ))}
+          </select>
+        )}
+      </div>
       {formVisible && (
         <form anchor="addClass" className={styles.addClass} onSubmit={handleFormSubmit}>
           <div>
@@ -107,7 +130,7 @@ function DashboardClasses() {
                     {theclass.allStudents ? (
                       theclass.allStudents.map((student, index) => {
                         return (
-                          <p className={styles.singleStudent} key={index}>
+                          <p className={styles.singleStudent} key={index} onClick={() => handleSelectStudent(student.name)}>
                             {student.name}
                           </p>
                         );

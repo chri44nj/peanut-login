@@ -82,11 +82,14 @@ function DashboardStatistics() {
         <div>
           <select className={styles.dropdown} id="subjects" name="subjects" onChange={handleSubjectChange}>
             <option className={styles.dropdownClass}>Alle emner</option>
-            <option className={styles.dropdownClass}>Addition</option>
-            <option className={styles.dropdownClass}>Subtraktion</option>
-            <option className={styles.dropdownClass}>Multiplikation</option>
-            <option className={styles.dropdownClass}>Division</option>
-            <option className={styles.dropdownClass}>Brøkregning</option>
+            <option className={styles.dropdownClass}>Brøker</option>
+            <option className={styles.dropdownClass}>Procent</option>
+            <option className={styles.dropdownClass}>Algebra</option>
+            <option className={styles.dropdownClass}>Eksponenter</option>
+            <option className={styles.dropdownClass}>Enheder</option>
+            <option className={styles.dropdownClass}>Parenteser</option>
+            <option className={styles.dropdownClass}>Priser</option>
+            <option className={styles.dropdownClass}>Ligninger</option>
           </select>
         </div>
       </div>

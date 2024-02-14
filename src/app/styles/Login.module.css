@@ -114,10 +114,10 @@
   width: 100%;
   margin: 0px auto;
   height: 2.5rem;
-  border: solid 1px var(--accent-purple);
+  border: solid 1px var(--accent-purple-dark);
   border-radius: 10px;
   background-color: var(--background-color);
-  color: var(--accent-purple);
+  color: var(--accent-purple-dark);
   font-weight: bold;
   transition: 0.2s;
 }
@@ -127,7 +127,7 @@
 }
 
 .validButton {
-  background-color: var(--accent-purple);
+  background-color: var(--accent-purple-dark);
   color: var(--background-color);
 }
 
@@ -150,10 +150,6 @@
   transition: 0.2s;
 }
 
-.switchButton:hover {
-  color: var(--accent-purple-dark);
-}
-
 .ellerContainer {
   position: relative;
   width: 100%;
@@ -162,8 +158,8 @@
 
 .ellerLine {
   width: 100%;
-  background-color: var(--text-color);
-  border-top: solid 1px var(--text-color);
+  background-color: var(--accent-purple-dark);
+  border-top: solid 1px var(--accent-purple-dark);
   margin: 0;
 }
 
@@ -205,7 +201,7 @@
 }
 
 .accountType {
-  color: #5a31f2;
+  color: var(--accent-purple);
 }
 
 /** TABLET **/

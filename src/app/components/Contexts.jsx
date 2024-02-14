@@ -29,6 +29,7 @@ function Contexts({ children }) {
     ],
     selectedClass: "",
     clickedClass: "Alle klasser",
+    selectedStudent: "Alle elever",
   });
 
   return (

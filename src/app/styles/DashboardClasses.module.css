@@ -2,6 +2,12 @@
 .classesContainer {
 }
 
+.dropdownsContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .classesGrid {
   display: grid;
   gap: 1rem;
