@@ -135,8 +135,8 @@ function Login() {
       }
 
       // Default values for additional fields
-      const phone = 11111111; // Set default value for phone
-      const school = "ikke specificeret"; // Set default value for school
+      const phone = 60842430; // Set default value for phone
+      const school = "jyderup skole"; // Set default value for school
       const subjects = ["matematik"]; // Set default value for subjects
 
       const res = await fetch("api/register", {

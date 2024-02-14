@@ -31,6 +31,7 @@ function Contexts({ children }) {
     selectedClass: "",
     clickedClass: "Alle klasser",
     selectedStudent: "Alle elever",
+    teacherData: { name: "", email: "", phone: "", school: "", subjects: [], classes: [], accountType: "" },
   });
 
   return (
