@@ -143,6 +143,7 @@ function Login() {
       }
 
       const phone = null;
+      const classes = [];
 
       const res = await fetch("api/register", {
         method: "POST",
@@ -157,6 +158,7 @@ function Login() {
           school,
           subjects,
           accountType,
+          classes,
         }),
       });
 

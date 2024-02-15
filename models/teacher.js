@@ -20,11 +20,10 @@ const teacherSchema = new Schema(
     },
     phone: {
       type: Number,
-      trim: true,
+      default: null,
     },
     school: {
       type: String,
-      trim: true,
     },
     subjects: {
       type: [String],
@@ -34,6 +33,10 @@ const teacherSchema = new Schema(
       type: String,
       trim: true,
       required: true,
+    },
+    classes: {
+      type: [String],
+      default: [],
     },
   },
   { timestamps: true }
