@@ -338,19 +338,18 @@ function Login() {
 
           {(accountType === "lærer" && subjects.length > 0) || (accountType && accountType !== "lærer") ? (
             <form onSubmit={(e) => handleCreateLogin(e)} className={styles.createForm} action="">
-              <h2>
-                {myContexts.loginType === "login" ? "Log ind" : "Opret en bruger"} som <span className={styles.accountType}>{accountType}</span>
-              </h2>
-              {accountType ? (
-                <div className={styles.switchButtonContainer}>
-                  <p>Trykkede du forkert?</p>
+              <div className={styles.switchButtonContainer}>
+                <h2>
+                  {myContexts.loginType === "login" ? "Log ind" : "Opret en bruger"} som <span className={styles.accountType}>{accountType}</span>
+                </h2>
+                {accountType ? (
                   <button type="button" className={`${styles.switchButton} hover-link`} onClick={() => chooseAccountType("")}>
                     Vælg anden type
                   </button>
-                </div>
-              ) : (
-                ""
-              )}
+                ) : (
+                  ""
+                )}
+              </div>
 
               <div className={styles.inputField}>
                 <label htmlFor="email">Fulde navn</label>

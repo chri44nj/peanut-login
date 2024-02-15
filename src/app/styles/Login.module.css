@@ -155,11 +155,7 @@
 }
 
 .switchButtonContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
-  gap: 4px;
 }
 
 .switchButton {
@@ -275,10 +271,6 @@
 /** TABLET **/
 
 @media only screen and (min-width: 600px) {
-  .switchButtonContainer {
-    flex-direction: row;
-  }
-
   .loginFormContainer,
   .createFormContainer,
   .loginForm,
