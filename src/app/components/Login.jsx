@@ -16,6 +16,9 @@ function Login() {
   const [passwordType, setPasswordType] = useState("password");
   const [tooltipText, setTooltipText] = useState("Vis adgangskode");
   const [accountType, setAccountType] = useState("");
+  const [school, setSchool] = useState("ingen");
+  const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -52,9 +55,12 @@ function Login() {
     setName("");
     setEmail("");
     setPassword("");
+    setSchool("ingen");
+    setSubjects([]);
     setEmailValid(false);
     setPasswordValid(false);
     setError("");
+    setSelectedSubjects([]);
     if (myContexts.loginType === "login") {
       myContextsDispatch((old) => ({
         ...old,
@@ -72,9 +78,11 @@ function Login() {
     setName("");
     setEmail("");
     setPassword("");
+    setSubjects([]);
     setEmailValid(false);
     setPasswordValid(false);
     setAccountType(selectedType);
+    setSelectedSubjects([]);
   }
 
   const handleSignIn = async (e) => {
@@ -113,7 +121,7 @@ function Login() {
   const handleCreateLogin = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password) {
+    if (!name || !school || !email || !password) {
       setError("Udfyld alle felter");
       return;
     }
@@ -130,14 +138,11 @@ function Login() {
       const { user } = await resUserExists.json();
 
       if (user) {
-        setError("Email allerede brugt");
+        setError("Email er allerede i brug");
         return;
       }
 
-      // Default values for additional fields
-      const phone = 60842430; // Set default value for phone
-      const school = "jyderup skole"; // Set default value for school
-      const subjects = ["matematik"]; // Set default value for subjects
+      const phone = null;
 
       const res = await fetch("api/register", {
         method: "POST",
@@ -161,9 +166,28 @@ function Login() {
         handleSignIn(e);
       } else {
         console.log("User registration failed.");
+        setError("Email er allerede i brug");
       }
     } catch (error) {
       console.log("Error during registration: ", error);
+      setError("Der opstod en ukendt fejl");
+    }
+  };
+
+  const toggleSubject = (subject) => {
+    if (selectedSubjects.includes(subject)) {
+      setSelectedSubjects(selectedSubjects.filter((item) => item !== subject));
+    } else {
+      setSelectedSubjects([...selectedSubjects, subject]);
+    }
+  };
+
+  const handleSubjects = () => {
+    if (selectedSubjects.length === 0) {
+      setError("Vælg et eller flere fag");
+    } else {
+      setError("");
+      setSubjects(selectedSubjects);
     }
   };
 
@@ -198,12 +222,15 @@ function Login() {
   );
 
   const checkMark = (
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4BB543" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#5a31f2" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
       <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
     </svg>
   );
 
-  const buttonTooltip = !emailValid ? "Indtast en korrekt emailadresse (eks: planetpeanut@hotmail.com" : !passwordValid ? "Indtast en korrekt adgangskode (min. 8 karakterer, min. 1 stort bogstav, min. 1 tal)" : "";
+  const subjectsList = ["Matematik", "Dansk", "Engelsk", "Musik", "Samfundsfag", "Idræt", "Historie", "Religion", "Biologi", "Geografi", "Billedkunst", "Madkundskab"];
+  const buttonTooltip = !emailValid ? "Indtast en korrekt emailadresse (eks: planetpeanut@hotmail.com)" : !passwordValid ? "Indtast en gyldig adgangskode (min. 8 karakterer, min. 1 stort bogstav, min. 1 tal)" : "";
+  const buttonTooltip2 = !name ? "Indtast dit navn" : school === "ingen" ? "Vælg en skole" : !emailValid ? "Indtast en korrekt emailadresse (eks: planetpeanut@hotmail.com)" : !passwordValid ? "Indtast en gyldig adgangskode (min. 8 karakterer, min. 1 stort bogstav, min. 1 tal)" : "";
+  const buttonTooltip3 = selectedSubjects.length === 0 ? "Vælg et eller flere fag" : "";
 
   return (
     <div id="loginContainer">
@@ -226,11 +253,12 @@ function Login() {
               </div>
             </div>
 
-            {error && <p>{error}</p>}
-
-            <button className={`${styles.loginButton} ${emailValid && password.length > 0 ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || password.length === 0}>
-              {myContexts.loginType === "login" ? "Log ind" : "Opret"}
-            </button>
+            <div className={styles.buttonErrorContainer}>
+              <button className={`${styles.loginButton} ${emailValid && password.length > 0 ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || password.length === 0}>
+                {myContexts.loginType === "login" ? "Log ind" : "Opret"}
+              </button>
+              {error && <p className={styles.error}>{error}</p>}
+            </div>
 
             <div className={styles.switchButtonContainer}>
               <p> {myContexts.loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
@@ -263,7 +291,7 @@ function Login() {
         <div id="createForm" className={styles.createFormContainer}>
           {!accountType ? (
             <div className={styles.chooseAccountContainer}>
-              <h2>Hvilken type bruger beskriver dig bedst?</h2>
+              <h2>Hvilken type bruger ønsker du at oprette?</h2>
               <div className={styles.optionsContainer}>
                 <OptionCard onClick={() => chooseAccountType("lærer")} top={userIcon} bottom="Lærer"></OptionCard>
                 <OptionCard onClick={() => chooseAccountType("forælder")} top={userIcon} bottom="Forælder"></OptionCard>
@@ -280,7 +308,35 @@ function Login() {
             ""
           )}
 
-          {accountType && !myContexts.loggedIn ? (
+          {accountType === "lærer" && subjects.length === 0 ? (
+            <div className={styles.chooseSubjectsContainer}>
+              <h2>Hvilke af disse fag underviser du i?</h2>
+
+              <ul className={styles.subjectsContainer}>
+                {subjectsList.map((subject) => (
+                  <li className={selectedSubjects.includes(subject) ? styles.selectedSubject : ""} key={subject} onClick={() => toggleSubject(subject)}>
+                    {subject}
+                  </li>
+                ))}
+              </ul>
+              <div className={styles.buttonErrorContainer}>
+                <button className={`${styles.subjectsButton} ${selectedSubjects.length > 0 ? styles.validButton : ""}`} type="button" onClick={handleSubjects} title={buttonTooltip3}>
+                  Fortsæt
+                </button>
+                {error && <p className={styles.error}>{error}</p>}
+              </div>
+              <div className={styles.switchButtonContainer}>
+                <p> {myContexts.loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
+                <button type="button" className={`${styles.switchButton} hover-link`} onClick={switchLogin}>
+                  {myContexts.loginType === "login" ? "Opret nu" : "Log ind"}
+                </button>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+
+          {(accountType === "lærer" && subjects.length > 0) || (accountType && accountType !== "lærer") ? (
             <form onSubmit={(e) => handleCreateLogin(e)} className={styles.createForm} action="">
               <h2>
                 {myContexts.loginType === "login" ? "Log ind" : "Opret en bruger"} som <span className={styles.accountType}>{accountType}</span>
@@ -302,6 +358,14 @@ function Login() {
               </div>
 
               <div className={styles.inputField}>
+                <label htmlFor="school">Vælg skole</label>
+                <select name="school" id="school" onChange={(e) => setSchool(e.target.value)}>
+                  <option value="ingen">Ingen skole valgt</option>
+                  <option value="jyderup skole">Jyderup Skole</option>
+                </select>
+              </div>
+
+              <div className={styles.inputField}>
                 <label htmlFor="email">Email-adresse</label>
                 <input type="email" id="email" name="email" title="Indtast din email-adresse" onChange={(e) => setEmail(e.target.value.toLowerCase())} required />
               </div>
@@ -314,24 +378,24 @@ function Login() {
                     {passwordType === "password" ? notVisible : visible} <span className={styles.passwordTooltip}>{tooltipText}</span>
                   </button>
                 </div>
+                <div className={styles.passwordCriteria}>
+                  <div>
+                    {passwordCriteria ? checkMark : cross}
+                    <p>Minimum 1 stort bogstav og 1 tal</p>
+                  </div>
+                  <div>
+                    {passwordCriteria2 ? checkMark : cross}
+                    <p>Minimum 8 karakterer langt</p>
+                  </div>
+                </div>
               </div>
 
-              <div className={styles.passwordCriteria}>
-                <div>
-                  {passwordCriteria ? checkMark : cross}
-                  <p className={passwordCriteria ? "valid" : ""}>Minimum 1 stort bogstav og 1 tal</p>
-                </div>
-                <div>
-                  {passwordCriteria2 ? checkMark : cross}
-                  <p>Minimum 8 karakterer langt</p>
-                </div>
+              <div className={styles.buttonErrorContainer}>
+                <button className={`${styles.loginButton} ${emailValid && passwordValid && name && school !== "ingen" ? styles.validButton : ""}`} type="submit" title={buttonTooltip2} disabled={!emailValid || !passwordValid}>
+                  {myContexts.loginType === "login" ? "Log ind" : "Opret"}
+                </button>
+                {error && <p className={styles.error}>{error}</p>}
               </div>
-
-              {error && <p>{error}</p>}
-
-              <button className={`${styles.loginButton} ${emailValid && passwordValid && name ? styles.validButton : ""}`} type="submit" title={buttonTooltip} disabled={!emailValid || !passwordValid}>
-                {myContexts.loginType === "login" ? "Log ind" : "Opret"}
-              </button>
 
               <div className={styles.switchButtonContainer}>
                 <p> {myContexts.loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
