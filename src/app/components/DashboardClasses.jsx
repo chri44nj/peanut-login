@@ -32,6 +32,11 @@ function DashboardClasses() {
       ...prevContexts,
       selectedStudent: studentName,
     }));
+    console.log("handleSelectStudent called");
+    const dashboardContainer = document.getElementById("dashboardContainer");
+    if (dashboardContainer) {
+      dashboardContainer.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const handleInputChange = (e) => {
@@ -66,12 +71,10 @@ function DashboardClasses() {
     return joinCode;
   }
 
-  console.log(generateJoinCode(10));
-
   /* Other */
 
   return (
-    <div className={styles.classesContainer}>
+    <div id="classesContainer" className={styles.classesContainer}>
       <div className={styles.dropdownsContainer}>
         <select className={styles.dropdown} id="classes" name="classes" value={myContexts.clickedClass} onChange={(e) => handleClassClick(e.target.value)}>
           <option value="Alle klasser">Alle klasser</option>
