@@ -27,7 +27,6 @@ function DashboardHome() {
       dashboardType: dashboardType,
       clickedClass: "Alle klasser",
     }));
-    burgerMenuClicked();
   }
 
   const fetchTeacherData = async () => {
