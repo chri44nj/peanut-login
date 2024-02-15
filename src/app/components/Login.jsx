@@ -40,6 +40,10 @@ function Login() {
     setPasswordCriteria2(password.length >= 8);
   }, [email, password]);
 
+  useEffect(() => {
+    setError("");
+  }, [myContexts.loginType]);
+
   /* Functions */
   function showPassword() {
     if (passwordType === "password") {
