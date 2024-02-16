@@ -298,7 +298,7 @@ function Login() {
     </svg>
   );
 
-  const subjectsList = ["Matematik", "Dansk", "Engelsk", "Musik", "Samfundsfag", "Idræt", "Historie", "Religion", "Biologi", "Geografi", "Billedkunst", "Madkundskab"];
+  const subjectsList = ["Matematik", "Biologi", "Kemi", "Fysik"];
   const buttonTooltip = !emailValid ? "Indtast en korrekt emailadresse (eks: planetpeanut@hotmail.com)" : !passwordValid ? "Indtast en gyldig adgangskode (min. 8 karakterer, min. 1 stort bogstav, min. 1 tal)" : "";
   const buttonTooltip2 = !name ? "Indtast dit navn" : school === "ingen" ? "Vælg en skole" : !emailValid ? "Indtast en korrekt emailadresse (eks: planetpeanut@hotmail.com)" : !passwordValid ? "Indtast en gyldig adgangskode (min. 8 karakterer, min. 1 stort bogstav, min. 1 tal)" : "";
   const buttonTooltip3 = selectedSubjects.length === 0 ? "Vælg et eller flere fag" : "";
