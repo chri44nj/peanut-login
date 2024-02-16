@@ -366,7 +366,6 @@ function Login() {
               <div className={styles.optionsContainer}>
                 <OptionCard onClick={() => chooseAccountType("lærer")} top={userIcon} bottom="Lærer"></OptionCard>
                 <OptionCard onClick={() => chooseAccountType("forælder")} top={userIcon} bottom="Forælder"></OptionCard>
-                <OptionCard onClick={() => chooseAccountType("elev")} top={userIcon} bottom="Elev"></OptionCard>
               </div>
               <div className={styles.switchButtonContainer}>
                 <p> {myContexts.loginType === "login" ? "Har du ikke en bruger endnu?" : "Har du allerede en bruger?"}</p>
