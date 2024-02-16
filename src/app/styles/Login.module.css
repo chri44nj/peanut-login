@@ -247,8 +247,11 @@
 
 .subjectsContainer li:hover {
   background-color: var(--background-color-alt);
-
   cursor: pointer;
+}
+
+.subjectsContainer li:focus {
+  outline: solid 1px var(--accent-purple-dark);
 }
 
 .subjectsContainer li.selectedSubject {

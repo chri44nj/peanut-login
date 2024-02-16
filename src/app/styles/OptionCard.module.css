@@ -11,6 +11,10 @@
   background-color: transparent;
 }
 
+.optionCard:focus {
+  outline: solid 1px var(--accent-purple-dark);
+}
+
 .optionCard:hover .topHalf,
 .optionCard:hover .bottomHalf {
   background-color: var(--accent-purple-dark);
