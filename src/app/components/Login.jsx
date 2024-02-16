@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import styles from "../styles/Login.module.css";
@@ -22,11 +22,16 @@ function Login() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState(null);
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [passwordCriteria, setPasswordCriteria] = useState(false);
   const [passwordCriteria2, setPasswordCriteria2] = useState(false);
   const [error, setError] = useState("");
+  const [listOfSchools, setListOfSchools] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredSchools, setFilteredSchools] = useState([]);
+  const [dropdownHidden, setDropdownHidden] = useState(true);
 
   /* Effects */
   useEffect(() => {
@@ -42,7 +47,30 @@ function Login() {
 
   useEffect(() => {
     setError("");
+    if (listOfSchools.length === 0) {
+      fetchSchools();
+    }
   }, [myContexts.loginType]);
+
+  const dropdownRef = useRef(null);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownHidden(true);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
+  useEffect(() => {
+    if (dropdownHidden === false) {
+      document.querySelector("#dropdown").scrollTop = 0;
+    }
+  }, [dropdownHidden]);
 
   /* Functions */
   function showPassword() {
@@ -146,7 +174,6 @@ function Login() {
         return;
       }
 
-      const phone = null;
       const classes = [];
 
       const res = await fetch("api/register", {
@@ -195,6 +222,44 @@ function Login() {
       setError("");
       setSubjects(selectedSubjects);
     }
+  };
+
+  const fetchSchools = async () => {
+    let headersList = {
+      Accept: "application/json",
+    };
+
+    let response = await fetch("https://skillzy-node.fly.dev/api/list-of-schools", {
+      method: "GET",
+      headers: headersList,
+    });
+
+    let list = await response.json();
+
+    setListOfSchools(list.data);
+
+    return list.data;
+  };
+
+  const handleSearchInputChange = (e) => {
+    setSearchTerm(e.target.value);
+    const searchTerm = e.target.value.toLowerCase(); // Convert input to lowercase for case-insensitive search
+
+    // Filter the list of schools based on the search term
+    const filteredList = listOfSchools.filter((school) => school.value.toLowerCase().includes(searchTerm));
+
+    setFilteredSchools(filteredList);
+    if (dropdownHidden) {
+      setDropdownHidden(false);
+    } else if (searchTerm.length === 0) {
+      setDropdownHidden(true);
+    }
+  };
+
+  const handleSchoolClick = (school) => {
+    setSchool(school.toLowerCase());
+    setSearchTerm(school);
+    setDropdownHidden(true);
   };
 
   /* Other Stuff */
@@ -358,16 +423,53 @@ function Login() {
               </div>
 
               <div className={styles.inputField}>
-                <label htmlFor="email">Fulde navn</label>
+                <label htmlFor="name">Fulde navn</label>
                 <input type="name" id="name" name="name" title="Indtast dit fulde navn" onChange={(e) => setName(e.target.value.toLowerCase())} required />
               </div>
 
               <div className={styles.inputField}>
-                <label htmlFor="school">Vælg skole</label>
-                <select name="school" id="school" onChange={(e) => setSchool(e.target.value)}>
-                  <option value="ingen">Ingen skole valgt</option>
-                  <option value="jyderup skole">Jyderup Skole</option>
-                </select>
+                <div className={styles.inputField}>
+                  <label htmlFor="search">Skole</label>
+                  <input
+                    type="text"
+                    id="search"
+                    placeholder="Søg efter skole..."
+                    value={searchTerm}
+                    onChange={handleSearchInputChange}
+                    onClick={() => {
+                      if (dropdownHidden) {
+                        setDropdownHidden(false);
+                      }
+                    }}
+                  />
+                  <div className={styles.dropdownContainer} ref={dropdownRef}>
+                    <div id="dropdown" className={`${styles.dropdown} ${dropdownHidden ? styles.dropdownHidden : ""}`}>
+                      <ul className={styles.dropdownMenu}>
+                        {filteredSchools.map((school, index) => (
+                          <li
+                            role="button"
+                            key={index}
+                            value={school.value}
+                            onClick={() => handleSchoolClick(school.value)}
+                            tabIndex="0"
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                handleSchoolClick(school.value);
+                              }
+                            }}
+                          >
+                            {school.value}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.inputField}>
+                <label htmlFor="phone">Telefonnummer</label>
+                <input type="tel" id="phone" name="phone" title="Indtast dit telefonnummer" maxlength="8" onChange={(e) => setPhone(e.target.value)} required />
               </div>
 
               <div className={styles.inputField}>
