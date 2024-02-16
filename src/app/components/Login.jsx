@@ -385,7 +385,17 @@ function Login() {
 
               <ul className={styles.subjectsContainer}>
                 {subjectsList.map((subject) => (
-                  <li className={selectedSubjects.includes(subject) ? styles.selectedSubject : ""} key={subject} onClick={() => toggleSubject(subject)}>
+                  <li
+                    className={selectedSubjects.includes(subject) ? styles.selectedSubject : ""}
+                    key={subject}
+                    onClick={() => toggleSubject(subject)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        toggleSubject(subject);
+                      }
+                    }}
+                    tabIndex="0"
+                  >
                     {subject}
                   </li>
                 ))}
