@@ -137,19 +137,36 @@
   height: fit-content;
 }
 
-.addClass label {
+.addClass h3 {
+  text-transform: capitalize;
+  color: var(--background-color);
+  font-weight: bold;
+}
+
+.addClassFlex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.addClassFlex label {
   color: var(--background-color);
 }
 
-.addClass input {
+.addClassFlex select,
+.addClassFlex input {
   width: 100%;
   height: 2.5rem;
   border-radius: 10px;
   border: none;
   padding-inline: 1rem;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-weight: bold;
 }
 
-.addClass div {
+.addClassFlex div {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -167,11 +184,7 @@
 }
 
 #closeForm:hover {
-  color: var(--accent-purple-dark);
-}
-
-.blurBackground {
-  filter: blur(2px);
+  color: var(--accent-purple);
 }
 
 .singleClassDetails {

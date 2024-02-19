@@ -11,18 +11,19 @@ function DashboardClasses() {
   /* States */
   const [formVisible, setFormVisible] = useState(false);
   const [newClass, setNewClass] = useState({
-    class: "",
-    school: "",
+    name: myContexts.teacherData.school,
+    grade: null,
+    letter: null,
     students: 0,
     allStudents: [],
     joinCode: "",
   });
 
   /* Functions */
-  const handleClassClick = (className) => {
+  const handleClassClick = (classId) => {
     myContextsDispatch((prevContexts) => ({
       ...prevContexts,
-      clickedClass: className,
+      clickedClass: classId,
       selectedStudent: "Alle elever",
     }));
   };
@@ -57,7 +58,7 @@ function DashboardClasses() {
       ...prevContexts,
       classes: [...prevContexts.classes, updatedNewClass],
     }));
-    setNewClass({ class: "", school: "", joinCode: "" });
+    setNewClass({ name: myContexts.teacherData.school, grade: null, letter: null, joinCode: "" });
     setFormVisible(false);
   };
 
@@ -79,8 +80,8 @@ function DashboardClasses() {
         <select className={styles.dropdown} id="classes" name="classes" value={myContexts.clickedClass} onChange={(e) => handleClassClick(e.target.value)}>
           <option value="Alle klasser">Alle klasser</option>
           {myContexts.classes.map((theclass, index) => (
-            <option className={styles.dropdownClass} key={index} value={theclass.class}>
-              {theclass.class}
+            <option className={styles.dropdownClass} key={index} value={theclass.id}>
+              {theclass.grade}.{theclass.letter}
             </option>
           ))}
         </select>
@@ -89,7 +90,7 @@ function DashboardClasses() {
             <option className={styles.dropdownClass}>Alle elever</option>
             {myContexts.clickedClass !== "Alle klasser" &&
               myContexts.classes
-                .find((specificClass) => specificClass.class === myContexts.clickedClass)
+                .find((specificClass) => specificClass.id === myContexts.clickedClass)
                 .allStudents.map((student, index) => (
                   <option className={styles.dropdownClass} key={index} value={student.name}>
                     {student.name}
@@ -100,13 +101,18 @@ function DashboardClasses() {
       </div>
       {formVisible && (
         <form className={styles.addClass} onSubmit={handleFormSubmit}>
-          <div>
-            <label htmlFor="className">Klasse</label>
-            <input id="className" name="class" type="text" value={newClass.class} onChange={handleInputChange} />
-          </div>
-          <div>
-            <label htmlFor="school">Skole</label>
-            <input id="school" name="school" type="text" value={newClass.school} onChange={handleInputChange} />
+          <h3>{myContexts.user.school}</h3>
+          <div className={styles.addClassFlex}>
+            {/*  <input id="grade" min="0" max="10" placeholder="klassetrin" name="grade" type="number" value={newClass.grade} onChange={handleInputChange} />
+            <input id="letter" pattern="[a-zA-ZæøåÆØÅ]{1}" placeholder="bogstav" name="letter" type="text" value={newClass.letter} onChange={handleInputChange} /> */}
+
+            <select id="grade" name="grade" type="text" value={newClass.grade} onChange={handleInputChange}>
+              <option value="klassetrin">Klassetrin</option>
+            </select>
+
+            <select id="letter" name="letter" type="text" value={newClass.letter} onChange={handleInputChange}>
+              <option value="bogstav">Bogstav</option>
+            </select>
           </div>
           <button id={styles.closeForm} type="button" onClick={() => setFormVisible((old) => !old)}>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
@@ -120,12 +126,14 @@ function DashboardClasses() {
       {myContexts.clickedClass === "Alle klasser" && (
         <>
           {myContexts.classes && (
-            <div className={`${styles.classesGrid} ${formVisible ? styles.blurBackground : ""}`}>
-              {myContexts.classes.map((theclass, index) => (
-                <div className={styles.classContainer} key={index} onClick={() => handleClassClick(theclass.class)}>
+            <div className={`${styles.classesGrid}`}>
+              {myContexts.classes.map((theclass) => (
+                <div className={styles.classContainer} key={theclass.id} onClick={() => handleClassClick(theclass.id)}>
                   <div>
-                    <p className={styles.class}>{theclass.class}</p>
-                    <p className={styles.school}>{theclass.school}</p>
+                    <p className={styles.class}>
+                      {theclass.grade}.{theclass.letter}
+                    </p>
+                    <p className={styles.school}>{theclass.name}</p>
                   </div>
                   <p className={styles.students}>{theclass.students} elever</p>
                 </div>
@@ -144,11 +152,11 @@ function DashboardClasses() {
       {myContexts.clickedClass !== "Alle klasser" && (
         <>
           {myContexts.classes.map((theclass, index) => {
-            if (theclass.class === myContexts.clickedClass)
+            if (theclass.id === myContexts.clickedClass)
               return (
                 <div className={styles.singleClassDetails} key={index}>
                   <h2>
-                    <span className={styles.school}>{theclass.school}</span>, {theclass.class}
+                    <span className={styles.school}>{theclass.name}</span>, {theclass.grade}.{theclass.letter}
                   </h2>
                   {myContexts.selectedStudent === "Alle elever" ? <p>Klassekode: {theclass.joinCode}</p> : ""}
                   <section className={styles.studentsList}>
