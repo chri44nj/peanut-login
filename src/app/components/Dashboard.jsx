@@ -34,6 +34,7 @@ function Dashboard() {
       ...old,
       dashboardType: dashboardType,
       clickedClass: "Alle klasser",
+      selectedStudent: "Alle elever",
     }));
     burgerMenuClicked();
   }
