@@ -11,7 +11,7 @@ function DashboardClasses() {
   /* States */
   const [formVisible, setFormVisible] = useState(false);
   const [newClass, setNewClass] = useState({
-    name: myContexts.teacherData.school,
+    name: myContexts.user.school,
     grade: null,
     letter: null,
     students: 0,
@@ -58,7 +58,7 @@ function DashboardClasses() {
       ...prevContexts,
       classes: [...prevContexts.classes, updatedNewClass],
     }));
-    setNewClass({ name: myContexts.teacherData.school, grade: null, letter: null, joinCode: "" });
+    setNewClass({ name: myContexts.user.school, grade: null, letter: null, joinCode: "" });
     setFormVisible(false);
   };
 
@@ -73,6 +73,8 @@ function DashboardClasses() {
   }
 
   /* Other */
+  const alphabetPattern = /[a-zA-ZæøåÆØÅ]/;
+  const numbersPattern = /^(10|[0-9])$/;
 
   return (
     <div id="classesContainer" className={styles.classesContainer}>
@@ -101,19 +103,27 @@ function DashboardClasses() {
       </div>
       {formVisible && (
         <form className={styles.addClass} onSubmit={handleFormSubmit}>
-          <h3>{myContexts.user.school}</h3>
+          <p>Vælg klassetrin og bogstav</p>
           <div className={styles.addClassFlex}>
-            {/*  <input id="grade" min="0" max="10" placeholder="klassetrin" name="grade" type="number" value={newClass.grade} onChange={handleInputChange} />
-            <input id="letter" pattern="[a-zA-ZæøåÆØÅ]{1}" placeholder="bogstav" name="letter" type="text" value={newClass.letter} onChange={handleInputChange} /> */}
-
             <select id="grade" name="grade" type="text" value={newClass.grade} onChange={handleInputChange}>
-              <option value="klassetrin">Klassetrin</option>
+              {Array.from({ length: 11 }, (_, i) => i).map((number) => (
+                <option key={number}>{number}</option>
+              ))}
             </select>
-
             <select id="letter" name="letter" type="text" value={newClass.letter} onChange={handleInputChange}>
-              <option value="bogstav">Bogstav</option>
+              {Array.from({ length: 29 }, (_, i) => String.fromCharCode(97 + i)) // Lowercase Danish alphabet 'a' to 'z'
+                .concat("æ", "ø", "å") // Adding additional Danish characters
+                .filter((letter) => /[a-zA-ZæøåÆØÅ]/.test(letter)) // Filtering out non-alphabetic characters
+                .map((letter, index) => (
+                  <option key={index}>{letter}</option>
+                ))}
             </select>
           </div>
+          <h3>
+            {myContexts.user.school}
+            {newClass.grade && newClass.letter ? `, ${newClass.grade}.${newClass.letter}` : ""}
+          </h3>
+
           <button id={styles.closeForm} type="button" onClick={() => setFormVisible((old) => !old)}>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />

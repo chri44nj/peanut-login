@@ -141,6 +141,11 @@
   text-transform: capitalize;
   color: var(--background-color);
   font-weight: bold;
+  font-size: var(--font-medium);
+}
+
+.addClass p {
+  color: var(--background-color);
 }
 
 .addClassFlex {
@@ -148,6 +153,7 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  width: 100%;
 }
 
 .addClassFlex label {
@@ -156,7 +162,7 @@
 
 .addClassFlex select,
 .addClassFlex input {
-  width: 100%;
+  width: 50px;
   height: 2.5rem;
   border-radius: 10px;
   border: none;
@@ -164,6 +170,9 @@
   background-color: var(--background-color);
   color: var(--text-color);
   font-weight: bold;
+  text-align: center;
+  -moz-appearance: none;
+  -webkit-appearance: none;
 }
 
 .addClassFlex div {
