@@ -10,7 +10,6 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
 
   if (session) redirect("/pages/dashboard");
-  console.log("Session is what?", session);
 
   return (
     <main id="main" className={styles.main}>

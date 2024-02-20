@@ -167,10 +167,6 @@
   :nth-child(1 of .overviewBottomFlex2) {
     margin-bottom: 2rem;
   }
-
-  .dropdown {
-    font-size: var(--font-medium);
-  }
 }
 
 /** LARGER SCREENS **/

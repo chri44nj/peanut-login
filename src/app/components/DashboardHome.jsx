@@ -13,12 +13,13 @@ function DashboardHome() {
   const myContextsDispatch = useContext(SetMyContexts);
 
   /* Effects */
+  const { data: session } = useSession();
+
   useEffect(() => {
     if (session) {
       fetchTeacherData();
-      console.log("Kører første gang");
     }
-  }, []);
+  }, [session]);
 
   /* Functions */
   function switchDashboardType(dashboardType) {
@@ -60,8 +61,7 @@ function DashboardHome() {
   };
 
   /* Other */
-  const { data: session } = useSession();
-  console.log("Session:", session);
+
   return (
     <div className={styles.homeContainer}>
       <h2 className={styles.name}>{session?.user?.name}</h2>

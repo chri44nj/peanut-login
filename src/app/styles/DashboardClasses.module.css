@@ -57,18 +57,7 @@
   text-transform: lowercase;
 }
 
-.addClass button {
-  width: 75%;
-  background-color: var(--background-color);
-  color: var(--accent-purple-dark);
-  border: none;
-  border-radius: 10px;
-  padding: 0.5rem 1rem;
-  font-weight: bold;
-  margin-top: 0.5rem;
-}
-
-.addClassButton {
+.openFormButton {
   width: 100%;
   padding: 0.5rem 1rem;
   border: solid 1px var(--accent-purple-dark);
@@ -81,6 +70,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.addClassButton {
+  width: 75%;
+  background-color: transparent;
+  color: var(--background-color);
+  border: solid 1px var(--background-color);
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  transition: 0.2s;
+}
+
+.validButton {
+  background-color: var(--background-color);
+  color: var(--accent-purple-dark);
+  border-color: var(--background-color);
 }
 
 .addStudentsButton {
@@ -98,7 +105,7 @@
   align-items: center;
 }
 
-.addClassButton:hover,
+.openFormButton:hover,
 .addStudentsButton:hover {
   background-color: var(--accent-purple-dark);
   border-color: var(--accent-purple-dark);
@@ -137,11 +144,15 @@
   height: fit-content;
 }
 
-.addClass h3 {
-  text-transform: capitalize;
+.addClass h3,
+.addClass h3 * {
   color: var(--background-color);
   font-weight: bold;
   font-size: var(--font-medium);
+}
+
+.addClass h3 span {
+  text-transform: capitalize;
 }
 
 .addClass p {
@@ -152,8 +163,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-  width: 100%;
+  gap: 2rem;
 }
 
 .addClassFlex label {
@@ -162,7 +172,7 @@
 
 .addClassFlex select,
 .addClassFlex input {
-  width: 50px;
+  width: fit-content;
   height: 2.5rem;
   border-radius: 10px;
   border: none;
@@ -180,20 +190,26 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 75%;
+  gap: 0.5rem;
 }
 
 #closeForm {
   background-color: transparent;
   width: fit-content;
   color: var(--background-color);
+  opacity: 0.5;
+  transition: 0.2s;
   position: absolute;
   top: 0;
   right: 0;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  padding: 1rem;
 }
 
 #closeForm:hover {
-  color: var(--accent-purple);
+  opacity: 1;
 }
 
 .singleClassDetails {
@@ -203,11 +219,18 @@
   font-size: 2rem;
 }
 
-.studentsList {
+.studentsListSection {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   margin-top: 1rem;
+}
+
+.studentsList {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .singleStudent {
@@ -218,6 +241,7 @@
   color: var(--text-color);
   font-weight: bold;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
+  transition: 0.2s;
 }
 
 .singleStudent:hover {
@@ -236,7 +260,7 @@
 /** TABLET **/
 
 @media only screen and (min-width: 600px) {
-  .addClassButton,
+  .openFormButton,
   .addStudentsButton {
     max-width: 300px;
   }
@@ -252,10 +276,6 @@
   .dropdownsContainer {
     flex-direction: row;
     align-items: center;
-  }
-
-  .dropdown {
-    font-size: var(--font-medium);
   }
 
   .buttonContainer {

@@ -15,7 +15,7 @@ function DashboardStatistics() {
   /* Effects */
   useEffect(() => {
     if (myContexts.selectedClass) {
-      const findSelectedClass = myContexts.classes.find((theclass) => theclass.class === myContexts.selectedClass);
+      const findSelectedClass = myContexts.classes.find((theclass) => theclass.id === myContexts.selectedClass);
       setSelectedClass(findSelectedClass || null);
     } else {
       setSelectedClass(myContexts.classes.length > 0 ? myContexts.classes[0] : null);
@@ -73,8 +73,8 @@ function DashboardStatistics() {
         <div>
           <select className={styles.dropdown} id="classes" name="classes" value={myContexts.selectedClass} onChange={handleClassChange}>
             {myContexts.classes.map((theclass, index) => (
-              <option className={styles.dropdownClass} key={index} value={theclass.class}>
-                {theclass.class}
+              <option className={styles.dropdownClass} key={index} value={theclass.id}>
+                {theclass.grade}.{theclass.letter}
               </option>
             ))}
           </select>

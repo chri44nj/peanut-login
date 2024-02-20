@@ -39,8 +39,6 @@ function Dashboard() {
   }
 
   /* Other */
-  const { data: session } = useSession();
-  const router = useRouter();
 
   return (
     <div id="dashboardContainer" className={styles.dashboardContainer}>

@@ -13,7 +13,7 @@ function DashboardMilestones() {
 
   /* Effects */
   useEffect(() => {
-    const findSelectedClass = myContexts.classes.find((theclass) => theclass.class === myContexts.selectedClass);
+    const findSelectedClass = myContexts.classes.find((theclass) => theclass.id === myContexts.selectedClass);
     setSelectedClass(findSelectedClass || null);
   }, [myContexts.selectedClass]);
 
@@ -31,8 +31,8 @@ function DashboardMilestones() {
       <div className={styles.classes}>
         <select className={styles.dropdown} id="classes" name="classes" value={myContexts.selectedClass} onChange={handleClassChange}>
           {myContexts.classes.map((theclass, index) => (
-            <option className={styles.dropdownClass} key={index} value={theclass.class}>
-              {theclass.class}
+            <option className={styles.dropdownClass} key={index} value={theclass.id}>
+              {theclass.grade}.{theclass.letter}
             </option>
           ))}
         </select>

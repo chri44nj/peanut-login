@@ -37,10 +37,6 @@
     font-weight: bold;
     font-size: var(--font-medium);
   }
-
-  .dropdown {
-    font-size: var(--font-medium);
-  }
 }
 
 /** LARGER SCREENS **/
