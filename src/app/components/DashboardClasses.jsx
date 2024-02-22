@@ -85,9 +85,6 @@ function DashboardClasses() {
       school: { name: myContexts.teacherData.school, grade: grade, letter: letter },
       teacherID: myContexts.teacherData.id,
     });
-
-    console.log("Hej Simon", res);
-    console.log("Hej Simon", res.data.ok);
   };
 
   /* Other */
