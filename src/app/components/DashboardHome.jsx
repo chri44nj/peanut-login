@@ -36,8 +36,11 @@ function DashboardHome() {
         params: { email: session?.user?.email },
       });
 
+      console.log("responsejsdi", response);
+
       // Map the response data to the structure of teacherData in the context
       const updatedTeacherData = {
+        id: response.data._id,
         name: response.data.name,
         email: response.data.email,
         phone: response.data.phone,

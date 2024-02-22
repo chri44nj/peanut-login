@@ -83,6 +83,7 @@ function DashboardClasses() {
   const postClass = async () => {
     const res = await axios.post(`https://skillzy-node.fly.dev/api/create-class`, {
       school: { name: myContexts.teacherData.school, grade: grade, letter: letter },
+      teacherID: myContexts.teacherData.id,
     });
 
     console.log("Hej Simon", res);
