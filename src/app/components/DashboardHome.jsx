@@ -46,14 +46,17 @@ function DashboardHome() {
         phone: response.data.phone,
         school: response.data.school,
         subjects: response.data.subjects,
-        classes: response.data.classes,
+        classesIDs: response.data.classes,
         accountType: response.data.accountType,
       };
 
       // Update teacherData in the context with the mapped data
       myContextsDispatch((old) => ({
         ...old,
-        teacherData: updatedTeacherData,
+        teacherData: {
+          ...old.teacherData,
+          ...updatedTeacherData,
+        },
       }));
 
       // Now, when you log teacherData, it should reflect the updated data
@@ -73,7 +76,7 @@ function DashboardHome() {
       <p className={styles.school}>
         {myContexts.teacherData.accountType} <span className={styles.lowercase}>på</span> {myContexts.teacherData.school}
       </p>
-      {myContexts.user.subjects ? (
+      {myContexts.teacherData.subjects ? (
         <p className={styles.subjects}>
           {myContexts.teacherData.subjects.map((subject, index) => (
             <span key={index}>{subject} </span>
@@ -83,7 +86,7 @@ function DashboardHome() {
         ""
       )}
       <a className="hover-link" href="#dashboardContainer" onClick={() => switchDashboardType("Dine klasser")}>
-        {myContexts.classes.length} klasser
+        {myContexts.teacherData.classesIDs.length} klasser
       </a>
     </div>
   );

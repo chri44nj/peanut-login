@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import styles from "../styles/DashboardClasses.module.css";
 import { MyContexts, SetMyContexts } from "./Contexts";
 
@@ -22,6 +22,11 @@ function DashboardClasses() {
     joinCode: "",
     id: "",
   });
+
+  /* Effects */
+  useEffect(() => {
+    fetchClasses();
+  }, [myContexts.teacherData.classesIDs]);
 
   /* Functions */
   const handleClassClick = (classId) => {
@@ -52,22 +57,24 @@ function DashboardClasses() {
     }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    postClass();
-    const updatedNewClass = {
+    await postClass();
+    /*   const updatedNewClass = {
       ...newClass,
       joinCode: generateID(8),
       id: generateID(8),
-    };
-    myContextsDispatch((prevContexts) => ({
+    }; */
+    /*   myContextsDispatch((prevContexts) => ({
       ...prevContexts,
       classes: [...prevContexts.classes, updatedNewClass],
-    }));
-    setNewClass({ name: myContexts.teacherData.school, grade: null, students: 0, allStudents: [], letter: null, joinCode: "", id: "" });
+    })); */
+    /*  setNewClass({ name: myContexts.teacherData.school, grade: null, students: 0, allStudents: [], letter: null, joinCode: "", id: "" }); */
     setGrade("");
     setLetter("");
     setFormVisible(false);
+    await fetchTeacherData();
+    fetchClasses();
   };
 
   function generateID(length) {
@@ -87,9 +94,45 @@ function DashboardClasses() {
     });
   };
 
+  const fetchClasses = async () => {
+    const classes = await axios.get(`https://skillzy-node.fly.dev/api/get-teacher-classes`, {
+      params: {
+        teacherID: myContexts.teacherData.id,
+      },
+    });
+
+    console.log("Classes", classes);
+
+    myContextsDispatch((prevContexts) => ({
+      ...prevContexts,
+      teacherData: {
+        ...prevContexts.teacherData,
+        classes: classes.data.map((specificClass) => ({
+          ...specificClass,
+          allStudents: [],
+          id: specificClass._id,
+        })),
+      },
+    }));
+  };
+
+  const fetchTeacherData = async () => {
+    try {
+      const response = await axios.get("https://skillzy-node.fly.dev/api/get-teacher", {
+        params: { email: session?.user?.email },
+      });
+
+      myContextsDispatch((old) => ({
+        ...old,
+        teacherData: {
+          ...old.teacherData,
+          classesIDs: response.data.classes,
+        },
+      }));
+    } catch (error) {}
+  };
+
   /* Other */
-  const alphabetPattern = /[a-zA-ZæøåÆØÅ]/;
-  const numbersPattern = /^(10|[0-9])$/;
 
   const book16 = (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book-fill" viewBox="0 0 16 16">
@@ -127,17 +170,19 @@ function DashboardClasses() {
         <div className={styles.dropdownsContainer}>
           <select className={styles.dropdown} id="classes" name="classes" value={myContexts.clickedClass} onChange={(e) => handleClassClick(e.target.value)}>
             <option value="Alle klasser">Alle klasser</option>
-            {myContexts.classes.map((theclass, index) => (
-              <option className={styles.dropdownClass} key={index} value={theclass.id}>
-                {theclass.grade}.{theclass.letter}
-              </option>
-            ))}
+            {myContexts.teacherData.classes
+              ? myContexts.teacherData.classes.map((theclass, index) => (
+                  <option className={styles.dropdownClass} key={index} value={theclass.id}>
+                    {theclass.grade}.{theclass.letter}
+                  </option>
+                ))
+              : ""}
           </select>
           {myContexts.clickedClass !== "Alle klasser" && (
             <select className={styles.dropdown} id="students" name="students" value={myContexts.selectedStudent} onChange={(e) => handleSelectStudent(e.target.value)}>
               <option className={styles.dropdownClass}>Alle elever</option>
               {myContexts.clickedClass !== "Alle klasser" &&
-                myContexts.classes
+                myContexts.teacherData.classes
                   .find((specificClass) => specificClass.id === myContexts.clickedClass)
                   .allStudents.map((student, index) => (
                     <option className={styles.dropdownClass} key={index} value={student.name}>
@@ -220,9 +265,9 @@ function DashboardClasses() {
 
         {myContexts.clickedClass === "Alle klasser" && (
           <>
-            {myContexts.classes && (
+            {myContexts.teacherData.classes && (
               <div className={`${styles.classesGrid}`}>
-                {myContexts.classes.map((theclass) => (
+                {myContexts.teacherData.classes.map((theclass) => (
                   <div className={styles.classContainer} key={theclass.id} onClick={() => handleClassClick(theclass.id)}>
                     <div>
                       <p className={styles.class}>
@@ -235,7 +280,7 @@ function DashboardClasses() {
                 ))}
               </div>
             )}
-            {myContexts.classes === 0 ? <p>Klik på knappen herunder for at tilføje en klasse.</p> : ""}
+            {myContexts.teacherData.classesIDs.length === 0 ? <p>Klik på knappen herunder for at tilføje en klasse.</p> : ""}
             <div className={styles.buttonContainer}>
               <button className={styles.openFormButton} type="button" onClick={() => setFormVisible((old) => !old)}>
                 {formVisible ? "Luk" : "Tilføj klasse"}
@@ -246,7 +291,7 @@ function DashboardClasses() {
 
         {myContexts.clickedClass !== "Alle klasser" && (
           <>
-            {myContexts.classes.map((theclass, index) => {
+            {myContexts.teacherData.classes.map((theclass, index) => {
               if (theclass.id === myContexts.clickedClass)
                 return (
                   <div className={styles.singleClassDetails} key={index}>
