@@ -193,6 +193,10 @@
   gap: 0.5rem;
 }
 
+.addClassFlex div p:first-of-type {
+  font-weight: bold;
+}
+
 #closeForm {
   background-color: transparent;
   width: fit-content;

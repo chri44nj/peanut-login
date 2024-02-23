@@ -1,5 +1,7 @@
 "use client";
 import { useContext, useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 import styles from "../styles/DashboardStatistics.module.css";
 import { MyContexts, SetMyContexts } from "./Contexts";
 
@@ -13,16 +15,82 @@ function DashboardStatistics() {
   const [chosenSubject, setChosenSubject] = useState("Alle emner");
 
   /* Effects */
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      console.log("Session er i gang");
+      fetchTeacherData();
+    }
+  }, [session]);
+
+  useEffect(() => {
+    fetchClasses();
+  }, [myContexts.teacherData.classesIDs]);
+
   useEffect(() => {
     if (myContexts.selectedClass) {
       const findSelectedClass = myContexts.teacherData.classes.find((theclass) => theclass._id === myContexts.selectedClass);
       setSelectedClass(findSelectedClass || null);
+      console.log("Yes maam");
     } else {
-      setSelectedClass(myContexts.teacherData.classes.length > 0 ? myContexts.teacherData.classes[0] : null);
+      setSelectedClass(myContexts.teacherData.classes.length > 0 ? myContexts.teacherData.classes[0]._id : null);
+      console.log("No maam");
     }
   }, [myContexts.selectedClass]);
 
   /* Functions */
+  const fetchTeacherData = async () => {
+    try {
+      const response = await axios.get("https://skillzy-node.fly.dev/api/get-teacher", {
+        params: { email: session?.user?.email },
+      });
+
+      const updatedTeacherData = {
+        id: response.data._id,
+        name: response.data.name,
+        email: response.data.email,
+        phone: response.data.phone,
+        school: response.data.school,
+        subjects: response.data.subjects,
+        classesIDs: response.data.classes,
+        accountType: response.data.accountType,
+      };
+
+      console.log("hell fucking yeah");
+
+      myContextsDispatch((old) => ({
+        ...old,
+        teacherData: {
+          ...old.teacherData,
+          ...updatedTeacherData,
+        },
+      }));
+    } catch (error) {
+      console.error("Error fetching teacher data:", error);
+    }
+  };
+
+  const fetchClasses = async () => {
+    if (myContexts.teacherData.id) {
+      const classes = await axios.get(`https://skillzy-node.fly.dev/api/get-teacher-classes`, {
+        params: {
+          teacherID: myContexts.teacherData.id,
+        },
+      });
+
+      myContextsDispatch((prevContexts) => ({
+        ...prevContexts,
+        teacherData: {
+          ...prevContexts.teacherData,
+          classes: classes.data.map((specificClass) => ({
+            ...specificClass,
+          })),
+        },
+      }));
+    }
+  };
+
   const handleClassChange = (event) => {
     const className = event.target.value;
     myContextsDispatch((prevContexts) => ({
@@ -103,21 +171,21 @@ function DashboardStatistics() {
             <p className={`${styles.marginTop} ${styles.overviewTimespan}`}>Altid</p>
             <div className={styles.overviewBottomFlex2}>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 50}</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>750</p>
                 <div className={styles.overviewFlex2}>
                   {pen16}
                   <p>Opgaver</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 23}</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>250</p>
                 <div className={styles.overviewFlex2}>
                   {clock16}
                   <p>Minutter</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 3}%</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>75%</p>
                 <div className={styles.overviewFlex2}>
                   {thumbs16}
                   <p>Korrekt</p>
@@ -127,14 +195,14 @@ function DashboardStatistics() {
             <p className={styles.overviewTimespan}>Seneste 7 dage</p>
             <div className={styles.overviewBottomFlex2}>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 10}</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>250</p>
                 <div className={styles.overviewFlex2}>
                   {pen16}
                   <p>Opgaver</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 3}</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>80</p>
                 <div className={styles.overviewFlex2}>
                   {clock16}
                   <p>Minutter</p>
@@ -157,7 +225,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students}</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>25</p>
                   <p>Elever</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
@@ -192,7 +260,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students - 3}</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>22</p>
                   <p>Aktive elever</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
@@ -227,7 +295,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 2.5}%</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>85%</p>
                   <p>Korrekt</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
@@ -262,7 +330,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{selectedClass.students * 1.5}%</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>55%</p>
                   <p>Korrekt</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>

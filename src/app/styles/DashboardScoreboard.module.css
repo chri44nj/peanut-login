@@ -24,6 +24,10 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
 }
 
+.hamsterScore:first-of-type {
+  background-color: gold;
+}
+
 .hamsterScore p {
   color: var(--text-color);
 }
@@ -38,8 +42,8 @@
   text-transform: capitalize;
 }
 
-.points {
-  color: var(--background-color);
+.hamsterTop .points {
+  color: var(--accent-purple-dark);
 }
 
 .loadButton {

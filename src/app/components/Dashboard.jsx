@@ -1,12 +1,9 @@
 "use client";
 import { useState, useContext } from "react";
-import { useRouter } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
-
+import { signOut } from "next-auth/react";
 import styles from "../styles/Dashboard.module.css";
 import { MyContexts, SetMyContexts } from "./Contexts";
-
-import DashboardHome from "./DashboardHome";
+import DashboardAccount from "./DashboardAccount";
 import DashboardStatistics from "./DashboardStatistics";
 import DashboardClasses from "./DashboardClasses";
 import DashboardMilestones from "./DashboardMilestones";
@@ -44,12 +41,20 @@ function Dashboard() {
   return (
     <div id="dashboardContainer" className={styles.dashboardContainer}>
       <div className={`${styles.dashboardMenu} ${burgerMenu ? styles.dashboardBurger : ""}`}>
-        <button id={myContexts.dashboardType === "Velkommen hjem" ? styles.activeDashboard : ""} value="Hjem" onClick={() => switchDashboardType("Velkommen hjem")}>
+        <button id={myContexts.dashboardType === "Din konto" ? styles.activeDashboard : ""} value="Hjem" onClick={() => switchDashboardType("Din konto")}>
           <a href="#dashboardContainer">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
               <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z" />
             </svg>
-            Hjem
+            Din konto
+          </a>
+        </button>
+        <button id={myContexts.dashboardType === "Statistik" ? styles.activeDashboard : ""} value="Statistik" onClick={() => switchDashboardType("Statistik")}>
+          <a href="#dashboardContainer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pie-chart-fill" viewBox="0 0 16 16">
+              <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z" />
+            </svg>
+            Statistik
           </a>
         </button>
         <button id={myContexts.dashboardType === "Dine klasser" ? styles.activeDashboard : ""} value="Dine klasser" onClick={() => switchDashboardType("Dine klasser")}>
@@ -62,14 +67,7 @@ function Dashboard() {
             Klasser
           </a>
         </button>
-        <button id={myContexts.dashboardType === "Statistik" ? styles.activeDashboard : ""} value="Statistik" onClick={() => switchDashboardType("Statistik")}>
-          <a href="#dashboardContainer">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pie-chart-fill" viewBox="0 0 16 16">
-              <path d="M15.985 8.5H8.207l-5.5 5.5a8 8 0 0 0 13.277-5.5zM2 13.292A8 8 0 0 1 7.5.015v7.778l-5.5 5.5zM8.5.015V7.5h7.485A8.001 8.001 0 0 0 8.5.015z" />
-            </svg>
-            Statistik
-          </a>
-        </button>
+
         <button id={myContexts.dashboardType === "Milepæle" ? styles.activeDashboard : ""} value="Milepæle" onClick={() => switchDashboardType("Milepæle")}>
           <a href="#dashboardContainer">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
@@ -116,7 +114,7 @@ function Dashboard() {
             <span></span>
           </button>
         </div>
-        {myContexts.dashboardType === "Velkommen hjem" ? <DashboardHome /> : ""}
+        {myContexts.dashboardType === "Din konto" ? <DashboardAccount /> : ""}
         {myContexts.dashboardType === "Statistik" ? <DashboardStatistics /> : ""}
         {myContexts.dashboardType === "Dine klasser" ? <DashboardClasses /> : ""}
         {myContexts.dashboardType === "Milepæle" ? <DashboardMilestones /> : ""}

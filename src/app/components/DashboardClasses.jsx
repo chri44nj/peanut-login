@@ -13,15 +13,6 @@ function DashboardClasses() {
   const [formVisible, setFormVisible] = useState(false);
   const [grade, setGrade] = useState("");
   const [letter, setLetter] = useState("");
-  const [newClass, setNewClass] = useState({
-    name: myContexts.teacherData.school,
-    grade: null,
-    letter: null,
-    students: 0,
-    allStudents: [],
-    joinCode: "",
-    id: "",
-  });
 
   /* Effects */
   useEffect(() => {
@@ -29,10 +20,10 @@ function DashboardClasses() {
   }, [myContexts.teacherData.classesIDs]);
 
   /* Functions */
-  const handleClassClick = (classId) => {
-    myContextsDispatch((prevContexts) => ({
+  const handleClassClick = async (classID) => {
+    await myContextsDispatch((prevContexts) => ({
       ...prevContexts,
-      clickedClass: classId,
+      clickedClass: classID,
       selectedStudent: "Alle elever",
     }));
   };
@@ -42,55 +33,27 @@ function DashboardClasses() {
       ...prevContexts,
       selectedStudent: studentName,
     }));
-    console.log("handleSelectStudent called");
+
     const dashboardContainer = document.getElementById("dashboardContainer");
     if (dashboardContainer) {
       dashboardContainer.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewClass((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     await postClass();
-    /*   const updatedNewClass = {
-      ...newClass,
-      joinCode: generateID(8),
-      id: generateID(8),
-    }; */
-    /*   myContextsDispatch((prevContexts) => ({
-      ...prevContexts,
-      classes: [...prevContexts.classes, updatedNewClass],
-    })); */
-    /*  setNewClass({ name: myContexts.teacherData.school, grade: null, students: 0, allStudents: [], letter: null, joinCode: "", id: "" }); */
     setGrade("");
     setLetter("");
     setFormVisible(false);
-    await fetchTeacherData();
+    await updateTeacherData();
     fetchClasses();
   };
-
-  function generateID(length) {
-    let id = "";
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      id += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return id;
-  }
 
   const postClass = async () => {
     const res = await axios.post(`https://skillzy-node.fly.dev/api/create-class`, {
       school: { name: myContexts.teacherData.school, grade: grade, letter: letter },
-      teacherID: myContexts.teacherData.id,
+      teacherID: myContexts.teacherData._id,
     });
   };
 
@@ -101,35 +64,37 @@ function DashboardClasses() {
       },
     });
 
-    console.log("Classes", classes);
-
     myContextsDispatch((prevContexts) => ({
       ...prevContexts,
       teacherData: {
         ...prevContexts.teacherData,
         classes: classes.data.map((specificClass) => ({
           ...specificClass,
-          allStudents: [],
-          id: specificClass._id,
         })),
       },
     }));
   };
 
-  const fetchTeacherData = async () => {
-    try {
-      const response = await axios.get("https://skillzy-node.fly.dev/api/get-teacher", {
-        params: { email: session?.user?.email },
-      });
+  const updateTeacherData = async (classID) => {
+    myContextsDispatch((old) => ({
+      ...old,
+      teacherData: {
+        ...old.teacherData,
+        classesIDs: classID,
+      },
+    }));
+  };
 
-      myContextsDispatch((old) => ({
-        ...old,
-        teacherData: {
-          ...old.teacherData,
-          classesIDs: response.data.classes,
-        },
-      }));
-    } catch (error) {}
+  const removeClass = async () => {
+    const res = await axios.post(`https://skillzy-node.fly.dev/api/remove-class-from-teacher`, {
+      classID: myContexts.clickedClass,
+      teacherID: myContexts.teacherData.id,
+    });
+
+    await myContextsDispatch((prevContexts) => ({
+      ...prevContexts,
+      clickedClass: "Alle klasser",
+    }));
   };
 
   /* Other */
@@ -172,7 +137,7 @@ function DashboardClasses() {
             <option value="Alle klasser">Alle klasser</option>
             {myContexts.teacherData.classes
               ? myContexts.teacherData.classes.map((theclass, index) => (
-                  <option className={styles.dropdownClass} key={index} value={theclass.id}>
+                  <option className={styles.dropdownClass} key={index} value={theclass._id}>
                     {theclass.grade}.{theclass.letter}
                   </option>
                 ))
@@ -183,10 +148,10 @@ function DashboardClasses() {
               <option className={styles.dropdownClass}>Alle elever</option>
               {myContexts.clickedClass !== "Alle klasser" &&
                 myContexts.teacherData.classes
-                  .find((specificClass) => specificClass.id === myContexts.clickedClass)
-                  .allStudents.map((student, index) => (
-                    <option className={styles.dropdownClass} key={index} value={student.name}>
-                      {student.name}
+                  .find((specificClass) => specificClass._id === myContexts.clickedClass)
+                  .students?.map((student, index) => (
+                    <option className={styles.dropdownClass} key={index} value={student}>
+                      {student}
                     </option>
                   ))}
             </select>
@@ -207,7 +172,6 @@ function DashboardClasses() {
                     {
                       e.target.value !== "Vælg" ? setGrade(e.target.value) : setGrade("");
                     }
-                    handleInputChange(e);
                   }}
                 >
                   <option>Vælg</option>
@@ -225,7 +189,6 @@ function DashboardClasses() {
                   value={letter}
                   onChange={(e) => {
                     e.target.value !== "Vælg" ? setLetter(e.target.value) : setLetter("");
-                    handleInputChange(e);
                   }}
                 >
                   <option>Vælg</option>
@@ -268,14 +231,16 @@ function DashboardClasses() {
             {myContexts.teacherData.classes && (
               <div className={`${styles.classesGrid}`}>
                 {myContexts.teacherData.classes.map((theclass) => (
-                  <div className={styles.classContainer} key={theclass.id} onClick={() => handleClassClick(theclass.id)}>
+                  <div className={styles.classContainer} key={theclass._id} onClick={() => handleClassClick(theclass._id)}>
                     <div>
                       <p className={styles.class}>
                         {theclass.grade}.{theclass.letter}
                       </p>
                       <p className={styles.school}>{theclass.name}</p>
                     </div>
-                    <p className={styles.students}>{theclass.students} elever</p>
+                    <p className={styles.students}>
+                      {theclass.students ? theclass.students.length : "0"} {theclass.students?.length === 1 ? "elev" : "elever"}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -292,21 +257,27 @@ function DashboardClasses() {
         {myContexts.clickedClass !== "Alle klasser" && (
           <>
             {myContexts.teacherData.classes.map((theclass, index) => {
-              if (theclass.id === myContexts.clickedClass)
+              if (theclass._id === myContexts.clickedClass)
                 return (
                   <div className={styles.singleClassDetails} key={index}>
                     <h2>
                       <span className={styles.school}>{theclass.name}</span>, {theclass.grade}.{theclass.letter}
                     </h2>
+                    <button type="button" onClick={removeClass}>
+                      Fjern klasse
+                    </button>
+                    <p>Denne klasses id: {theclass._id}</p>
+                    <p>Det klikkede id: {myContexts.clickedClass}</p>
                     {myContexts.selectedStudent === "Alle elever" ? <p>Klassekode: {theclass.joinCode}</p> : ""}
-                    <section className={styles.studentsListSection}>
-                      {myContexts.selectedStudent === "Alle elever" ? <h3>{theclass.allStudents.length > 0 ? "Alle " + theclass.allStudents.length : 0} elever</h3> : <h3>{myContexts.selectedStudent}</h3>}
 
-                      {theclass.allStudents && myContexts.selectedStudent === "Alle elever" ? (
+                    <section className={styles.studentsListSection}>
+                      {myContexts.selectedStudent === "Alle elever" ? <h3>{theclass.students?.length === 0 ? "Der er ingen elever tilføjet til klassen" : theclass.students?.length === 1 ? "Din ene elev" : "Dine " + theclass.students?.length + " elever"} </h3> : <h3>{myContexts.selectedStudent}</h3>}
+
+                      {theclass.students && myContexts.selectedStudent === "Alle elever" ? (
                         <ul className={styles.studentsList}>
-                          {theclass.allStudents.map((student, index) => (
-                            <li className={styles.singleStudent} key={index} onClick={() => handleSelectStudent(student.name)}>
-                              {student.name}
+                          {theclass.students?.map((student, index) => (
+                            <li className={styles.singleStudent} key={index} onClick={() => handleSelectStudent(student)}>
+                              {student}
                             </li>
                           ))}
                         </ul>
@@ -314,7 +285,7 @@ function DashboardClasses() {
                         ""
                       )}
 
-                      {theclass.allStudents.length === 0 ? <p>Klik på knappen herunder eller del din klassekode med eleverne, for at tilføje dem til klassen.</p> : ""}
+                      {theclass.students?.length === 0 ? <p>Klik på knappen herunder eller del din klassekode med eleverne, for at tilføje dem til klassen.</p> : ""}
                       {myContexts.selectedStudent === "Alle elever" && (
                         <div className={styles.buttonContainer}>
                           <button className={styles.addStudentsButton} type="button">

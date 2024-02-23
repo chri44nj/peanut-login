@@ -2,12 +2,10 @@
 import { useContext, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-
-import styles from "../styles/DashboardHome.module.css";
-
+import styles from "../styles/DashboardAccount.module.css";
 import { MyContexts, SetMyContexts } from "./Contexts";
 
-function DashboardHome() {
+function DashboardAccount() {
   /* Contexts */
   const myContexts = useContext(MyContexts);
   const myContextsDispatch = useContext(SetMyContexts);
@@ -20,6 +18,10 @@ function DashboardHome() {
       fetchTeacherData();
     }
   }, [session]);
+
+  useEffect(() => {
+    fetchClasses();
+  }, [myContexts.teacherData.classesIDs]);
 
   /* Functions */
   function switchDashboardType(dashboardType) {
@@ -36,9 +38,6 @@ function DashboardHome() {
         params: { email: session?.user?.email },
       });
 
-      console.log("responsejsdi", response);
-
-      // Map the response data to the structure of teacherData in the context
       const updatedTeacherData = {
         id: response.data._id,
         name: response.data.name,
@@ -50,7 +49,8 @@ function DashboardHome() {
         accountType: response.data.accountType,
       };
 
-      // Update teacherData in the context with the mapped data
+      console.log("Heell yeah?");
+
       myContextsDispatch((old) => ({
         ...old,
         teacherData: {
@@ -58,11 +58,28 @@ function DashboardHome() {
           ...updatedTeacherData,
         },
       }));
-
-      // Now, when you log teacherData, it should reflect the updated data
-      console.log("Updated teacherData:", updatedTeacherData);
     } catch (error) {
       console.error("Error fetching teacher data:", error);
+    }
+  };
+
+  const fetchClasses = async () => {
+    if (myContexts.teacherData.id) {
+      const classes = await axios.get(`https://skillzy-node.fly.dev/api/get-teacher-classes`, {
+        params: {
+          teacherID: myContexts.teacherData.id,
+        },
+      });
+
+      myContextsDispatch((prevContexts) => ({
+        ...prevContexts,
+        teacherData: {
+          ...prevContexts.teacherData,
+          classes: classes.data.map((specificClass) => ({
+            ...specificClass,
+          })),
+        },
+      }));
     }
   };
 
@@ -92,4 +109,4 @@ function DashboardHome() {
   );
 }
 
-export default DashboardHome;
+export default DashboardAccount;

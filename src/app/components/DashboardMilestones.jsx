@@ -1,5 +1,6 @@
 "use client";
-import { useState, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
+import axios from "axios";
 import styles from "../styles/DashboardMilestones.module.css";
 import { MyContexts, SetMyContexts } from "./Contexts";
 
@@ -9,20 +10,36 @@ function DashboardMilestones() {
   const myContextsDispatch = useContext(SetMyContexts);
 
   /* States */
-  const [selectedClass, setSelectedClass] = useState("");
 
   /* Effects */
+
   useEffect(() => {
-    const findSelectedClass = myContexts.teacherData.classes.find((theclass) => theclass._id === myContexts.selectedClass);
-    setSelectedClass(findSelectedClass || null);
-  }, [myContexts.selectedClass]);
+    fetchClasses();
+  }, [myContexts.teacherData.classesIDs]);
 
   /* Functions */
-  const handleClassChange = (event) => {
-    const className = event.target.value;
+  const handleClassChange = (e) => {
     myContextsDispatch((prevContexts) => ({
       ...prevContexts,
-      selectedClass: className,
+      selectedClass: e.target.value,
+    }));
+  };
+
+  const fetchClasses = async () => {
+    const classes = await axios.get(`https://skillzy-node.fly.dev/api/get-teacher-classes`, {
+      params: {
+        teacherID: myContexts.teacherData.id,
+      },
+    });
+
+    myContextsDispatch((prevContexts) => ({
+      ...prevContexts,
+      teacherData: {
+        ...prevContexts.teacherData,
+        classes: classes.data.map((specificClass) => ({
+          ...specificClass,
+        })),
+      },
     }));
   };
 
@@ -31,7 +48,7 @@ function DashboardMilestones() {
       <div className={styles.classes}>
         <select className={styles.dropdown} id="classes" name="classes" value={myContexts.selectedClass} onChange={handleClassChange}>
           {myContexts.teacherData.classes.map((theclass, index) => (
-            <option className={styles.dropdownClass} key={index} value={theclass.id}>
+            <option className={styles.dropdownClass} key={index} value={theclass._id}>
               {theclass.grade}.{theclass.letter}
             </option>
           ))}
