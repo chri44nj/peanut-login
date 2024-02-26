@@ -10,6 +10,7 @@ function Contexts({ children }) {
     selectedClass: "",
     clickedClass: "Alle klasser",
     selectedStudent: "Alle elever",
+    selectedSubject: "Alle emner",
     teacherData: { id: "", name: "", email: "", phone: "", school: "", subjects: [], classesIDs: [], classes: [], accountType: "" },
   });
 

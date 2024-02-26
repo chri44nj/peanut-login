@@ -46,14 +46,14 @@ function DashboardClasses() {
     setGrade("");
     setLetter("");
     setFormVisible(false);
-    await updateTeacherData();
+    /*  await updateTeacherData(); */
     fetchClasses();
   };
 
   const postClass = async () => {
     const res = await axios.post(`https://skillzy-node.fly.dev/api/create-class`, {
       school: { name: myContexts.teacherData.school, grade: grade, letter: letter },
-      teacherID: myContexts.teacherData._id,
+      teacherID: myContexts.teacherData.id,
     });
   };
 
@@ -75,7 +75,7 @@ function DashboardClasses() {
     }));
   };
 
-  const updateTeacherData = async (classID) => {
+  /*   const updateTeacherData = async (classID) => {
     myContextsDispatch((old) => ({
       ...old,
       teacherData: {
@@ -83,7 +83,7 @@ function DashboardClasses() {
         classesIDs: classID,
       },
     }));
-  };
+  }; */
 
   const removeClass = async () => {
     const res = await axios.post(`https://skillzy-node.fly.dev/api/remove-class-from-teacher`, {
@@ -95,6 +95,15 @@ function DashboardClasses() {
       ...prevContexts,
       clickedClass: "Alle klasser",
     }));
+
+    fetchClasses();
+  };
+
+  const removeStudent = async () => {
+    const res = await axios.post(`https://skillzy-node.fly.dev/api/remove-student-from-class`, {
+      classID: myContexts.clickedClass,
+      username: myContexts.selectedStudent,
+    });
   };
 
   /* Other */
@@ -263,11 +272,6 @@ function DashboardClasses() {
                     <h2>
                       <span className={styles.school}>{theclass.name}</span>, {theclass.grade}.{theclass.letter}
                     </h2>
-                    <button type="button" onClick={removeClass}>
-                      Fjern klasse
-                    </button>
-                    <p>Denne klasses id: {theclass._id}</p>
-                    <p>Det klikkede id: {myContexts.clickedClass}</p>
                     {myContexts.selectedStudent === "Alle elever" ? <p>Klassekode: {theclass.joinCode}</p> : ""}
 
                     <section className={styles.studentsListSection}>
@@ -291,6 +295,9 @@ function DashboardClasses() {
                           <button className={styles.addStudentsButton} type="button">
                             Tilføj elev
                           </button>
+                          <button type="button" onClick={removeClass}>
+                            Fjern klasse
+                          </button>
                         </div>
                       )}
                     </section>
@@ -305,200 +312,205 @@ function DashboardClasses() {
       </div>
 
       {myContexts.selectedStudent !== "Alle elever" ? (
-        <div className={styles.clickedClassContainer}>
-          <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
-            <div className={styles.overviewTop}>
-              <h2></h2>
-            </div>
-            <p className={`${styles.marginTop} ${styles.overviewTimespan}`}>Altid</p>
-            <div className={styles.overviewBottomFlex2}>
-              <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>50</p>
-                <div className={styles.overviewFlex2}>
-                  {pen16}
-                  <p>Opgaver</p>
-                </div>
+        <>
+          <div className={styles.clickedClassContainer}>
+            <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
+              <div className={styles.overviewTop}>
+                <h2></h2>
               </div>
-              <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>25</p>
-                <div className={styles.overviewFlex2}>
-                  {clock16}
-                  <p>Minutter</p>
-                </div>
-              </div>
-              <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>75%</p>
-                <div className={styles.overviewFlex2}>
-                  {thumbs16}
-                  <p>Korrekt</p>
-                </div>
-              </div>
-            </div>
-            <p className={styles.overviewTimespan}>Seneste 7 dage</p>
-            <div className={styles.overviewBottomFlex2}>
-              <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>85</p>
-                <div className={styles.overviewFlex2}>
-                  {pen16}
-                  <p>Opgaver</p>
-                </div>
-              </div>
-              <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>89</p>
-                <div className={styles.overviewFlex2}>
-                  {clock16}
-                  <p>Minutter</p>
-                </div>
-              </div>
-              <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>97%</p>
-                <div className={styles.overviewFlex2}>
-                  {thumbs16}
-                  <p>Korrekt</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={`${styles.classOverview} ${styles.overviewClass}`}>
-            <div className={styles.overviewTop}>
-              <h2>Klasse</h2>
-            </div>
-            <div className={styles.overviewBottomFlex}>
-              <div className={styles.overviewBottomGrid}>
+              <p className={`${styles.marginTop} ${styles.overviewTimespan}`}>Altid</p>
+              <div className={styles.overviewBottomFlex2}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>Så mange</p>
-                  <p>Elever</p>
-                </div>
-                <div className={styles.overviewBottomGrid2}>
-                  <div>
-                    <div className={styles.overviewFlex2}>
-                      {pen16}
-                      <p>Opgaver</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {clock16}
-                      <p>Minutter</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {trophy16}
-                      <p>Rang</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p>1040</p>
-                    <p>1080</p>
-                    <p>85/489</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>50</p>
+                  <div className={styles.overviewFlex2}>
+                    {pen16}
+                    <p>Opgaver</p>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={`${styles.classOverview} ${styles.overviewLastWeek}`}>
-            <div className={styles.overviewTop}>
-              <h2>Seneste 7 dage</h2>
-            </div>
-            <div className={styles.overviewBottomFlex}>
-              <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p>Selected student</p>
-                </div>
-                <div className={styles.overviewBottomGrid2}>
-                  <div>
-                    <div className={styles.overviewFlex2}>
-                      {pen16}
-                      <p>Opgaver</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {clock16}
-                      <p>Minutter</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {trophy16}
-                      <p>Rang</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p>77</p>
-                    <p>108</p>
-                    <p>4/489</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>25</p>
+                  <div className={styles.overviewFlex2}>
+                    {clock16}
+                    <p>Minutter</p>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={`${styles.classOverview} ${styles.overviewBestSubject}`}>
-            <div className={styles.overviewTop}>
-              <h2>Bedste emne</h2>
-            </div>
-            <div className={styles.overviewBottomFlex}>
-              <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>66%</p>
-                  <p>Korrekt</p>
-                </div>
-                <div className={styles.overviewBottomGrid2}>
-                  <div>
-                    <div className={styles.overviewFlex2}>
-                      {book16}
-                      <p>Bedst subject</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {pen16}
-                      <p>Opgaver</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {clock16}
-                      <p>Minutter</p>
-                    </div>
-                  </div>
-                  <div>
-                    <br />
-                    <p>152</p>
-                    <p>97</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>75%</p>
+                  <div className={styles.overviewFlex2}>
+                    {thumbs16}
+                    <p>Korrekt</p>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div className={`${styles.classOverview} ${styles.overviewWorstSubject}`}>
-            <div className={styles.overviewTop}>
-              <h2>Sværeste emne</h2>
-            </div>
-            <div className={styles.overviewBottomFlex}>
-              <div className={styles.overviewBottomGrid}>
+              <p className={styles.overviewTimespan}>Seneste 7 dage</p>
+              <div className={styles.overviewBottomFlex2}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>66%</p>
-                  <p>Korrekt</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>85</p>
+                  <div className={styles.overviewFlex2}>
+                    {pen16}
+                    <p>Opgaver</p>
+                  </div>
                 </div>
-                <div className={styles.overviewBottomGrid2}>
-                  <div>
-                    <div className={styles.overviewFlex2}>
-                      {book16}
-                      <p>Værste subject</p>
+                <div className={styles.overviewFlex}>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>89</p>
+                  <div className={styles.overviewFlex2}>
+                    {clock16}
+                    <p>Minutter</p>
+                  </div>
+                </div>
+                <div className={styles.overviewFlex}>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>97%</p>
+                  <div className={styles.overviewFlex2}>
+                    {thumbs16}
+                    <p>Korrekt</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={`${styles.classOverview} ${styles.overviewClass}`}>
+              <div className={styles.overviewTop}>
+                <h2>Klasse</h2>
+              </div>
+              <div className={styles.overviewBottomFlex}>
+                <div className={styles.overviewBottomGrid}>
+                  <div className={styles.overviewFlex}>
+                    <p className={`${styles.bold} ${styles.bigStat}`}>Så mange</p>
+                    <p>Elever</p>
+                  </div>
+                  <div className={styles.overviewBottomGrid2}>
+                    <div>
+                      <div className={styles.overviewFlex2}>
+                        {pen16}
+                        <p>Opgaver</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {clock16}
+                        <p>Minutter</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {trophy16}
+                        <p>Rang</p>
+                      </div>
                     </div>
-                    <div className={styles.overviewFlex2}>
-                      {pen16}
-                      <p>Opgaver</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {clock16}
-                      <p>Minutter</p>
+                    <div>
+                      <p>1040</p>
+                      <p>1080</p>
+                      <p>85/489</p>
                     </div>
                   </div>
-                  <div>
-                    <br />
-                    <p>77</p>
-                    <p>108</p>
+                </div>
+              </div>
+            </div>
+
+            <div className={`${styles.classOverview} ${styles.overviewLastWeek}`}>
+              <div className={styles.overviewTop}>
+                <h2>Seneste 7 dage</h2>
+              </div>
+              <div className={styles.overviewBottomFlex}>
+                <div className={styles.overviewBottomGrid}>
+                  <div className={styles.overviewFlex}>
+                    <p>Selected student</p>
+                  </div>
+                  <div className={styles.overviewBottomGrid2}>
+                    <div>
+                      <div className={styles.overviewFlex2}>
+                        {pen16}
+                        <p>Opgaver</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {clock16}
+                        <p>Minutter</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {trophy16}
+                        <p>Rang</p>
+                      </div>
+                    </div>
+                    <div>
+                      <p>77</p>
+                      <p>108</p>
+                      <p>4/489</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={`${styles.classOverview} ${styles.overviewBestSubject}`}>
+              <div className={styles.overviewTop}>
+                <h2>Bedste emne</h2>
+              </div>
+              <div className={styles.overviewBottomFlex}>
+                <div className={styles.overviewBottomGrid}>
+                  <div className={styles.overviewFlex}>
+                    <p className={`${styles.bold} ${styles.bigStat}`}>66%</p>
+                    <p>Korrekt</p>
+                  </div>
+                  <div className={styles.overviewBottomGrid2}>
+                    <div>
+                      <div className={styles.overviewFlex2}>
+                        {book16}
+                        <p>Bedst subject</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {pen16}
+                        <p>Opgaver</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {clock16}
+                        <p>Minutter</p>
+                      </div>
+                    </div>
+                    <div>
+                      <br />
+                      <p>152</p>
+                      <p>97</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={`${styles.classOverview} ${styles.overviewWorstSubject}`}>
+              <div className={styles.overviewTop}>
+                <h2>Sværeste emne</h2>
+              </div>
+              <div className={styles.overviewBottomFlex}>
+                <div className={styles.overviewBottomGrid}>
+                  <div className={styles.overviewFlex}>
+                    <p className={`${styles.bold} ${styles.bigStat}`}>66%</p>
+                    <p>Korrekt</p>
+                  </div>
+                  <div className={styles.overviewBottomGrid2}>
+                    <div>
+                      <div className={styles.overviewFlex2}>
+                        {book16}
+                        <p>Værste subject</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {pen16}
+                        <p>Opgaver</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {clock16}
+                        <p>Minutter</p>
+                      </div>
+                    </div>
+                    <div>
+                      <br />
+                      <p>77</p>
+                      <p>108</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+          <button type="button" onClick={removeStudent}>
+            Fjern elev
+          </button>
+        </>
       ) : (
         ""
       )}

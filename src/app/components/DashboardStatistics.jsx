@@ -11,15 +11,12 @@ function DashboardStatistics() {
   const myContextsDispatch = useContext(SetMyContexts);
 
   /* States */
-  const [selectedClass, setSelectedClass] = useState("");
-  const [chosenSubject, setChosenSubject] = useState("Alle emner");
 
   /* Effects */
   const { data: session } = useSession();
 
   useEffect(() => {
     if (session) {
-      console.log("Session er i gang");
       fetchTeacherData();
     }
   }, [session]);
@@ -29,15 +26,13 @@ function DashboardStatistics() {
   }, [myContexts.teacherData.classesIDs]);
 
   useEffect(() => {
-    if (myContexts.selectedClass) {
-      const findSelectedClass = myContexts.teacherData.classes.find((theclass) => theclass._id === myContexts.selectedClass);
-      setSelectedClass(findSelectedClass || null);
-      console.log("Yes maam");
-    } else {
-      setSelectedClass(myContexts.teacherData.classes.length > 0 ? myContexts.teacherData.classes[0]._id : null);
-      console.log("No maam");
+    if (!myContexts.selectedClass && myContexts.teacherData.classes.length > 0) {
+      myContextsDispatch((old) => ({
+        ...old,
+        selectedClass: myContexts.teacherData.classes[0]._id,
+      }));
     }
-  }, [myContexts.selectedClass]);
+  }, [myContexts.selectedClass, myContexts.teacherData.classes]);
 
   /* Functions */
   const fetchTeacherData = async () => {
@@ -99,9 +94,11 @@ function DashboardStatistics() {
     }));
   };
 
-  const handleSubjectChange = (event) => {
-    const subjectName = event.target.value;
-    setChosenSubject(subjectName);
+  const handleSubjectChange = (e) => {
+    myContextsDispatch((prevContexts) => ({
+      ...prevContexts,
+      selectedSubject: e.target.value,
+    }));
   };
 
   /* Other */
@@ -148,7 +145,7 @@ function DashboardStatistics() {
           </select>
         </div>
         <div>
-          <select className={styles.dropdown} id="subjects" name="subjects" onChange={handleSubjectChange}>
+          <select className={styles.dropdown} id="subjects" name="subjects" value={myContexts.selectedSubject} onChange={handleSubjectChange}>
             <option className={styles.dropdownClass}>Alle emner</option>
             <option className={styles.dropdownClass}>Brøker</option>
             <option className={styles.dropdownClass}>Procent</option>
@@ -162,11 +159,11 @@ function DashboardStatistics() {
         </div>
       </div>
 
-      {selectedClass ? (
+      {myContexts.teacherData.classes ? (
         <div className={styles.selectedClassContainer}>
           <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
             <div className={styles.overviewTop}>
-              <h2>{chosenSubject}</h2>
+              <h2>{myContexts.selectedSubject}</h2>
             </div>
             <p className={`${styles.marginTop} ${styles.overviewTimespan}`}>Altid</p>
             <div className={styles.overviewBottomFlex2}>
@@ -302,7 +299,7 @@ function DashboardStatistics() {
                   <div>
                     <div className={styles.overviewFlex2}>
                       {book16}
-                      <p>{selectedClass.bestSubject}</p>
+                      <p>Bedste</p>
                     </div>
                     <div className={styles.overviewFlex2}>
                       {pen16}
@@ -337,7 +334,7 @@ function DashboardStatistics() {
                   <div>
                     <div className={styles.overviewFlex2}>
                       {book16}
-                      <p>{selectedClass.worstSubject}</p>
+                      <p>Sværeste</p>
                     </div>
                     <div className={styles.overviewFlex2}>
                       {pen16}
