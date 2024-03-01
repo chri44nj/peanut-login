@@ -281,6 +281,7 @@
   padding-block: 1rem;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
   position: relative;
+  margin-bottom: 1rem;
 }
 
 .overviewTop {
@@ -387,9 +388,9 @@
   border-radius: 10px;
   border: solid 1px var(--red);
   padding: 0.5rem 1rem;
-  margin-top: 2rem;
   text-align: center;
   transition: 0.2s;
+  width: 100%;
 }
 
 .removeButton2 {
@@ -399,7 +400,7 @@
   border-radius: 10px;
   border: solid 1px var(--red);
   padding: 0.5rem 1rem;
-
+  width: 100%;
   text-align: center;
   transition: 0.2s;
 }
@@ -430,6 +431,8 @@
 .removeStudent p {
   color: var(--text-color);
   font-size: var(--font-small);
+  font-weight: bold;
+  padding-top: 1rem;
 }
 
 .removeStudent .bold {
@@ -445,14 +448,17 @@
   color: var(--text-color);
 }
 
-.red {
+.redBackground {
+  color: var(--background-color);
   background-color: var(--red);
 }
 /** TABLET **/
 
 @media only screen and (min-width: 600px) {
   .openFormButton,
-  .addStudentsButton {
+  .addStudentsButton,
+  .removeButton,
+  .removeButton2 {
     max-width: 300px;
   }
 
