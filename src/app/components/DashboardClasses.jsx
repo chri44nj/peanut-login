@@ -10,7 +10,8 @@ function DashboardClasses() {
   const myContextsDispatch = useContext(SetMyContexts);
 
   /* States */
-  const [formVisible, setFormVisible] = useState(false);
+  const [createFormVisible, setCreateFormVisible] = useState(false);
+  const [removeFormVisible, setRemoveFormVisible] = useState(false);
   const [grade, setGrade] = useState("");
   const [letter, setLetter] = useState("");
 
@@ -45,7 +46,7 @@ function DashboardClasses() {
     await postClass();
     setGrade("");
     setLetter("");
-    setFormVisible(false);
+    setCreateFormVisible(false);
     /*  await updateTeacherData(); */
     fetchClasses();
   };
@@ -74,16 +75,6 @@ function DashboardClasses() {
       },
     }));
   };
-
-  /*   const updateTeacherData = async (classID) => {
-    myContextsDispatch((old) => ({
-      ...old,
-      teacherData: {
-        ...old.teacherData,
-        classesIDs: classID,
-      },
-    }));
-  }; */
 
   const removeClass = async () => {
     const res = await axios.post(`https://skillzy-node.fly.dev/api/remove-class-from-teacher`, {
@@ -166,74 +157,6 @@ function DashboardClasses() {
             </select>
           )}
         </div>
-        {formVisible && (
-          <form className={styles.addClass} onSubmit={handleFormSubmit}>
-            <div className={styles.addClassFlex}>
-              <div>
-                <p>Klassetrin</p>
-
-                <select
-                  id="grade"
-                  name="grade"
-                  type="text"
-                  value={grade}
-                  onChange={(e) => {
-                    {
-                      e.target.value !== "Vælg" ? setGrade(e.target.value) : setGrade("");
-                    }
-                  }}
-                >
-                  <option>Vælg</option>
-                  {Array.from({ length: 11 }, (_, i) => i).map((number) => (
-                    <option key={number}>{number}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <p>Bogstav</p>
-                <select
-                  id="letter"
-                  name="letter"
-                  type="text"
-                  value={letter}
-                  onChange={(e) => {
-                    e.target.value !== "Vælg" ? setLetter(e.target.value) : setLetter("");
-                  }}
-                >
-                  <option>Vælg</option>
-                  {Array.from({ length: 29 }, (_, i) => String.fromCharCode(97 + i)) // Lowercase Danish alphabet 'a' to 'z'
-                    .concat("æ", "ø", "å") // Adding additional Danish characters
-                    .filter((letter) => /[a-zA-ZæøåÆØÅ]/.test(letter)) // Filtering out non-alphabetic characters
-                    .map((letter, index) => (
-                      <option key={index}>{letter}</option>
-                    ))}
-                  <option>kl</option>
-                </select>
-              </div>
-            </div>
-            <h3>
-              {grade && letter ? `${grade}.${letter}, ` : ""}
-              <span>{myContexts.teacherData.school}</span>
-            </h3>
-
-            <button
-              id={styles.closeForm}
-              type="button"
-              onClick={() => {
-                setFormVisible((old) => !old);
-                setGrade("");
-                setLetter("");
-              }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
-              </svg>
-            </button>
-            <button className={`${styles.addClassButton} ${grade && letter ? styles.validButton : ""}`} type="submit" disabled={!grade || !letter}>
-              Tilføj
-            </button>
-          </form>
-        )}
 
         {myContexts.clickedClass === "Alle klasser" && (
           <>
@@ -256,8 +179,8 @@ function DashboardClasses() {
             )}
             {myContexts.teacherData.classesIDs.length === 0 ? <p>Klik på knappen herunder for at tilføje en klasse.</p> : ""}
             <div className={styles.buttonContainer}>
-              <button className={styles.openFormButton} type="button" onClick={() => setFormVisible((old) => !old)}>
-                {formVisible ? "Luk" : "Tilføj klasse"}
+              <button className={styles.openFormButton} type="button" onClick={() => setCreateFormVisible((old) => !old)}>
+                {createFormVisible ? "Luk" : "Tilføj klasse"}
               </button>
             </div>
           </>
@@ -316,7 +239,7 @@ function DashboardClasses() {
           <div className={styles.clickedClassContainer}>
             <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
               <div className={styles.overviewTop}>
-                <h2></h2>
+                <h2>{myContexts.selectedStudent}s statistik</h2>
               </div>
               <p className={`${styles.marginTop} ${styles.overviewTimespan}`}>Altid</p>
               <div className={styles.overviewBottomFlex2}>
@@ -370,12 +293,12 @@ function DashboardClasses() {
 
             <div className={`${styles.classOverview} ${styles.overviewClass}`}>
               <div className={styles.overviewTop}>
-                <h2>Klasse</h2>
+                <h2>Klassen</h2>
               </div>
               <div className={styles.overviewBottomFlex}>
                 <div className={styles.overviewBottomGrid}>
                   <div className={styles.overviewFlex}>
-                    <p className={`${styles.bold} ${styles.bigStat}`}>Så mange</p>
+                    <p className={`${styles.bold} ${styles.bigStat}`}>25</p>
                     <p>Elever</p>
                   </div>
                   <div className={styles.overviewBottomGrid2}>
@@ -410,8 +333,10 @@ function DashboardClasses() {
               <div className={styles.overviewBottomFlex}>
                 <div className={styles.overviewBottomGrid}>
                   <div className={styles.overviewFlex}>
-                    <p>Selected student</p>
+                    <p className={`${styles.bold} ${styles.bigStat}`}>87%</p>
+                    <p>Korrekt</p>
                   </div>
+
                   <div className={styles.overviewBottomGrid2}>
                     <div>
                       <div className={styles.overviewFlex2}>
@@ -451,7 +376,7 @@ function DashboardClasses() {
                     <div>
                       <div className={styles.overviewFlex2}>
                         {book16}
-                        <p>Bedst subject</p>
+                        <p className={styles.subjectHeader}>Addition</p>
                       </div>
                       <div className={styles.overviewFlex2}>
                         {pen16}
@@ -462,8 +387,7 @@ function DashboardClasses() {
                         <p>Minutter</p>
                       </div>
                     </div>
-                    <div>
-                      <br />
+                    <div className={styles.alignBottom}>
                       <p>152</p>
                       <p>97</p>
                     </div>
@@ -486,7 +410,7 @@ function DashboardClasses() {
                     <div>
                       <div className={styles.overviewFlex2}>
                         {book16}
-                        <p>Værste subject</p>
+                        <p className={styles.subjectHeader}>Ligninger</p>
                       </div>
                       <div className={styles.overviewFlex2}>
                         {pen16}
@@ -497,8 +421,7 @@ function DashboardClasses() {
                         <p>Minutter</p>
                       </div>
                     </div>
-                    <div>
-                      <br />
+                    <div className={styles.alignBottom}>
                       <p>77</p>
                       <p>108</p>
                     </div>
@@ -507,12 +430,115 @@ function DashboardClasses() {
               </div>
             </div>
           </div>
-          <button type="button" onClick={removeStudent}>
+          <button
+            className={styles.removeButton}
+            type="button"
+            onClick={() => {
+              setRemoveFormVisible((old) => !old);
+            }}
+          >
             Fjern elev
           </button>
         </>
       ) : (
         ""
+      )}
+
+      {createFormVisible && (
+        <form className={styles.addClass} onSubmit={handleFormSubmit}>
+          <div className={styles.addClassFlex}>
+            <div>
+              <p>Klassetrin</p>
+
+              <select
+                id="grade"
+                name="grade"
+                type="text"
+                value={grade}
+                onChange={(e) => {
+                  {
+                    e.target.value !== "Vælg" ? setGrade(e.target.value) : setGrade("");
+                  }
+                }}
+              >
+                <option>Vælg</option>
+                {Array.from({ length: 11 }, (_, i) => i).map((number) => (
+                  <option key={number}>{number}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <p>Bogstav</p>
+              <select
+                id="letter"
+                name="letter"
+                type="text"
+                value={letter}
+                onChange={(e) => {
+                  e.target.value !== "Vælg" ? setLetter(e.target.value) : setLetter("");
+                }}
+              >
+                <option>Vælg</option>
+                {Array.from({ length: 29 }, (_, i) => String.fromCharCode(97 + i)) // Lowercase Danish alphabet 'a' to 'z'
+                  .concat("æ", "ø", "å") // Adding additional Danish characters
+                  .filter((letter) => /[a-zA-ZæøåÆØÅ]/.test(letter)) // Filtering out non-alphabetic characters
+                  .map((letter, index) => (
+                    <option key={index}>{letter}</option>
+                  ))}
+                <option>kl</option>
+              </select>
+            </div>
+          </div>
+          <h3>
+            {grade && letter ? `${grade}.${letter}, ` : ""}
+            <span>{myContexts.teacherData.school}</span>
+          </h3>
+
+          <button
+            id={styles.closeCreateForm}
+            type="button"
+            onClick={() => {
+              setCreateFormVisible((old) => !old);
+              setGrade("");
+              setLetter("");
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+            </svg>
+          </button>
+          <button className={`${styles.addClassButton} ${grade && letter ? styles.validButton : ""}`} type="submit" disabled={!grade || !letter}>
+            Tilføj
+          </button>
+        </form>
+      )}
+
+      {removeFormVisible && (
+        <div className={styles.removeStudent}>
+          {myContexts.teacherData.classes.map((theclass, index) => {
+            if (theclass._id === myContexts.clickedClass) {
+              return (
+                <p key={index}>
+                  Er du sikker på du vil fjerne {myContexts.selectedStudent} fra <span className={styles.capitalize}>{theclass.name}</span>, {theclass.grade}.{theclass.letter}?
+                </p>
+              );
+            }
+          })}
+          <button
+            id={styles.closeRemoveForm}
+            type="button"
+            onClick={() => {
+              setRemoveFormVisible((old) => !old);
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+            </svg>
+          </button>
+          <button className={`${styles.removeButton2} ${removeFormVisible ? styles.red : ""}`} type="button" onClick={removeStudent}>
+            Fjern {myContexts.selectedStudent}
+          </button>
+        </div>
       )}
     </>
   );

@@ -271,8 +271,7 @@
 }
 
 .error {
-  color: #ff3333;
-
+  color: var(--red);
   margin-block: 0.5rem;
 }
 

@@ -217,7 +217,7 @@ function DashboardStatistics() {
 
           <div className={`${styles.classOverview} ${styles.overviewClass}`}>
             <div className={styles.overviewTop}>
-              <h2>Klasse</h2>
+              <h2>Klassen</h2>
             </div>
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
@@ -241,9 +241,9 @@ function DashboardStatistics() {
                     </div>
                   </div>
                   <div>
-                    <p>1040</p>
-                    <p>1080</p>
-                    <p>85/489</p>
+                    <p className={styles.bold}>1040</p>
+                    <p className={styles.bold}>1080</p>
+                    <p className={styles.bold}>85/489</p>
                   </div>
                 </div>
               </div>
@@ -276,9 +276,9 @@ function DashboardStatistics() {
                     </div>
                   </div>
                   <div>
-                    <p>77</p>
-                    <p>108</p>
-                    <p>4/489</p>
+                    <p className={styles.bold}>77</p>
+                    <p className={styles.bold}>108</p>
+                    <p className={styles.bold}>4/489</p>
                   </div>
                 </div>
               </div>
@@ -299,7 +299,7 @@ function DashboardStatistics() {
                   <div>
                     <div className={styles.overviewFlex2}>
                       {book16}
-                      <p>Bedste</p>
+                      <p className={styles.subjectHeader}>Division</p>
                     </div>
                     <div className={styles.overviewFlex2}>
                       {pen16}
@@ -310,10 +310,9 @@ function DashboardStatistics() {
                       <p>Minutter</p>
                     </div>
                   </div>
-                  <div>
-                    <br />
-                    <p>152</p>
-                    <p>97</p>
+                  <div className={styles.alignBottom}>
+                    <p className={styles.bold}>152</p>
+                    <p className={styles.bold}>97</p>
                   </div>
                 </div>
               </div>
@@ -334,7 +333,7 @@ function DashboardStatistics() {
                   <div>
                     <div className={styles.overviewFlex2}>
                       {book16}
-                      <p>Sværeste</p>
+                      <p className={styles.subjectHeader}>Algebra</p>
                     </div>
                     <div className={styles.overviewFlex2}>
                       {pen16}
@@ -345,10 +344,9 @@ function DashboardStatistics() {
                       <p>Minutter</p>
                     </div>
                   </div>
-                  <div>
-                    <br />
-                    <p>77</p>
-                    <p>108</p>
+                  <div className={styles.alignBottom}>
+                    <p className={styles.bold}>77</p>
+                    <p className={styles.bold}>108</p>
                   </div>
                 </div>
               </div>

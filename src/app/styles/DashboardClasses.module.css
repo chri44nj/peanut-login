@@ -197,7 +197,7 @@
   font-weight: bold;
 }
 
-#closeForm {
+#closeCreateForm {
   background-color: transparent;
   width: fit-content;
   color: var(--background-color);
@@ -212,7 +212,23 @@
   padding: 1rem;
 }
 
-#closeForm:hover {
+#closeRemoveForm {
+  background-color: transparent;
+  width: fit-content;
+  color: var(--accent-purple-dark);
+  opacity: 0.5;
+  transition: 0.2s;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  padding: 1rem;
+}
+
+#closeCreateForm:hover,
+#closeRemoveForm:hover {
   opacity: 1;
 }
 
@@ -267,29 +283,37 @@
   position: relative;
 }
 
+.overviewTop {
+  position: absolute;
+  top: 0.5rem;
+  left: 1rem;
+}
+
+.overviewTop h2 {
+  color: var(--accent-purple-dark);
+  font-size: var(--font-small);
+}
+
+.clickedClassContainer * {
+  color: var(--text-color);
+}
+
 .overviewSubject {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.overviewTop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  width: 100%;
-  height: 2.5rem;
   background-color: var(--accent-purple-dark);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-.overviewTop h2 {
+.overviewSubject h2,
+.overviewSubject * {
   color: var(--background-color);
+}
+
+.subjectHeader {
+  font-weight: bold;
+  font-size: var(--font-small);
 }
 
 .overviewBottomFlex {
@@ -323,19 +347,19 @@
   margin-bottom: 1rem;
 }
 
-.clickedClassContainer * {
-  color: var(--text-color);
-}
-
 .overviewBottomGrid {
   display: grid;
-  grid-template-columns: 1fr 1.75fr;
+  grid-template-columns: 1fr 1.25fr;
 }
 
 .overviewBottomGrid2 {
   display: grid;
   grid-template-columns: 1fr 0.5fr;
   gap: 0.5rem;
+}
+
+.alignBottom {
+  align-self: end;
 }
 
 .overviewFlex {
@@ -353,15 +377,76 @@
 
 .overviewTimespan {
   font-weight: bold;
-  text-decoration: underline;
+  font-size: var(--font-smaller);
 }
 
-.bold {
+.removeButton {
+  color: var(--red);
+  background-color: var(--background-color-alt);
+  font-weight: bold;
+  border-radius: 10px;
+  border: solid 1px var(--red);
+  padding: 0.5rem 1rem;
+  margin-top: 2rem;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.removeButton2 {
+  background-color: var(--red);
+  color: var(--background-color-alt);
+  font-weight: bold;
+  border-radius: 10px;
+  border: solid 1px var(--red);
+  padding: 0.5rem 1rem;
+
+  text-align: center;
+  transition: 0.2s;
+}
+
+.removeButton:hover {
+  color: var(--background-color);
+  background-color: var(--red);
+}
+
+.removeStudent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  position: fixed;
+  z-index: 10;
+  background-color: var(--background-color);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
+  border-radius: 10px;
+  padding: 2rem 1rem;
+  inset: 0;
+  margin: auto 1rem;
+  height: fit-content;
+  text-align: center;
+}
+
+.removeStudent p {
+  color: var(--text-color);
+  font-size: var(--font-small);
+}
+
+.removeStudent .bold {
   font-weight: bold;
 }
 
 .bigStat {
   font-size: 2rem;
+}
+
+.capitalize {
+  text-transform: capitalize;
+  color: var(--text-color);
+}
+
+.red {
+  background-color: var(--red);
 }
 /** TABLET **/
 
@@ -371,7 +456,8 @@
     max-width: 300px;
   }
 
-  .addClass {
+  .addClass,
+  .removeStudent {
     margin: auto 35%;
   }
 
