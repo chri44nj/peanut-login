@@ -288,7 +288,7 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  margin-block: 1rem;
+  margin-block: 2rem;
 }
 
 .classOverview {
@@ -297,7 +297,6 @@
   padding-block: 1rem;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
   position: relative;
-  margin-bottom: 1rem;
 }
 
 .overviewTop {
@@ -358,10 +357,9 @@
 .clickedClassContainer {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .overviewBottomGrid {
@@ -499,8 +497,6 @@
   .clickedClassContainer {
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 0rem;
   }
 
   .overviewClass {

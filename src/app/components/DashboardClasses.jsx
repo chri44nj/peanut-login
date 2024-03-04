@@ -219,19 +219,26 @@ function DashboardClasses() {
           <>
             {myContexts.teacherData.classes && (
               <div className={`${styles.classesGrid}`}>
-                {myContexts.teacherData.classes.map((theclass) => (
-                  <div className={styles.classContainer} key={theclass._id} onClick={() => handleClassClick(theclass._id)}>
-                    <div>
-                      <p className={styles.class}>
-                        {theclass.grade}.{theclass.letter}
+                {myContexts.teacherData.classes
+                  .sort((a, b) => {
+                    if (a.grade === b.grade) {
+                      return a.letter.localeCompare(b.letter);
+                    }
+                    return a.grade - b.grade;
+                  })
+                  .map((theclass) => (
+                    <div className={styles.classContainer} key={theclass._id} onClick={() => handleClassClick(theclass._id)}>
+                      <div>
+                        <p className={styles.class}>
+                          {theclass.grade}.{theclass.letter}
+                        </p>
+                        <p className={styles.school}>{theclass.name}</p>
+                      </div>
+                      <p className={styles.students}>
+                        {theclass.students ? theclass.students.length : "0"} {theclass.students?.length === 1 ? "elev" : "elever"}
                       </p>
-                      <p className={styles.school}>{theclass.name}</p>
                     </div>
-                    <p className={styles.students}>
-                      {theclass.students ? theclass.students.length : "0"} {theclass.students?.length === 1 ? "elev" : "elever"}
-                    </p>
-                  </div>
-                ))}
+                  ))}
               </div>
             )}
             {myContexts.teacherData.classesIDs.length === 0 ? <p>Klik på knappen herunder for at tilføje en klasse.</p> : ""}
@@ -255,15 +262,18 @@ function DashboardClasses() {
                     {myContexts.selectedStudent === "Alle elever" ? <p>Klassekode: {myContexts.clickedClass}</p> : ""}
 
                     <section className={styles.studentsListSection}>
-                      {myContexts.selectedStudent === "Alle elever" ? <h3>{theclass.students?.length === 0 ? "Der er ingen elever tilføjet til klassen" : theclass.students?.length === 1 ? "Din ene elev" : "Dine " + theclass.students?.length + " elever"} </h3> : <h3>{myContexts.selectedStudent}</h3>}
+                      {myContexts.selectedStudent === "Alle elever" ? <h3>{theclass.students?.length === 0 ? "Der er ingen elever tilføjet til klassen" : theclass.students?.length === 1 ? "Din ene elev" : "Dine " + theclass.students?.length + " elever"} </h3> : ""}
 
                       {theclass.students && myContexts.selectedStudent === "Alle elever" ? (
                         <ul className={styles.studentsList}>
-                          {theclass.students?.map((student, index) => (
-                            <li className={styles.singleStudent} key={index} onClick={() => handleSelectStudent(student)}>
-                              {student}
-                            </li>
-                          ))}
+                          {theclass.students
+                            // Sort the students alphabetically
+                            .sort((a, b) => a.localeCompare(b))
+                            .map((student, index) => (
+                              <li className={styles.singleStudent} key={index} onClick={() => handleSelectStudent(student)}>
+                                {student}
+                              </li>
+                            ))}
                         </ul>
                       ) : (
                         ""
