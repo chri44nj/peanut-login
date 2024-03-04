@@ -2,6 +2,22 @@
 .classesContainer {
 }
 
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.breadcrumb button {
+  background-color: transparent;
+  border: none;
+}
+
+.breadcrumb span {
+  color: var(--accent-purple);
+}
+
 .dropdownsContainer {
   display: flex;
   flex-direction: column;

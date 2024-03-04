@@ -11,7 +11,8 @@ function DashboardClasses() {
 
   /* States */
   const [createFormVisible, setCreateFormVisible] = useState(false);
-  const [removeFormVisible, setRemoveFormVisible] = useState(false);
+  const [removeClassFormVisible, setRemoveClassFormVisible] = useState(false);
+  const [removeStudentFormVisible, setRemoveStudentFormVisible] = useState(false);
   const [grade, setGrade] = useState("");
   const [letter, setLetter] = useState("");
 
@@ -82,6 +83,7 @@ function DashboardClasses() {
       teacherID: myContexts.teacherData.id,
     });
 
+    setRemoveClassFormVisible(false);
     await myContextsDispatch((prevContexts) => ({
       ...prevContexts,
       clickedClass: "Alle klasser",
@@ -95,7 +97,7 @@ function DashboardClasses() {
       username: myContexts.selectedStudent,
     });
 
-    setRemoveFormVisible(false);
+    setRemoveStudentFormVisible(false);
     await myContextsDispatch((prevContexts) => ({
       ...prevContexts,
       selectedStudent: "Alle elever",
@@ -137,6 +139,55 @@ function DashboardClasses() {
 
   return (
     <>
+      {myContexts.clickedClass !== "Alle klasser" ? (
+        <div className={styles.breadcrumb}>
+          <button
+            className="hover-link"
+            type="button"
+            onClick={() => {
+              myContextsDispatch((prevContexts) => ({
+                ...prevContexts,
+                clickedClass: "Alle klasser",
+                selectedStudent: "Alle elever",
+              }));
+            }}
+          >
+            Alle klasser
+          </button>
+
+          <span> / </span>
+          <button
+            className="hover-link"
+            type="button"
+            onClick={() => {
+              myContextsDispatch((prevContexts) => ({
+                ...prevContexts,
+                selectedStudent: "Alle elever",
+              }));
+            }}
+          >
+            {myContexts.teacherData.classes.map((theclass) => {
+              if (theclass._id === myContexts.clickedClass) {
+                return `${theclass.grade}.${theclass.letter}`;
+              }
+            })}
+          </button>
+
+          {myContexts.selectedStudent !== "Alle elever" ? (
+            <>
+              <span> / </span>
+              <button className="hover-link" type="button">
+                {myContexts.selectedStudent}
+              </button>
+            </>
+          ) : (
+            ""
+          )}
+        </div>
+      ) : (
+        ""
+      )}
+
       <div id="classesContainer" className={styles.classesContainer}>
         <div className={styles.dropdownsContainer}>
           <select className={styles.dropdown} id="classes" name="classes" value={myContexts.clickedClass} onChange={(e) => handleClassClick(e.target.value)}>
@@ -201,7 +252,7 @@ function DashboardClasses() {
                     <h2>
                       <span className={styles.school}>{theclass.name}</span>, {theclass.grade}.{theclass.letter}
                     </h2>
-                    {myContexts.selectedStudent === "Alle elever" ? <p>Klassekode: {theclass.joinCode}</p> : ""}
+                    {myContexts.selectedStudent === "Alle elever" ? <p>Klassekode: {myContexts.clickedClass}</p> : ""}
 
                     <section className={styles.studentsListSection}>
                       {myContexts.selectedStudent === "Alle elever" ? <h3>{theclass.students?.length === 0 ? "Der er ingen elever tilføjet til klassen" : theclass.students?.length === 1 ? "Din ene elev" : "Dine " + theclass.students?.length + " elever"} </h3> : <h3>{myContexts.selectedStudent}</h3>}
@@ -224,8 +275,14 @@ function DashboardClasses() {
                           <button className={styles.addStudentsButton} type="button">
                             Tilføj elev
                           </button>
-                          <button className={styles.removeButton} type="button" onClick={removeClass}>
-                            Fjern klasse
+                          <button
+                            className={styles.removeButton}
+                            type="button"
+                            onClick={() => {
+                              setRemoveClassFormVisible((old) => !old);
+                            }}
+                          >
+                            {removeClassFormVisible ? "Luk" : "Fjern klasse"}
                           </button>
                         </div>
                       )}
@@ -440,10 +497,10 @@ function DashboardClasses() {
             className={styles.removeButton}
             type="button"
             onClick={() => {
-              setRemoveFormVisible((old) => !old);
+              setRemoveStudentFormVisible((old) => !old);
             }}
           >
-            {removeFormVisible ? "Luk" : "Fjern elev"}
+            {removeStudentFormVisible ? "Luk" : "Fjern elev"}
           </button>
         </>
       ) : (
@@ -519,7 +576,7 @@ function DashboardClasses() {
         </form>
       )}
 
-      {removeFormVisible && (
+      {removeStudentFormVisible && (
         <div className={styles.removeStudent}>
           {myContexts.teacherData.classes.map((theclass, index) => {
             if (theclass._id === myContexts.clickedClass) {
@@ -534,15 +591,47 @@ function DashboardClasses() {
             id={styles.closeRemoveForm}
             type="button"
             onClick={() => {
-              setRemoveFormVisible((old) => !old);
+              setRemoveStudentFormVisible((old) => !old);
             }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
             </svg>
           </button>
-          <button className={`${styles.removeButton2} ${removeFormVisible ? styles.redBackground : ""}`} type="button" onClick={removeStudent}>
+          <button className={`${styles.removeButton2} ${removeStudentFormVisible ? styles.redBackground : ""}`} type="button" onClick={removeStudent}>
             Fjern {myContexts.selectedStudent}
+          </button>
+        </div>
+      )}
+
+      {removeClassFormVisible && (
+        <div className={styles.removeStudent}>
+          {myContexts.teacherData.classes.map((theclass, index) => {
+            if (theclass._id === myContexts.clickedClass) {
+              return (
+                <p key={index}>
+                  Er du sikker på du vil fjerne <span className={styles.capitalize}>{theclass.name}</span>, {theclass.grade}.{theclass.letter} fra dine klasser?
+                </p>
+              );
+            }
+          })}
+          <button
+            id={styles.closeRemoveForm}
+            type="button"
+            onClick={() => {
+              setRemoveClassFormVisible((old) => !old);
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+            </svg>
+          </button>
+          <button className={`${styles.removeButton2} ${removeStudentFormVisible ? styles.redBackground : ""}`} type="button" onClick={removeClass}>
+            {myContexts.teacherData.classes.map((theclass) => {
+              if (theclass._id === myContexts.clickedClass) {
+                return `Fjern ${theclass.grade}.${theclass.letter}`;
+              }
+            })}
           </button>
         </div>
       )}
