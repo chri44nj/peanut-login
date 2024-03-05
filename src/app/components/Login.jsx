@@ -257,7 +257,7 @@ function Login() {
   };
 
   const handleSchoolClick = (school) => {
-    setSchool(school.toLowerCase());
+    setSchool(school);
     setSearchTerm(school);
     setDropdownHidden(true);
   };

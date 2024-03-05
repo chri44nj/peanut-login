@@ -5,7 +5,13 @@ import styles from "../styles/DashboardScoreboard.module.css";
 
 function DashboardScoreboard() {
   /* States */
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({
+    diamond: [],
+    gold: [],
+    silver: [],
+    bronze: [],
+    all: [],
+  });
   const [amount, setAmount] = useState(10);
 
   /* Other */
@@ -20,8 +26,23 @@ function DashboardScoreboard() {
           name: user.name,
           score: user.score,
         }));
-        await setUserData((prevData) => [...prevData, ...formattedData]);
-        console.log(userData);
+
+        // Separate users into categories
+        const sortedUsers = formattedData.slice().sort((a, b) => b.score - a.score);
+        const diamondUsers = sortedUsers.length > 0 ? [sortedUsers[0]] : [];
+        const goldUsers = sortedUsers.filter((user) => user.score >= 2000 && user !== diamondUsers[0]);
+        const silverUsers = sortedUsers.filter((user) => user.score >= 1000 && user.score < 2000);
+        const bronzeUsers = sortedUsers.filter((user) => user.score >= 500 && user.score < 1000);
+        const allUsers = sortedUsers.filter((user) => user.score < 500);
+
+        // Update userData state with categorized users
+        setUserData({
+          diamond: diamondUsers,
+          gold: goldUsers,
+          silver: silverUsers,
+          bronze: bronzeUsers,
+          all: allUsers,
+        });
       } catch (error) {
         console.error("Error fetching leaderboard data:", error);
       }
@@ -34,22 +55,76 @@ function DashboardScoreboard() {
     <>
       <div className={styles.scoreboardContainer}>
         <h2>Seneste 24 timer</h2>
-        {userData.map((user, index) => (
-          <div className={styles.hamsterScore} key={index}>
-            <div className={styles.hamsterTop}>
-              <p>{index + 1}.</p>
-              <div className={styles.hamsterTop}>
+
+        <section className={`${styles.hamsterScore}`}>
+          <div className={styles.diamond}></div>
+          {userData.diamond.map((user, index) => (
+            <div className={styles.singleHamster} key={index}>
+              <div className={styles.singleHamsterLeft}>
+                <p>O</p>
                 <p className={styles.hamsterName}>{user.name}</p>
               </div>
-            </div>
-            <div className={styles.hamsterTop}>
+
               <p>{user.score}</p>
-              <svg className={styles.points} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-capslock-fill" viewBox="0 0 16 16">
-                <path d="M7.27 1.047a1 1 0 0 1 1.46 0l6.345 6.77c.6.638.146 1.683-.73 1.683H11.5v1a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-1H1.654C.78 9.5.326 8.455.924 7.816L7.27 1.047zM4.5 13.5a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-1z" />
-              </svg>
             </div>
-          </div>
-        ))}
+          ))}
+        </section>
+
+        <section className={`${styles.hamsterScore}`}>
+          <div className={styles.gold}></div>
+          {userData.gold.map((user, index) => (
+            <div className={styles.singleHamster} key={index}>
+              <div className={styles.singleHamsterLeft}>
+                <p>O</p>
+                <p className={styles.hamsterName}>{user.name}</p>
+              </div>
+
+              <p>{user.score}</p>
+            </div>
+          ))}
+        </section>
+
+        <section className={`${styles.hamsterScore}`}>
+          <div className={styles.silver}></div>
+          {userData.silver.map((user, index) => (
+            <div className={styles.singleHamster} key={index}>
+              <div className={styles.singleHamsterLeft}>
+                <p>O</p>
+                <p className={styles.hamsterName}>{user.name}</p>
+              </div>
+
+              <p>{user.score}</p>
+            </div>
+          ))}
+        </section>
+
+        <section className={`${styles.hamsterScore}`}>
+          <div className={styles.bronze}></div>
+          {userData.bronze.map((user, index) => (
+            <div className={styles.singleHamster} key={index}>
+              <div className={styles.singleHamsterLeft}>
+                <p>O</p>
+                <p className={styles.hamsterName}>{user.name}</p>
+              </div>
+
+              <p>{user.score}</p>
+            </div>
+          ))}
+        </section>
+
+        <section className={`${styles.hamsterScore}`}>
+          <div className={styles.all}></div>
+          {userData.all.map((user, index) => (
+            <div className={styles.singleHamster} key={index}>
+              <div className={styles.singleHamsterLeft}>
+                <p>O</p>
+                <p className={styles.hamsterName}>{user.name}</p>
+              </div>
+
+              <p>{user.score}</p>
+            </div>
+          ))}
+        </section>
       </div>
       <button className={styles.loadButton} type="button" onClick={() => setAmount((old) => old + 10)}>
         Indlæs næste 10

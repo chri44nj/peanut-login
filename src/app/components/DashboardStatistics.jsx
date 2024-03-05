@@ -18,6 +18,7 @@ function DashboardStatistics() {
   useEffect(() => {
     if (session) {
       fetchTeacherData();
+      fetchProblemsSolved();
     }
   }, [session]);
 
@@ -99,6 +100,17 @@ function DashboardStatistics() {
       ...prevContexts,
       selectedSubject: e.target.value,
     }));
+  };
+
+  const fetchProblemsSolved = async () => {
+    if (myContexts.selectedClass) {
+      const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved`, {
+        params: {
+          classID: myContexts.selectedClass,
+        },
+      });
+      console.log("Første API-kald!!", problemsSolved.data.totalProblemsSolved);
+    }
   };
 
   /* Other */
