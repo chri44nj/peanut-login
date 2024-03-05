@@ -249,7 +249,7 @@
 }
 
 .singleClassDetails h2 {
-  font-size: 2rem;
+  font-size: var(--font-small);
 }
 
 .studentsListSection {
@@ -519,6 +519,10 @@
 
   :nth-child(1 of .overviewBottomFlex2) {
     margin-bottom: 2rem;
+  }
+
+  .singleClassDetails h2 {
+    font-size: var(--font-medium);
   }
 }
 
