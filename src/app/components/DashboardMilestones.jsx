@@ -47,11 +47,19 @@ function DashboardMilestones() {
     <div className={styles.milestonesContainer}>
       <div className={styles.classes}>
         <select className={styles.dropdown} id="classes" name="classes" value={myContexts.selectedClass} onChange={handleClassChange}>
-          {myContexts.teacherData.classes.map((theclass, index) => (
-            <option className={styles.dropdownClass} key={index} value={theclass._id}>
-              {theclass.grade}.{theclass.letter}
-            </option>
-          ))}
+          {myContexts.teacherData.classes
+            .sort((classA, classB) => {
+              if (classA.grade !== classB.grade) {
+                return classA.grade - classB.grade;
+              } else {
+                return classA.letter.localeCompare(classB.letter);
+              }
+            })
+            .map((theclass, index) => (
+              <option className={styles.dropdownClass} key={index} value={theclass._id}>
+                {theclass.grade}.{theclass.letter}
+              </option>
+            ))}
         </select>
       </div>
     </div>

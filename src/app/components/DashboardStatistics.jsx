@@ -11,6 +11,17 @@ function DashboardStatistics() {
   const myContextsDispatch = useContext(SetMyContexts);
 
   /* States */
+  const [numberOfStudents, setNumberOfStudents] = useState(0);
+  const [totalTime, setTotalTime] = useState(null);
+  const [totalCorrect, setTotalCorrect] = useState(null);
+  const [totalWrong, setTotalWrong] = useState(null);
+  const [totalSolved, setTotalSolved] = useState(null);
+
+  const [activeStudentsThisWeek, setActiveStudentsThisWeek] = useState(0);
+  const [totalTimeThisWeek, setTotalTimeThisWeek] = useState(null);
+  const [totalCorrectThisWeek, setTotalCorrectThisWeek] = useState(null);
+  const [totalWrongThisWeek, setTotalWrongThisWeek] = useState(null);
+  const [totalSolvedThisWeek, setTotalSolvedThisWeek] = useState(null);
 
   /* Effects */
   const { data: session } = useSession();
@@ -18,7 +29,6 @@ function DashboardStatistics() {
   useEffect(() => {
     if (session) {
       fetchTeacherData();
-      fetchProblemsSolved();
     }
   }, [session]);
 
@@ -27,12 +37,20 @@ function DashboardStatistics() {
   }, [myContexts.teacherData.classesIDs]);
 
   useEffect(() => {
+    if (myContexts.selectedClass) {
+      setNumberOfStudents(myContexts.teacherData.classes.find((specificClass) => specificClass._id === myContexts.selectedClass).students.length);
+    }
+  }, [myContexts.selectedClass]);
+
+  useEffect(() => {
     if (!myContexts.selectedClass && myContexts.teacherData.classes.length > 0) {
       myContextsDispatch((old) => ({
         ...old,
         selectedClass: myContexts.teacherData.classes[0]._id,
       }));
     }
+    fetchProblemsSolved();
+    fetchProblemsSolvedThisWeek();
   }, [myContexts.selectedClass, myContexts.teacherData.classes]);
 
   /* Functions */
@@ -107,9 +125,35 @@ function DashboardStatistics() {
       const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved`, {
         params: {
           classID: myContexts.selectedClass,
+          period: "week",
         },
       });
-      console.log("Første API-kald!!", problemsSolved.data.totalProblemsSolved);
+
+      setTotalTime(problemsSolved.data.time);
+      setTotalCorrect(problemsSolved.data.totalCorrect);
+      setTotalWrong(problemsSolved.data.totalWrong);
+      setTotalSolved(problemsSolved.data.totalProblemsSolved);
+
+      console.log("Første API-kald!!", problemsSolved.data.totalProblemsSolved, problemsSolved.data);
+    }
+  };
+
+  const fetchProblemsSolvedThisWeek = async () => {
+    if (myContexts.selectedClass) {
+      const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-this-week`, {
+        params: {
+          classID: myContexts.selectedClass,
+          period: "week",
+        },
+      });
+
+      setActiveStudentsThisWeek(problemsSolved.data.activeStudents);
+      setTotalTimeThisWeek(problemsSolved.data.time);
+      setTotalCorrectThisWeek(problemsSolved.data.totalCorrect);
+      setTotalWrongThisWeek(problemsSolved.data.totalWrong);
+      setTotalSolvedThisWeek(problemsSolved.data.totalProblemsSolved);
+
+      console.log("Første API-kald!!", problemsSolved.data.totalProblemsSolved, problemsSolved.data);
     }
   };
 
@@ -149,11 +193,19 @@ function DashboardStatistics() {
       <div className={styles.classes}>
         <div>
           <select className={styles.dropdown} id="classes" name="classes" value={myContexts.selectedClass} onChange={handleClassChange}>
-            {myContexts.teacherData.classes.map((theclass, index) => (
-              <option className={styles.dropdownClass} key={index} value={theclass._id}>
-                {theclass.grade}.{theclass.letter}
-              </option>
-            ))}
+            {myContexts.teacherData.classes
+              .sort((classA, classB) => {
+                if (classA.grade !== classB.grade) {
+                  return classA.grade - classB.grade;
+                } else {
+                  return classA.letter.localeCompare(classB.letter);
+                }
+              })
+              .map((theclass, index) => (
+                <option className={styles.dropdownClass} key={index} value={theclass._id}>
+                  {theclass.grade}.{theclass.letter}
+                </option>
+              ))}
           </select>
         </div>
         <div>
@@ -180,45 +232,45 @@ function DashboardStatistics() {
             <p className={`${styles.marginTop} ${styles.overviewTimespan}`}>Altid</p>
             <div className={styles.overviewBottomFlex2}>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>750</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolved ? totalSolved : "-"}</p>
                 <div className={styles.overviewFlex2}>
                   {pen16}
                   <p>Opgaver</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>250</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{totalTime ? Math.ceil(totalTime / 60) : "-"}</p>
                 <div className={styles.overviewFlex2}>
                   {clock16}
                   <p>Minutter</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>75%</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolved ? Math.floor((totalCorrect / totalSolved) * 100) + "%" : "-"}</p>
                 <div className={styles.overviewFlex2}>
                   {thumbs16}
                   <p>Korrekt</p>
                 </div>
               </div>
             </div>
-            <p className={styles.overviewTimespan}>Seneste 7 dage</p>
+            <p className={styles.overviewTimespan}>Denne uge</p>
             <div className={styles.overviewBottomFlex2}>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>250</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolvedThisWeek ? totalSolvedThisWeek : "-"}</p>
                 <div className={styles.overviewFlex2}>
                   {pen16}
                   <p>Opgaver</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>80</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{totalTimeThisWeek ? Math.ceil(totalTimeThisWeek / 60) : "-"}</p>
                 <div className={styles.overviewFlex2}>
                   {clock16}
                   <p>Minutter</p>
                 </div>
               </div>
               <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>86%</p>
+                <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolvedThisWeek ? Math.floor((totalCorrectThisWeek / totalSolvedThisWeek) * 100) + "%" : "-"}</p>
                 <div className={styles.overviewFlex2}>
                   {thumbs16}
                   <p>Korrekt</p>
@@ -234,7 +286,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>25</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{numberOfStudents ? numberOfStudents : "-"}</p>
                   <p>Elever</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
@@ -253,9 +305,9 @@ function DashboardStatistics() {
                     </div>
                   </div>
                   <div>
-                    <p className={styles.bold}>1040</p>
-                    <p className={styles.bold}>1080</p>
-                    <p className={styles.bold}>85/489</p>
+                    <p className={styles.bold}>{totalSolved ? totalSolved : "-"}</p>
+                    <p className={styles.bold}>{totalTime ? Math.ceil(totalTime / 60) : "-"}</p>
+                    <p className={styles.bold}>-</p>
                   </div>
                 </div>
               </div>
@@ -264,12 +316,12 @@ function DashboardStatistics() {
 
           <div className={`${styles.classOverview} ${styles.overviewLastWeek}`}>
             <div className={styles.overviewTop}>
-              <h2>Seneste 7 dage</h2>
+              <h2>Denne uge</h2>
             </div>
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>22</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{activeStudentsThisWeek ? activeStudentsThisWeek : ""}</p>
                   <p>Aktive elever</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
@@ -288,9 +340,9 @@ function DashboardStatistics() {
                     </div>
                   </div>
                   <div>
-                    <p className={styles.bold}>77</p>
-                    <p className={styles.bold}>108</p>
-                    <p className={styles.bold}>4/489</p>
+                    <p className={styles.bold}>{totalSolvedThisWeek ? totalSolvedThisWeek : "-"}</p>
+                    <p className={styles.bold}>{totalTimeThisWeek ? Math.ceil(totalTimeThisWeek / 60) : "-"}</p>
+                    <p className={styles.bold}>-</p>
                   </div>
                 </div>
               </div>
@@ -304,7 +356,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>85%</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>-</p>
                   <p>Korrekt</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
@@ -323,8 +375,8 @@ function DashboardStatistics() {
                     </div>
                   </div>
                   <div className={styles.alignBottom}>
-                    <p className={styles.bold}>152</p>
-                    <p className={styles.bold}>97</p>
+                    <p className={styles.bold}>-</p>
+                    <p className={styles.bold}>-</p>
                   </div>
                 </div>
               </div>
@@ -338,7 +390,7 @@ function DashboardStatistics() {
             <div className={styles.overviewBottomFlex}>
               <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>55%</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>-</p>
                   <p>Korrekt</p>
                 </div>
                 <div className={styles.overviewBottomGrid2}>
@@ -357,8 +409,8 @@ function DashboardStatistics() {
                     </div>
                   </div>
                   <div className={styles.alignBottom}>
-                    <p className={styles.bold}>77</p>
-                    <p className={styles.bold}>108</p>
+                    <p className={styles.bold}>-</p>
+                    <p className={styles.bold}>-</p>
                   </div>
                 </div>
               </div>

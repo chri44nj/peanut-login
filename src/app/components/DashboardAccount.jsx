@@ -103,7 +103,7 @@ function DashboardAccount() {
         ""
       )}
       <a className="hover-link" href="#dashboardContainer" onClick={() => switchDashboardType("Dine klasser")}>
-        {myContexts.teacherData.classesIDs.length} klasser
+        {myContexts.teacherData.classesIDs.length} {myContexts.teacherData.classesIDs.length === 1 ? "klasse" : "klasser"}
       </a>
     </div>
   );
