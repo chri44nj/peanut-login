@@ -16,21 +16,6 @@
   gap: 0.5rem;
 }
 
-.dropdown {
-  padding: 0.25rem 0.5rem;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  font-size: var(--font-small);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
-}
-
-.dropdown:hover {
-  cursor: pointer;
-}
-
 .selectedClassContainer {
   display: grid;
   grid-template-columns: 1fr;
@@ -53,6 +38,9 @@
 }
 
 .overviewTop {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   position: absolute;
   top: 0.5rem;
   left: 1rem;
@@ -68,12 +56,50 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: var(--accent-purple-dark);
+  background-image: linear-gradient(to right, var(--accent-purple), var(--accent-purple-dark));
 }
 
 .overviewSubject h2,
-.overviewSubject * {
+.overviewSubject *,
+.overviewPeriod h2,
+.overviewPeriod * {
   color: var(--background-color);
+}
+
+.overviewPeriod {
+  background-image: linear-gradient(to right, var(--accent-purple), var(--accent-purple-dark));
+}
+
+.dropdown {
+  padding: 0.25rem 0.5rem;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  font-size: var(--font-small);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
+}
+
+.dropdown2 {
+  padding: 0.25rem 0.5rem;
+  background-color: transparent;
+  font-weight: bold;
+  border: solid 1px var(--background-color);
+  border-radius: 10px;
+  font-size: var(--font-small);
+}
+
+.dropdown2 option {
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+}
+
+.dropdown:hover,
+.dropdown2:hover {
+  cursor: pointer;
 }
 
 .subjectHeader {

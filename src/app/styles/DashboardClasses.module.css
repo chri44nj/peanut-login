@@ -187,17 +187,26 @@
   color: var(--background-color);
 }
 
+.addClassFlex select {
+  padding-inline: 1rem;
+  text-align: center;
+}
+
+.addClassFlex option {
+  text-align: start;
+}
+
 .addClassFlex select,
 .addClassFlex input {
   width: fit-content;
   height: 2.5rem;
   border-radius: 10px;
   border: none;
-  padding-inline: 1rem;
+
   background-color: var(--background-color);
   color: var(--text-color);
   font-weight: bold;
-  text-align: center;
+
   -moz-appearance: none;
   -webkit-appearance: none;
 }

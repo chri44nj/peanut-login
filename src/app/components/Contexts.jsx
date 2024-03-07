@@ -11,6 +11,7 @@ function Contexts({ children }) {
     clickedClass: "Alle klasser",
     selectedStudent: "Alle elever",
     selectedSubject: "Alle emner",
+    selectedPeriod: "Denne uge",
     teacherData: { id: "", name: "", email: "", phone: "", school: "", subjects: [], classesIDs: [], classes: [], accountType: "" },
   });
 

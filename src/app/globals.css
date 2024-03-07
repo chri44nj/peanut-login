@@ -136,3 +136,9 @@ svg {
 .hover-link-2:hover::after {
   width: 100%;
 }
+
+.flex-next-to {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+}
