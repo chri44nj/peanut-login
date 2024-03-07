@@ -37,8 +37,11 @@ function DashboardStatistics() {
   }, [myContexts.teacherData.classesIDs]);
 
   useEffect(() => {
-    if (myContexts.selectedClass) {
-      setNumberOfStudents(myContexts.teacherData.classes.find((specificClass) => specificClass._id === myContexts.selectedClass).students.length);
+    if (myContexts.teacherData.classes.length > 0 && myContexts.selectedClass) {
+      const selectedClassData = myContexts.teacherData.classes.find((specificClass) => specificClass._id === myContexts.selectedClass);
+      if (selectedClassData && selectedClassData.students) {
+        setNumberOfStudents(selectedClassData.students.length);
+      }
     }
   }, [myContexts.selectedClass]);
 
@@ -125,7 +128,6 @@ function DashboardStatistics() {
       const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved`, {
         params: {
           classID: myContexts.selectedClass,
-          period: "week",
         },
       });
 
@@ -143,7 +145,6 @@ function DashboardStatistics() {
       const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-this-week`, {
         params: {
           classID: myContexts.selectedClass,
-          period: "week",
         },
       });
 

@@ -48,7 +48,7 @@ function DashboardClasses() {
     setGrade("");
     setLetter("");
     setCreateFormVisible(false);
-    /*  await updateTeacherData(); */
+
     fetchClasses();
   };
 
