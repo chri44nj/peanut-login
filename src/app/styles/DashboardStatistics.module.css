@@ -87,7 +87,7 @@
   font-weight: bold;
   border: solid 1px var(--background-color);
   border-radius: 10px;
-  font-size: var(--font-small);
+  font-size: var(--font-smaller);
 }
 
 .dropdown2 option {
@@ -126,12 +126,14 @@
 }
 
 :nth-child(1 of .overviewBottomFlex2) {
-  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: solid 1px var(--background-color);
 }
 
 .overviewBottomGrid {
   display: grid;
-  grid-template-columns: 1fr 1.25fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .overviewBottomGrid2 {
@@ -192,13 +194,8 @@
     grid-row: 1 / 3;
   }
 
-  .overviewBottomGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  :nth-child(1 of .overviewBottomFlex2) {
-    margin-bottom: 2rem;
+  .dropdown2 {
+    font-size: var(--font-small);
   }
 }
 

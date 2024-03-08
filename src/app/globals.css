@@ -142,3 +142,7 @@ svg {
   align-items: center;
   gap: 0.25em;
 }
+
+.loading {
+  color: var(--accent-purple);
+}

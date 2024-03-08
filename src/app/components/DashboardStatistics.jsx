@@ -11,6 +11,8 @@ function DashboardStatistics() {
   const myContextsDispatch = useContext(SetMyContexts);
 
   /* States */
+  const [fetchedOnce, setFetchedOnce] = useState(false);
+
   const [numberOfStudents, setNumberOfStudents] = useState(0);
   const [totalTime, setTotalTime] = useState(null);
   const [totalCorrect, setTotalCorrect] = useState(null);
@@ -148,7 +150,7 @@ function DashboardStatistics() {
       setTotalCorrect(problemsSolved.data.totalCorrect);
       setTotalWrong(problemsSolved.data.totalWrong);
       setTotalSolved(problemsSolved.data.totalProblemsSolved);
-
+      setFetchedOnce(true);
       console.log("Altid", problemsSolved.data);
     }
   };
@@ -300,230 +302,233 @@ function DashboardStatistics() {
       </div>
 
       {myContexts.teacherData.classes ? (
-        <div className={styles.selectedClassContainer}>
-          <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
-            <div className={styles.overviewTop}>
-              {book24}
-              <select className={styles.dropdown2} id="subjects" name="subjects" value={myContexts.selectedSubject} onChange={handleSubjectChange}>
-                <option className={styles.dropdownClass}>Alle emner</option>
-                <option className={styles.dropdownClass}>Brøker</option>
-                <option className={styles.dropdownClass}>Procent</option>
-                <option className={styles.dropdownClass}>Algebra</option>
-                <option className={styles.dropdownClass}>Eksponenter</option>
-                <option className={styles.dropdownClass}>Enheder</option>
-                <option className={styles.dropdownClass}>Parenteser</option>
-                <option className={styles.dropdownClass}>Priser</option>
-                <option className={styles.dropdownClass}>Ligninger</option>
-              </select>
-            </div>
-            <p className={`${styles.marginTop} ${styles.overviewTimespan}`}>Altid</p>
-            <div className={styles.overviewBottomFlex2}>
-              <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolved ? totalSolved : "-"}</p>
-                <div className={styles.overviewFlex2}>
-                  {pen16}
-                  <p>Opgaver</p>
-                </div>
+        <>
+          {fetchedOnce === false && <p className="loading">Indlæser data...</p>}
+          <div className={styles.selectedClassContainer}>
+            <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
+              <div className={styles.overviewTop}>
+                {book24}
+                <select className={styles.dropdown2} id="subjects" name="subjects" value={myContexts.selectedSubject} onChange={handleSubjectChange}>
+                  <option className={styles.dropdownClass}>Alle emner</option>
+                  <option className={styles.dropdownClass}>Brøker</option>
+                  <option className={styles.dropdownClass}>Procent</option>
+                  <option className={styles.dropdownClass}>Algebra</option>
+                  <option className={styles.dropdownClass}>Eksponenter</option>
+                  <option className={styles.dropdownClass}>Enheder</option>
+                  <option className={styles.dropdownClass}>Parenteser</option>
+                  <option className={styles.dropdownClass}>Priser</option>
+                  <option className={styles.dropdownClass}>Ligninger</option>
+                </select>
               </div>
-              <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{totalTime ? Math.ceil(totalTime / 60) : "-"}</p>
-                <div className={styles.overviewFlex2}>
-                  {clock16}
-                  <p>Minutter</p>
-                </div>
-              </div>
-              <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolved ? Math.floor((totalCorrect / totalSolved) * 100) + "%" : "-"}</p>
-                <div className={styles.overviewFlex2}>
-                  {thumbs16}
-                  <p>Korrekt</p>
-                </div>
-              </div>
-            </div>
-            <p className={styles.overviewTimespan}>{myContexts.selectedPeriod}</p>
-            <div className={styles.overviewBottomFlex2}>
-              <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolvedThisPeriod ? totalSolvedThisPeriod : "-"}</p>
-                <div className={styles.overviewFlex2}>
-                  {pen16}
-                  <p>Opgaver</p>
-                </div>
-              </div>
-              <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{totalTimeThisPeriod ? Math.ceil(totalTimeThisPeriod / 60) : "-"}</p>
-                <div className={styles.overviewFlex2}>
-                  {clock16}
-                  <p>Minutter</p>
-                </div>
-              </div>
-              <div className={styles.overviewFlex}>
-                <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolvedThisPeriod ? Math.floor((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100) + "%" : "-"}</p>
-                <div className={styles.overviewFlex2}>
-                  {thumbs16}
-                  <p>Korrekt</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={`${styles.classOverview} ${styles.overviewClass}`}>
-            <div className={styles.overviewTop}>
-              {class24}
-              <h2>Klassen</h2>
-            </div>
-            <div className={styles.overviewBottomFlex}>
-              <div className={styles.overviewBottomGrid}>
+              <p className={`${styles.marginTop} ${styles.overviewTimespan}`}>Altid</p>
+              <div className={styles.overviewBottomFlex2}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{numberOfStudents ? numberOfStudents : "-"}</p>
-                  <div className="flex-next-to">
-                    {student21}
-                    <p>Elever</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolved ? totalSolved : "-"}</p>
+                  <div className={styles.overviewFlex2}>
+                    {pen16}
+                    <p>Opgaver</p>
                   </div>
                 </div>
-                <div className={styles.overviewBottomGrid2}>
-                  <div>
-                    <div className={styles.overviewFlex2}>
-                      {pen16}
-                      <p>Opgaver</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {clock16}
-                      <p>Minutter</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {trophy16}
-                      <p>Rang</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className={styles.bold}>{totalSolved ? totalSolved : "-"}</p>
-                    <p className={styles.bold}>{totalTime ? Math.ceil(totalTime / 60) : "-"}</p>
-                    <p className={styles.bold}>-</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={`${styles.classOverview} ${styles.overviewPeriod}`}>
-            <div className={styles.overviewTop}>
-              {calendar24}
-              <select className={styles.dropdown2} id="subjects" name="subjects" value={myContexts.selectedPeriod} onChange={handlePeriodChange}>
-                <option className={styles.dropdownClass}>Denne uge</option>
-                <option className={styles.dropdownClass}>Denne måned</option>
-                <option className={styles.dropdownClass}>Dette år</option>
-              </select>
-            </div>
-            <div className={styles.overviewBottomFlex}>
-              <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{activeStudentsThisPeriod ? activeStudentsThisPeriod : ""}</p>
-                  <div className="flex-next-to">
-                    {activeStudent21}
-                    <p>Aktive elever</p>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{totalTime ? Math.ceil(totalTime / 60) : "-"}</p>
+                  <div className={styles.overviewFlex2}>
+                    {clock16}
+                    <p>Minutter</p>
                   </div>
                 </div>
-                <div className={styles.overviewBottomGrid2}>
-                  <div>
-                    <div className={styles.overviewFlex2}>
-                      {pen16}
-                      <p>Opgaver</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {clock16}
-                      <p>Minutter</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {trophy16}
-                      <p>Rang</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className={styles.bold}>{totalSolvedThisPeriod ? totalSolvedThisPeriod : "-"}</p>
-                    <p className={styles.bold}>{totalTimeThisPeriod ? Math.ceil(totalTimeThisPeriod / 60) : "-"}</p>
-                    <p className={styles.bold}>-</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={`${styles.classOverview} ${styles.overviewBestSubject}`}>
-            <div className={styles.overviewTop}>
-              {book24}
-              <h2>Bedste emne</h2>
-            </div>
-            <div className={styles.overviewBottomFlex}>
-              <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>-</p>
-                  <div className="flex-next-to">
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolved ? Math.floor((totalCorrect / totalSolved) * 100) + "%" : "-"}</p>
+                  <div className={styles.overviewFlex2}>
                     {thumbs16}
                     <p>Korrekt</p>
                   </div>
                 </div>
-                <div className={styles.overviewBottomGrid2}>
-                  <div>
-                    <div className={styles.overviewFlex2}>
-                      {book16}
-                      <p className={styles.subjectHeader}>Division</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {pen16}
-                      <p>Opgaver</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {clock16}
-                      <p>Minutter</p>
-                    </div>
-                  </div>
-                  <div className={styles.alignBottom}>
-                    <p className={styles.bold}>-</p>
-                    <p className={styles.bold}>-</p>
+              </div>
+              <p className={styles.overviewTimespan}>{myContexts.selectedPeriod}</p>
+              <div className={styles.overviewBottomFlex2}>
+                <div className={styles.overviewFlex}>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolvedThisPeriod ? totalSolvedThisPeriod : "-"}</p>
+                  <div className={styles.overviewFlex2}>
+                    {pen16}
+                    <p>Opgaver</p>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={`${styles.classOverview} ${styles.overviewWorstSubject}`}>
-            <div className={styles.overviewTop}>
-              {halfBook24}
-              <h2>Sværeste emne</h2>
-            </div>
-            <div className={styles.overviewBottomFlex}>
-              <div className={styles.overviewBottomGrid}>
                 <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>-</p>
-                  <div className="flex-next-to">
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{totalTimeThisPeriod ? Math.ceil(totalTimeThisPeriod / 60) : "-"}</p>
+                  <div className={styles.overviewFlex2}>
+                    {clock16}
+                    <p>Minutter</p>
+                  </div>
+                </div>
+                <div className={styles.overviewFlex}>
+                  <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolvedThisPeriod ? Math.floor((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100) + "%" : "-"}</p>
+                  <div className={styles.overviewFlex2}>
                     {thumbs16}
                     <p>Korrekt</p>
                   </div>
                 </div>
-                <div className={styles.overviewBottomGrid2}>
-                  <div>
-                    <div className={styles.overviewFlex2}>
-                      {book16}
-                      <p className={styles.subjectHeader}>Algebra</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {pen16}
-                      <p>Opgaver</p>
-                    </div>
-                    <div className={styles.overviewFlex2}>
-                      {clock16}
-                      <p>Minutter</p>
+              </div>
+            </div>
+
+            <div className={`${styles.classOverview} ${styles.overviewClass}`}>
+              <div className={styles.overviewTop}>
+                {class24}
+                <h2>Klassen</h2>
+              </div>
+              <div className={styles.overviewBottomFlex}>
+                <div className={styles.overviewBottomGrid}>
+                  <div className={styles.overviewFlex}>
+                    <p className={`${styles.bold} ${styles.bigStat}`}>{numberOfStudents ? numberOfStudents : "-"}</p>
+                    <div className="flex-next-to">
+                      {student21}
+                      <p>{numberOfStudents === 1 ? "Elev" : "Elever"}</p>
                     </div>
                   </div>
-                  <div className={styles.alignBottom}>
-                    <p className={styles.bold}>-</p>
-                    <p className={styles.bold}>-</p>
+                  <div className={styles.overviewBottomGrid2}>
+                    <div>
+                      <div className={styles.overviewFlex2}>
+                        {pen16}
+                        <p>Opgaver</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {clock16}
+                        <p>Minutter</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {trophy16}
+                        <p>Rang</p>
+                      </div>
+                    </div>
+                    <div>
+                      <p className={styles.bold}>{totalSolved ? totalSolved : "-"}</p>
+                      <p className={styles.bold}>{totalTime ? Math.ceil(totalTime / 60) : "-"}</p>
+                      <p className={styles.bold}>-</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={`${styles.classOverview} ${styles.overviewPeriod}`}>
+              <div className={styles.overviewTop}>
+                {calendar24}
+                <select className={styles.dropdown2} id="subjects" name="subjects" value={myContexts.selectedPeriod} onChange={handlePeriodChange}>
+                  <option className={styles.dropdownClass}>Denne uge</option>
+                  <option className={styles.dropdownClass}>Denne måned</option>
+                  <option className={styles.dropdownClass}>Dette år</option>
+                </select>
+              </div>
+              <div className={styles.overviewBottomFlex}>
+                <div className={styles.overviewBottomGrid}>
+                  <div className={styles.overviewFlex}>
+                    <p className={`${styles.bold} ${styles.bigStat}`}>{activeStudentsThisPeriod ? activeStudentsThisPeriod : "-"}</p>
+                    <div className="flex-next-to">
+                      {activeStudent21}
+                      <p>{activeStudentsThisPeriod === 1 ? "Aktiv elev" : "Aktive elever"}</p>
+                    </div>
+                  </div>
+                  <div className={styles.overviewBottomGrid2}>
+                    <div>
+                      <div className={styles.overviewFlex2}>
+                        {pen16}
+                        <p>Opgaver</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {clock16}
+                        <p>Minutter</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {trophy16}
+                        <p>Rang</p>
+                      </div>
+                    </div>
+                    <div>
+                      <p className={styles.bold}>{totalSolvedThisPeriod ? totalSolvedThisPeriod : "-"}</p>
+                      <p className={styles.bold}>{totalTimeThisPeriod ? Math.ceil(totalTimeThisPeriod / 60) : "-"}</p>
+                      <p className={styles.bold}>-</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={`${styles.classOverview} ${styles.overviewBestSubject}`}>
+              <div className={styles.overviewTop}>
+                {book24}
+                <h2>Bedste emne</h2>
+              </div>
+              <div className={styles.overviewBottomFlex}>
+                <div className={styles.overviewBottomGrid}>
+                  <div className={styles.overviewFlex}>
+                    <p className={`${styles.bold} ${styles.bigStat}`}>-</p>
+                    <div className="flex-next-to">
+                      {thumbs16}
+                      <p>Korrekt</p>
+                    </div>
+                  </div>
+                  <div className={styles.overviewBottomGrid2}>
+                    <div>
+                      <div className={styles.overviewFlex2}>
+                        {book16}
+                        <p className={styles.subjectHeader}>Division</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {pen16}
+                        <p>Opgaver</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {clock16}
+                        <p>Minutter</p>
+                      </div>
+                    </div>
+                    <div className={styles.alignBottom}>
+                      <p className={styles.bold}>-</p>
+                      <p className={styles.bold}>-</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={`${styles.classOverview} ${styles.overviewWorstSubject}`}>
+              <div className={styles.overviewTop}>
+                {halfBook24}
+                <h2>Sværeste emne</h2>
+              </div>
+              <div className={styles.overviewBottomFlex}>
+                <div className={styles.overviewBottomGrid}>
+                  <div className={styles.overviewFlex}>
+                    <p className={`${styles.bold} ${styles.bigStat}`}>-</p>
+                    <div className="flex-next-to">
+                      {thumbs16}
+                      <p>Korrekt</p>
+                    </div>
+                  </div>
+                  <div className={styles.overviewBottomGrid2}>
+                    <div>
+                      <div className={styles.overviewFlex2}>
+                        {book16}
+                        <p className={styles.subjectHeader}>Algebra</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {pen16}
+                        <p>Opgaver</p>
+                      </div>
+                      <div className={styles.overviewFlex2}>
+                        {clock16}
+                        <p>Minutter</p>
+                      </div>
+                    </div>
+                    <div className={styles.alignBottom}>
+                      <p className={styles.bold}>-</p>
+                      <p className={styles.bold}>-</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </>
       ) : (
         <p>Det ser ud til, du ikke har nogle klasser forbundet endnu. Tilføj nu!</p>
       )}

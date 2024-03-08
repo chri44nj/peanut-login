@@ -57,7 +57,7 @@ function DashboardScoreboard() {
     <>
       <div className={styles.scoreboardContainer}>
         <h2>Denne uge</h2>
-        {Object.values(userData).every((category) => category.length === 0) && <p>Indlæser data...</p>}
+        {Object.values(userData).every((category) => category.length === 0) && <p className="loading">Indlæser data...</p>}
 
         <section className={`${styles.hamsterScore}`}>
           <div className={`${styles.scoreboardCategory} ${styles.diamond}`}>
