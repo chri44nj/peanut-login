@@ -56,7 +56,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: linear-gradient(to right, var(--accent-purple), var(--accent-purple-dark));
+  background-image: linear-gradient(to right, var(--accent-green2), var(--accent-green));
 }
 
 .overviewSubject h2,
@@ -67,7 +67,7 @@
 }
 
 .overviewPeriod {
-  background-image: linear-gradient(to right, var(--accent-purple), var(--accent-purple-dark));
+  background-image: linear-gradient(to right, var(--accent-gold3), var(--accent-gold2));
 }
 
 .dropdown {

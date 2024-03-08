@@ -9,7 +9,6 @@
 
 .scoreboardContainer h2 {
   font-size: var(--font-medium);
-  margin-bottom: 1rem;
 }
 
 .hamsterScore {
@@ -19,7 +18,6 @@
   justify-content: space-between;
   width: 100%;
   background-color: var(--background-color);
-
   border-radius: 10px;
   font-weight: bold;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
@@ -28,7 +26,8 @@
 .scoreboardCategory {
   position: relative;
   width: 100%;
-  border-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   padding-block: 0.5rem;
 }
 
@@ -40,8 +39,28 @@
   font-size: var(--font-small);
 }
 
+#novice {
+  padding-left: 1rem;
+}
+
 .diamond {
-  background-color: #ff00d0;
+  background-color: var(--accent-pink);
+}
+
+.gold {
+  background-color: var(--accent-gold);
+}
+
+.silver {
+  background-color: var(--accent-silver);
+}
+
+.bronze {
+  background-color: var(--accent-bronze);
+}
+
+.all {
+  background-color: var(--accent-blue);
 }
 
 .diamondMedal,
@@ -56,23 +75,54 @@
   width: 3.5rem;
 }
 
-.gold {
-  background-color: #ffd15b;
+.information {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 1rem;
+  margin: auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: var(--background-color);
+  width: 100%;
 }
 
-.silver {
-  background-color: #b1b1b1;
+.information:hover {
+  cursor: pointer;
 }
 
-.bronze {
-  background-color: #cd8d69;
+.informationTooltip {
+  display: none;
+  background-color: var(--background-color);
+  color: var(--accent-purple-dark);
+  border: solid 1px var(--accent-purple-dark);
+  border-radius: 10px;
+  padding: 0.5rem;
+  position: absolute;
+  min-width: fit-content;
+  right: 0; /* Adjust right positioning as needed */
+  top: 100%; /* Position below the information icon */
+  z-index: 100;
+  text-align: center;
 }
 
-.all {
-  background-color: #6696ff;
+.tooltipPointer {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px; /* Adjust the size of the pointer */
+  border-color: transparent transparent var(--accent-purple-dark) transparent;
+  top: -12px; /* Position the pointer above the tooltip */
+  right: 12px; /* Adjust the position of the pointer horizontally */
 }
 
-.singleHamster {
+.information:hover .informationTooltip {
+  display: block;
+}
+
+.singleSchool {
   width: 100%;
   padding: 1rem;
   display: flex;
@@ -80,7 +130,48 @@
   align-items: center;
 }
 
-.singleHamsterLeft {
+.singleSchool:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.diamondSchool:nth-child(even) {
+  background-color: var(--accent-pink-alt);
+}
+
+.goldSchool:nth-child(even) {
+  background-color: var(--accent-gold-alt2);
+}
+
+.goldSchool:nth-child(odd) {
+  background-color: var(--accent-gold-alt);
+}
+
+.silverSchool:nth-child(even) {
+  background-color: var(--accent-silver-alt2);
+}
+
+.silverSchool:nth-child(odd) {
+  background-color: var(--accent-silver-alt);
+}
+
+.bronzeSchool:nth-child(even) {
+  background-color: var(--accent-bronze-alt2);
+}
+
+.bronzeSchool:nth-child(odd) {
+  background-color: var(--accent-bronze-alt);
+}
+
+.allSchool:nth-child(even) {
+  background-color: var(--accent-blue-alt2);
+}
+
+.allSchool:nth-child(odd) {
+  background-color: var(--accent-blue-alt);
+}
+
+.singleSchoolLeft {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -122,6 +213,10 @@
 @media only screen and (min-width: 600px) {
   .loadButton {
     max-width: 300px;
+  }
+
+  .scoreboardContainer {
+    gap: 2rem;
   }
 }
 

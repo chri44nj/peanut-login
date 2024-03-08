@@ -5,12 +5,31 @@
 :root {
   /* Colors */
   --background-color: #ffffff;
-  --background-color-alt: #eff4ff;
-  --text-color: #3d23a1;
+  --background-color-alt: #f7f7f7;
+  --text-color: #232b2b;
+  --text-color2: #3d3d3d;
   --accent-pink: #ff00d0;
+  --accent-pink-alt: #ffbcf3;
   --accent-purple: #5a31f2;
   --accent-purple-dark: #3d23a1;
-
+  --accent-green: #428000;
+  --accent-green2: #72b01b;
+  --accent-green3: #9fd539;
+  --accent-gold: #ffd15b;
+  --accent-gold2: #e8a328;
+  --accent-gold3: #fabe2c;
+  --accent-gold4: #fed843;
+  --accent-gold-alt: #ffe9b0;
+  --accent-gold-alt2: #fff6df;
+  --accent-silver: #b1b1b1;
+  --accent-silver-alt: #dbdbdb;
+  --accent-silver-alt2: #efefef;
+  --accent-bronze: #cd8d69;
+  --accent-bronze-alt: #edbea3;
+  --accent-bronze-alt2: #ffdcc8;
+  --accent-blue: #6696ff;
+  --accent-blue-alt: #c7d8ff;
+  --accent-blue-alt2: #eff4ff;
   --red: #ff3333;
 
   /* Font-Sizes */
