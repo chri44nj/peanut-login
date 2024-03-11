@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import styles from "../styles/DashboardStatistics.module.css";
@@ -14,16 +14,12 @@ function DashboardStatistics() {
   const [fetchedOnce, setFetchedOnce] = useState(false);
 
   const [numberOfStudents, setNumberOfStudents] = useState(0);
-  const [totalTime, setTotalTime] = useState(null);
-  const [totalCorrect, setTotalCorrect] = useState(null);
-  const [totalWrong, setTotalWrong] = useState(null);
-  const [totalSolved, setTotalSolved] = useState(null);
-
   const [activeStudentsThisPeriod, setActiveStudentsThisPeriod] = useState(0);
   const [totalTimeThisPeriod, setTotalTimeThisPeriod] = useState(null);
   const [totalCorrectThisPeriod, setTotalCorrectThisPeriod] = useState(null);
   const [totalWrongThisPeriod, setTotalWrongThisPeriod] = useState(null);
   const [totalSolvedThisPeriod, setTotalSolvedThisPeriod] = useState(null);
+  const [correctPercentageThisPeriod, setCorrectPercentageThisPeriod] = useState(0);
 
   /* Effects */
   const { data: session } = useSession();
@@ -54,13 +50,17 @@ function DashboardStatistics() {
         selectedClass: myContexts.teacherData.classes[0]._id,
       }));
     }
-    fetchProblemsSolved();
-    if (myContexts.selectedPeriod === "Denne uge") {
+
+    if (myContexts.selectedPeriod === "I dag") {
+      fetchProblemsSolvedToday();
+    } else if (myContexts.selectedPeriod === "Denne uge") {
       fetchProblemsSolvedThisWeek();
     } else if (myContexts.selectedPeriod === "Denne måned") {
       fetchProblemsSolvedThisMonth();
     } else if (myContexts.selectedPeriod === "Dette år") {
       fetchProblemsSolvedThisYear();
+    } else {
+      fetchProblemsSolvedAllTime();
     }
   }, [myContexts.selectedClass, myContexts.teacherData.classes, myContexts.selectedPeriod]);
 
@@ -138,20 +138,25 @@ function DashboardStatistics() {
     }));
   };
 
-  const fetchProblemsSolved = async () => {
+  const fetchProblemsSolvedToday = async () => {
     if (myContexts.selectedClass) {
-      const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved`, {
+      const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-today`, {
         params: {
           classID: myContexts.selectedClass,
         },
       });
 
-      setTotalTime(problemsSolved.data.time);
-      setTotalCorrect(problemsSolved.data.totalCorrect);
-      setTotalWrong(problemsSolved.data.totalWrong);
-      setTotalSolved(problemsSolved.data.totalProblemsSolved);
-      setFetchedOnce(true);
-      console.log("Altid", problemsSolved.data);
+      setActiveStudentsThisPeriod(problemsSolved.data.activeStudents);
+      setTotalTimeThisPeriod(problemsSolved.data.time);
+      setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
+      setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
+      setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
+      await setCorrectPercentageThisPeriod(Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100));
+      changeProgress();
+      if (fetchedOnce !== true) {
+        setFetchedOnce(true);
+      }
+      console.log("Denne uge", problemsSolved.data);
     }
   };
 
@@ -168,7 +173,11 @@ function DashboardStatistics() {
       setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
+      await setCorrectPercentageThisPeriod(Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100));
 
+      if (fetchedOnce !== true) {
+        setFetchedOnce(true);
+      }
       console.log("Denne uge", problemsSolved.data);
     }
   };
@@ -187,6 +196,12 @@ function DashboardStatistics() {
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
 
+      await setCorrectPercentageThisPeriod(Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100));
+      changeProgress();
+      if (fetchedOnce !== true) {
+        setFetchedOnce(true);
+      }
+
       console.log("Denne måned", problemsSolved.data);
     }
   };
@@ -204,8 +219,35 @@ function DashboardStatistics() {
       setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
+      await setCorrectPercentageThisPeriod(Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100));
+      changeProgress();
+      if (fetchedOnce !== true) {
+        setFetchedOnce(true);
+      }
 
       console.log("Dette år", problemsSolved.data);
+    }
+  };
+
+  const fetchProblemsSolvedAllTime = async () => {
+    if (myContexts.selectedClass) {
+      const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-all-time`, {
+        params: {
+          classID: myContexts.selectedClass,
+        },
+      });
+
+      setActiveStudentsThisPeriod(problemsSolved.data.activeStudents);
+      setTotalTimeThisPeriod(problemsSolved.data.time);
+      setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
+      setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
+      setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
+      await setCorrectPercentageThisPeriod(Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100));
+      changeProgress();
+      if (fetchedOnce !== true) {
+        setFetchedOnce(true);
+      }
+      console.log("Altid", problemsSolved.data);
     }
   };
 
@@ -279,6 +321,21 @@ function DashboardStatistics() {
     </svg>
   );
 
+  const progressBarRef = useRef();
+  const changeProgress = () => {
+    if (!correctPercentageThisPeriod) {
+      progressBarRef.current.style.background = `conic-gradient(
+      #fed843 ${0 * 3.6}deg,
+      #efefef ${0 * 3.6}deg
+    )`;
+    } else {
+      progressBarRef.current.style.background = `conic-gradient(
+      #fed843 ${correctPercentageThisPeriod * 3.6}deg,
+      #efefef ${correctPercentageThisPeriod * 3.6}deg
+    )`;
+    }
+  };
+
   return (
     <div className={styles.statisticsContainer}>
       <div className={styles.classes}>
@@ -298,6 +355,13 @@ function DashboardStatistics() {
                 </option>
               ))}
           </select>
+          <select className={styles.dropdown} id="subjects" name="subjects" value={myContexts.selectedPeriod} onChange={handlePeriodChange}>
+            <option className={styles.dropdownClass}>I dag</option>
+            <option className={styles.dropdownClass}>Denne uge</option>
+            <option className={styles.dropdownClass}>Denne måned</option>
+            <option className={styles.dropdownClass}>Dette år</option>
+            <option className={styles.dropdownClass}>Altid</option>
+          </select>
         </div>
       </div>
 
@@ -305,225 +369,147 @@ function DashboardStatistics() {
         <>
           {fetchedOnce === false && <p className="loading">Indlæser data...</p>}
           <div className={styles.selectedClassContainer}>
+            <div className={`${styles.classOverview} ${styles.overviewHighlight}`}>
+              <h3 className={styles.overviewHighlightHeading}>Overblik</h3>
+              <div className={styles.overviewHighlightGrid}>
+                <div className={styles.overviewHighlightNumber}>
+                  <div className={styles.container}>
+                    <div ref={progressBarRef} className={styles.progress}>
+                      <div className={styles.valueContainer}>{totalSolvedThisPeriod ? Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100) : "-"}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.flexColumn}>
+                  <p>Elever</p>
+                  <p>Aktive elever</p>
+                  <p>Opgaver</p>
+                  <p>Minutter</p>
+                </div>
+                <div className={styles.flexColumn}>
+                  <p>{numberOfStudents ? numberOfStudents : "-"}</p>
+                  <p>{activeStudentsThisPeriod ? activeStudentsThisPeriod : "-"}</p>
+                  <p>{totalSolvedThisPeriod ? totalSolvedThisPeriod : "-"}</p>
+                  <p>{totalTimeThisPeriod ? Math.round(totalTimeThisPeriod / 60) : "-"}</p>
+                </div>
+              </div>
+            </div>
             <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
-              <div className={styles.overviewTop}>
-                {book24}
-                <select className={styles.dropdown2} id="subjects" name="subjects" value={myContexts.selectedSubject} onChange={handleSubjectChange}>
-                  <option className={styles.dropdownClass}>Alle emner</option>
-                  <option className={styles.dropdownClass}>Brøker</option>
-                  <option className={styles.dropdownClass}>Procent</option>
-                  <option className={styles.dropdownClass}>Algebra</option>
-                  <option className={styles.dropdownClass}>Eksponenter</option>
-                  <option className={styles.dropdownClass}>Enheder</option>
-                  <option className={styles.dropdownClass}>Parenteser</option>
-                  <option className={styles.dropdownClass}>Priser</option>
-                  <option className={styles.dropdownClass}>Ligninger</option>
-                </select>
-              </div>
-              <p className={`${styles.marginTop} ${styles.overviewTimespan}`}>Altid</p>
-              <div className={styles.overviewBottomFlex2}>
-                <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolved ? totalSolved : "-"}</p>
-                  <div className={styles.overviewFlex2}>
-                    {pen16}
-                    <p>Opgaver</p>
-                  </div>
+              <h3>Brøker</h3>
+              <div className={styles.overviewSubjectGrid}>
+                <div className={styles.flexColumn}>
+                  <p>Korrekt</p>
+                  <p>Opgaver</p>
+                  <p>Minutter</p>
                 </div>
-                <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{totalTime ? Math.ceil(totalTime / 60) : "-"}</p>
-                  <div className={styles.overviewFlex2}>
-                    {clock16}
-                    <p>Minutter</p>
-                  </div>
-                </div>
-                <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolved ? Math.floor((totalCorrect / totalSolved) * 100) + "%" : "-"}</p>
-                  <div className={styles.overviewFlex2}>
-                    {thumbs16}
-                    <p>Korrekt</p>
-                  </div>
-                </div>
-              </div>
-              <p className={styles.overviewTimespan}>{myContexts.selectedPeriod}</p>
-              <div className={styles.overviewBottomFlex2}>
-                <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolvedThisPeriod ? totalSolvedThisPeriod : "-"}</p>
-                  <div className={styles.overviewFlex2}>
-                    {pen16}
-                    <p>Opgaver</p>
-                  </div>
-                </div>
-                <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{totalTimeThisPeriod ? Math.ceil(totalTimeThisPeriod / 60) : "-"}</p>
-                  <div className={styles.overviewFlex2}>
-                    {clock16}
-                    <p>Minutter</p>
-                  </div>
-                </div>
-                <div className={styles.overviewFlex}>
-                  <p className={`${styles.bold} ${styles.bigStat}`}>{totalSolvedThisPeriod ? Math.floor((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100) + "%" : "-"}</p>
-                  <div className={styles.overviewFlex2}>
-                    {thumbs16}
-                    <p>Korrekt</p>
-                  </div>
+                <div className={styles.flexColumn}>
+                  <p>75%</p>
+                  <p>273</p>
+                  <p>102</p>
                 </div>
               </div>
             </div>
-
-            <div className={`${styles.classOverview} ${styles.overviewClass}`}>
-              <div className={styles.overviewTop}>
-                {class24}
-                <h2>Klassen</h2>
-              </div>
-              <div className={styles.overviewBottomFlex}>
-                <div className={styles.overviewBottomGrid}>
-                  <div className={styles.overviewFlex}>
-                    <p className={`${styles.bold} ${styles.bigStat}`}>{numberOfStudents ? numberOfStudents : "-"}</p>
-                    <div className="flex-next-to">
-                      {student21}
-                      <p>{numberOfStudents === 1 ? "Elev" : "Elever"}</p>
-                    </div>
-                  </div>
-                  <div className={styles.overviewBottomGrid2}>
-                    <div>
-                      <div className={styles.overviewFlex2}>
-                        {pen16}
-                        <p>Opgaver</p>
-                      </div>
-                      <div className={styles.overviewFlex2}>
-                        {clock16}
-                        <p>Minutter</p>
-                      </div>
-                      <div className={styles.overviewFlex2}>
-                        {trophy16}
-                        <p>Rang</p>
-                      </div>
-                    </div>
-                    <div>
-                      <p className={styles.bold}>{totalSolved ? totalSolved : "-"}</p>
-                      <p className={styles.bold}>{totalTime ? Math.ceil(totalTime / 60) : "-"}</p>
-                      <p className={styles.bold}>-</p>
-                    </div>
-                  </div>
+            <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
+              <h3>Procent</h3>
+              <div className={styles.overviewSubjectGrid}>
+                <div className={styles.flexColumn}>
+                  <p>Korrekt</p>
+                  <p>Opgaver</p>
+                  <p>Minutter</p>
+                </div>
+                <div className={styles.flexColumn}>
+                  <p>75%</p>
+                  <p>273</p>
+                  <p>102</p>
                 </div>
               </div>
             </div>
-
-            <div className={`${styles.classOverview} ${styles.overviewPeriod}`}>
-              <div className={styles.overviewTop}>
-                {calendar24}
-                <select className={styles.dropdown2} id="subjects" name="subjects" value={myContexts.selectedPeriod} onChange={handlePeriodChange}>
-                  <option className={styles.dropdownClass}>Denne uge</option>
-                  <option className={styles.dropdownClass}>Denne måned</option>
-                  <option className={styles.dropdownClass}>Dette år</option>
-                </select>
-              </div>
-              <div className={styles.overviewBottomFlex}>
-                <div className={styles.overviewBottomGrid}>
-                  <div className={styles.overviewFlex}>
-                    <p className={`${styles.bold} ${styles.bigStat}`}>{activeStudentsThisPeriod ? activeStudentsThisPeriod : "-"}</p>
-                    <div className="flex-next-to">
-                      {activeStudent21}
-                      <p>{activeStudentsThisPeriod === 1 ? "Aktiv elev" : "Aktive elever"}</p>
-                    </div>
-                  </div>
-                  <div className={styles.overviewBottomGrid2}>
-                    <div>
-                      <div className={styles.overviewFlex2}>
-                        {pen16}
-                        <p>Opgaver</p>
-                      </div>
-                      <div className={styles.overviewFlex2}>
-                        {clock16}
-                        <p>Minutter</p>
-                      </div>
-                      <div className={styles.overviewFlex2}>
-                        {trophy16}
-                        <p>Rang</p>
-                      </div>
-                    </div>
-                    <div>
-                      <p className={styles.bold}>{totalSolvedThisPeriod ? totalSolvedThisPeriod : "-"}</p>
-                      <p className={styles.bold}>{totalTimeThisPeriod ? Math.ceil(totalTimeThisPeriod / 60) : "-"}</p>
-                      <p className={styles.bold}>-</p>
-                    </div>
-                  </div>
+            <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
+              <h3>Algebra</h3>
+              <div className={styles.overviewSubjectGrid}>
+                <div className={styles.flexColumn}>
+                  <p>Korrekt</p>
+                  <p>Opgaver</p>
+                  <p>Minutter</p>
+                </div>
+                <div className={styles.flexColumn}>
+                  <p>75%</p>
+                  <p>273</p>
+                  <p>102</p>
                 </div>
               </div>
             </div>
-
-            <div className={`${styles.classOverview} ${styles.overviewBestSubject}`}>
-              <div className={styles.overviewTop}>
-                {book24}
-                <h2>Bedste emne</h2>
-              </div>
-              <div className={styles.overviewBottomFlex}>
-                <div className={styles.overviewBottomGrid}>
-                  <div className={styles.overviewFlex}>
-                    <p className={`${styles.bold} ${styles.bigStat}`}>-</p>
-                    <div className="flex-next-to">
-                      {thumbs16}
-                      <p>Korrekt</p>
-                    </div>
-                  </div>
-                  <div className={styles.overviewBottomGrid2}>
-                    <div>
-                      <div className={styles.overviewFlex2}>
-                        {book16}
-                        <p className={styles.subjectHeader}>Division</p>
-                      </div>
-                      <div className={styles.overviewFlex2}>
-                        {pen16}
-                        <p>Opgaver</p>
-                      </div>
-                      <div className={styles.overviewFlex2}>
-                        {clock16}
-                        <p>Minutter</p>
-                      </div>
-                    </div>
-                    <div className={styles.alignBottom}>
-                      <p className={styles.bold}>-</p>
-                      <p className={styles.bold}>-</p>
-                    </div>
-                  </div>
+            <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
+              <h3>Eksponenter</h3>
+              <div className={styles.overviewSubjectGrid}>
+                <div className={styles.flexColumn}>
+                  <p>Korrekt</p>
+                  <p>Opgaver</p>
+                  <p>Minutter</p>
+                </div>
+                <div className={styles.flexColumn}>
+                  <p>75%</p>
+                  <p>273</p>
+                  <p>102</p>
                 </div>
               </div>
             </div>
-
-            <div className={`${styles.classOverview} ${styles.overviewWorstSubject}`}>
-              <div className={styles.overviewTop}>
-                {halfBook24}
-                <h2>Sværeste emne</h2>
+            <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
+              <h3>Enheder</h3>
+              <div className={styles.overviewSubjectGrid}>
+                <div className={styles.flexColumn}>
+                  <p>Korrekt</p>
+                  <p>Opgaver</p>
+                  <p>Minutter</p>
+                </div>
+                <div className={styles.flexColumn}>
+                  <p>75%</p>
+                  <p>273</p>
+                  <p>102</p>
+                </div>
               </div>
-              <div className={styles.overviewBottomFlex}>
-                <div className={styles.overviewBottomGrid}>
-                  <div className={styles.overviewFlex}>
-                    <p className={`${styles.bold} ${styles.bigStat}`}>-</p>
-                    <div className="flex-next-to">
-                      {thumbs16}
-                      <p>Korrekt</p>
-                    </div>
-                  </div>
-                  <div className={styles.overviewBottomGrid2}>
-                    <div>
-                      <div className={styles.overviewFlex2}>
-                        {book16}
-                        <p className={styles.subjectHeader}>Algebra</p>
-                      </div>
-                      <div className={styles.overviewFlex2}>
-                        {pen16}
-                        <p>Opgaver</p>
-                      </div>
-                      <div className={styles.overviewFlex2}>
-                        {clock16}
-                        <p>Minutter</p>
-                      </div>
-                    </div>
-                    <div className={styles.alignBottom}>
-                      <p className={styles.bold}>-</p>
-                      <p className={styles.bold}>-</p>
-                    </div>
-                  </div>
+            </div>
+            <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
+              <h3>Parenteser</h3>
+              <div className={styles.overviewSubjectGrid}>
+                <div className={styles.flexColumn}>
+                  <p>Korrekt</p>
+                  <p>Opgaver</p>
+                  <p>Minutter</p>
+                </div>
+                <div className={styles.flexColumn}>
+                  <p>75%</p>
+                  <p>273</p>
+                  <p>102</p>
+                </div>
+              </div>
+            </div>
+            <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
+              <h3>Priser</h3>
+              <div className={styles.overviewSubjectGrid}>
+                <div className={styles.flexColumn}>
+                  <p>Korrekt</p>
+                  <p>Opgaver</p>
+                  <p>Minutter</p>
+                </div>
+                <div className={styles.flexColumn}>
+                  <p>75%</p>
+                  <p>273</p>
+                  <p>102</p>
+                </div>
+              </div>
+            </div>
+            <div className={`${styles.classOverview} ${styles.overviewSubject}`}>
+              <h3>Ligninger</h3>
+              <div className={styles.overviewSubjectGrid}>
+                <div className={styles.flexColumn}>
+                  <p>Korrekt</p>
+                  <p>Opgaver</p>
+                  <p>Minutter</p>
+                </div>
+                <div className={styles.flexColumn}>
+                  <p>75%</p>
+                  <p>273</p>
+                  <p>102</p>
                 </div>
               </div>
             </div>

@@ -18,7 +18,7 @@
 
 .selectedClassContainer {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
   width: 100%;
   margin-top: 2rem;
@@ -32,42 +32,85 @@
 .classOverview {
   background-color: var(--background-color);
   border-radius: 10px;
-  padding-block: 1rem;
+  padding: 1rem;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
   position: relative;
 }
 
-.overviewTop {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  position: absolute;
-  top: 0.5rem;
-  left: 1rem;
-}
-
-.overviewTop h2 {
-  color: var(--accent-purple-dark);
-  font-size: var(--font-small);
-}
-
-.overviewSubject {
+.overviewHighlight {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  background-image: linear-gradient(to right, var(--accent-green2), var(--accent-green));
+  /* background-image: linear-gradient(to right, var(--accent-purple), var(--accent-purple-dark)); */
+  background-color: var(--accent-purple-dark);
+  grid-column: 1 / 3;
 }
 
-.overviewSubject h2,
-.overviewSubject *,
-.overviewPeriod h2,
-.overviewPeriod * {
+.overviewHighlight * {
   color: var(--background-color);
 }
 
-.overviewPeriod {
-  background-image: linear-gradient(to right, var(--accent-gold3), var(--accent-gold2));
+.overviewHighlight p {
+  font-size: var(--font-small);
+}
+
+.overviewHighlightHeading {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+}
+
+.overviewHighlightGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1.25fr 0.25fr;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.overviewHighlightNumber {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background-color: transparent;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+}
+
+.progress {
+  position: relative;
+  height: 100px;
+  width: 100px;
+  background-color: red;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.progress:before {
+  content: "";
+  position: absolute;
+  height: 84%;
+  width: 84%;
+  background-color: var(--accent-purple-dark);
+  border-radius: 50%;
+}
+
+.valueContainer {
+  position: relative;
+  color: var(--background-color);
+}
+
+.overviewSubject {
+  background-color: var(--background-color);
+}
+
+.overviewSubjectGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 0.5fr;
 }
 
 .dropdown {
@@ -81,128 +124,44 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
 }
 
-.dropdown2 {
-  padding: 0.25rem 0.5rem;
-  background-color: transparent;
-  font-weight: bold;
-  border: solid 1px var(--background-color);
-  border-radius: 10px;
-  font-size: var(--font-smaller);
-}
-
-.dropdown2 option {
-  color: var(--text-color);
-  background-color: var(--background-color);
-  font-family: "Montserrat", sans-serif;
-  font-weight: bold;
-}
-
-.dropdown:hover,
-.dropdown2:hover {
+.dropdown:hover {
   cursor: pointer;
 }
 
-.subjectHeader {
-  font-weight: bold;
-  font-size: var(--font-small);
-}
-
-.overviewBottomFlex {
-  margin-top: 2.5rem;
+.flexColumn {
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.overviewBottomFlex2 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-}
-
-.marginTop {
-  margin-top: 2.5rem;
-}
-
-:nth-child(1 of .overviewBottomFlex2) {
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
-  border-bottom: solid 1px var(--background-color);
-}
-
-.overviewBottomGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.overviewBottomGrid2 {
-  display: grid;
-  grid-template-columns: 1fr 0.5fr;
-  gap: 0.5rem;
-}
-
-.alignBottom {
-  align-self: end;
-}
-
-.overviewFlex {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.overviewFlex2 {
-  display: flex;
-  align-items: center;
-  gap: 0.25em;
-}
-
-.overviewTimespan {
-  font-weight: bold;
-  font-size: var(--font-smaller);
-}
-
-.bold {
-  font-weight: bold;
-}
-
-.bigStat {
-  font-size: 2rem;
 }
 
 /** TABLET **/
 
 @media only screen and (min-width: 1000px) {
   .selectedClassContainer {
-    grid-template-columns: 1fr 1fr;
     margin-top: 1rem;
     margin-bottom: 0rem;
   }
 
-  .overviewClass {
-    grid-column: 2;
-  }
-
-  .overviewStudents {
-    grid-column: 2;
-  }
-
-  .overviewSubject {
+  .overviewHighlight {
     grid-column: 1;
     grid-row: 1 / 3;
-  }
-
-  .dropdown2 {
-    font-size: var(--font-small);
   }
 }
 
 /** LARGER SCREENS **/
 
 @media only screen and (min-width: 1200px) {
+  .overviewHighlight {
+    grid-column: 1 / 3;
+    grid-row: 1 / 3;
+  }
+
+  .overviewHighlightGrid {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr 0.25fr;
+  }
+
   .selectedClassContainer {
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    grid-template-columns: repeat(6, 1fr);
   }
 }
