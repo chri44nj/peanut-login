@@ -2,6 +2,9 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
 import styles from "../styles/DashboardStatistics.module.css";
 import { MyContexts, SetMyContexts } from "./Contexts";
 
@@ -19,7 +22,6 @@ function DashboardStatistics() {
   const [totalCorrectThisPeriod, setTotalCorrectThisPeriod] = useState(null);
   const [totalWrongThisPeriod, setTotalWrongThisPeriod] = useState(null);
   const [totalSolvedThisPeriod, setTotalSolvedThisPeriod] = useState(null);
-  const [correctPercentageThisPeriod, setCorrectPercentageThisPeriod] = useState(0);
 
   /* Effects */
   const { data: session } = useSession();
@@ -59,7 +61,7 @@ function DashboardStatistics() {
       fetchProblemsSolvedThisMonth();
     } else if (myContexts.selectedPeriod === "Dette år") {
       fetchProblemsSolvedThisYear();
-    } else {
+    } else if (myContexts.selectedPeriod === "Altid") {
       fetchProblemsSolvedAllTime();
     }
   }, [myContexts.selectedClass, myContexts.teacherData.classes, myContexts.selectedPeriod]);
@@ -151,12 +153,11 @@ function DashboardStatistics() {
       setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
-      await setCorrectPercentageThisPeriod(Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100));
-      changeProgress();
+
       if (fetchedOnce !== true) {
         setFetchedOnce(true);
       }
-      console.log("Denne uge", problemsSolved.data);
+      console.log("I dag", problemsSolved.data);
     }
   };
 
@@ -173,7 +174,6 @@ function DashboardStatistics() {
       setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
-      await setCorrectPercentageThisPeriod(Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100));
 
       if (fetchedOnce !== true) {
         setFetchedOnce(true);
@@ -196,8 +196,6 @@ function DashboardStatistics() {
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
 
-      await setCorrectPercentageThisPeriod(Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100));
-      changeProgress();
       if (fetchedOnce !== true) {
         setFetchedOnce(true);
       }
@@ -219,8 +217,7 @@ function DashboardStatistics() {
       setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
-      await setCorrectPercentageThisPeriod(Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100));
-      changeProgress();
+
       if (fetchedOnce !== true) {
         setFetchedOnce(true);
       }
@@ -242,8 +239,7 @@ function DashboardStatistics() {
       setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
-      await setCorrectPercentageThisPeriod(Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100));
-      changeProgress();
+
       if (fetchedOnce !== true) {
         setFetchedOnce(true);
       }
@@ -252,9 +248,11 @@ function DashboardStatistics() {
   };
 
   /* Other */
-  const book16 = (
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book-fill" viewBox="0 0 16 16">
-      <path d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z" />
+  const overview20 = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#232b2b" class="bi bi-people-fill" viewBox="0 0 16 16">
+      <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+      <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z" />
+      <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
     </svg>
   );
 
@@ -321,21 +319,6 @@ function DashboardStatistics() {
     </svg>
   );
 
-  const progressBarRef = useRef();
-  const changeProgress = () => {
-    if (!correctPercentageThisPeriod) {
-      progressBarRef.current.style.background = `conic-gradient(
-      #fed843 ${0 * 3.6}deg,
-      #efefef ${0 * 3.6}deg
-    )`;
-    } else {
-      progressBarRef.current.style.background = `conic-gradient(
-      #fed843 ${correctPercentageThisPeriod * 3.6}deg,
-      #efefef ${correctPercentageThisPeriod * 3.6}deg
-    )`;
-    }
-  };
-
   return (
     <div className={styles.statisticsContainer}>
       <div className={styles.classes}>
@@ -370,13 +353,38 @@ function DashboardStatistics() {
           {fetchedOnce === false && <p className="loading">Indlæser data...</p>}
           <div className={styles.selectedClassContainer}>
             <div className={`${styles.classOverview} ${styles.overviewHighlight}`}>
-              <h3 className={styles.overviewHighlightHeading}>Overblik</h3>
+              <div className={styles.overviewHighlightHeading}>
+                {overview20}
+                <h3>Overblik</h3>
+              </div>
               <div className={styles.overviewHighlightGrid}>
-                <div className={styles.overviewHighlightNumber}>
-                  <div className={styles.container}>
-                    <div ref={progressBarRef} className={styles.progress}>
-                      <div className={styles.valueContainer}>{totalSolvedThisPeriod ? Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100) : "-"}</div>
+                <div className={styles.overviewHighlightPercentage}>
+                  <div className={styles.flexColumn2}>
+                    <div className={styles.percentageCircle}>
+                      <CircularProgressbar
+                        value={Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100)}
+                        text={`${Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100)}%`}
+                        styles={{
+                          root: {},
+                          path: {
+                            stroke: `#232b2b`,
+                            strokeLinecap: "round",
+                            transition: "stroke-dashoffset 1s ease 0s",
+                          },
+                          trail: {
+                            stroke: "#ffffff",
+                            strokeLinecap: "butt",
+                            transform: "rotate(0.25turn)",
+                            transformOrigin: "center center",
+                          },
+                          text: {
+                            fill: "#232b2b",
+                            fontSize: "1.25rem",
+                          },
+                        }}
+                      />
                     </div>
+                    <p>Korrekt</p>
                   </div>
                 </div>
                 <div className={styles.flexColumn}>
@@ -385,11 +393,11 @@ function DashboardStatistics() {
                   <p>Opgaver</p>
                   <p>Minutter</p>
                 </div>
-                <div className={styles.flexColumn}>
+                <div className={`${styles.flexColumn} ${styles.overviewHighlightNumbers}`}>
                   <p>{numberOfStudents ? numberOfStudents : "-"}</p>
                   <p>{activeStudentsThisPeriod ? activeStudentsThisPeriod : "-"}</p>
                   <p>{totalSolvedThisPeriod ? totalSolvedThisPeriod : "-"}</p>
-                  <p>{totalTimeThisPeriod ? Math.round(totalTimeThisPeriod / 60) : "-"}</p>
+                  <p>{totalTimeThisPeriod ? Math.ceil(totalTimeThisPeriod / 60) : "-"}</p>
                 </div>
               </div>
             </div>
