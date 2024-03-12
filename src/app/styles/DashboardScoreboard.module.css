@@ -79,8 +79,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 1rem;
-  margin: auto 0;
+  padding-inline: 1rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -88,23 +87,23 @@
   width: 100%;
 }
 
-.information:hover {
+.tooltip:hover {
   cursor: pointer;
 }
 
 .informationTooltip {
-  display: none;
   background-color: var(--background-color);
-  color: var(--accent-purple-dark);
-  border: solid 1px var(--accent-purple-dark);
+  color: var(--text-color);
+  border: solid 1px var(--background-color);
   border-radius: 10px;
-  padding: 0.5rem;
+  padding: 1rem;
   position: absolute;
   min-width: fit-content;
   right: 0; /* Adjust right positioning as needed */
   top: 100%; /* Position below the information icon */
   z-index: 100;
   text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
 }
 
 .tooltipPointer {
@@ -113,13 +112,9 @@
   height: 0;
   border-style: solid;
   border-width: 6px; /* Adjust the size of the pointer */
-  border-color: transparent transparent var(--accent-purple-dark) transparent;
-  top: -12px; /* Position the pointer above the tooltip */
-  right: 12px; /* Adjust the position of the pointer horizontally */
-}
-
-.information:hover .informationTooltip {
-  display: block;
+  border-color: transparent transparent var(--background-color) transparent;
+  top: 2.25rem; /* Position the pointer above the tooltip */
+  right: 1.15rem; /* Adjust the position of the pointer horizontally */
 }
 
 .singleSchool {

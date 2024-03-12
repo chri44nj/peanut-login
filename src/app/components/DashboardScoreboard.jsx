@@ -20,6 +20,20 @@ function DashboardScoreboard() {
     loadData();
   }, [amount]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showTooltip && !event.target.closest(`.${styles.tooltip}`)) {
+        setShowTooltip(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [showTooltip]);
+
   /* Functions */
   async function loadData() {
     const info = { range: "today", n: amount };
@@ -72,11 +86,19 @@ function DashboardScoreboard() {
           <div className={`${styles.scoreboardCategory} ${styles.diamond}`}>
             <h3 className={styles.scoreboardCategoryName}>Diamant</h3>
             <img src="/pics/diamond-medal.svg" alt="Diamond Medal" className={styles.diamondMedal} />
+
             <div className={styles.information}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+              <svg className={styles.tooltip} onClick={() => setShowTooltip((prevState) => (prevState !== "Diamant" ? "Diamant" : false))} onMouseOver={() => setShowTooltip("Diamant")} onMouseOut={() => setShowTooltip(false)} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
                 <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
               </svg>
-              <span className={styles.informationTooltip}>Vær skolen med højeste score for at komme i rank diamant!</span>
+              {showTooltip === "Diamant" ? (
+                <>
+                  <div className={styles.tooltipPointer}></div>
+                  <span className={styles.informationTooltip}>Vær skolen med højeste score for at få din klasse i diamant!</span>
+                </>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           {userData.diamond.map((user, index) => (
@@ -94,11 +116,19 @@ function DashboardScoreboard() {
           <div className={`${styles.scoreboardCategory} ${styles.gold}`}>
             <h3 className={styles.scoreboardCategoryName}>Guld</h3>
             <img src="/pics/gold-medal.svg" alt="Gold Medal" className={styles.goldMedal} />
+
             <div className={styles.information}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+              <svg className={styles.tooltip} onClick={() => setShowTooltip((prevState) => (prevState !== "Guld" ? "Guld" : false))} onMouseOver={() => setShowTooltip("Guld")} onMouseOut={() => setShowTooltip(false)} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
                 <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
               </svg>
-              <span className={styles.informationTooltip}>Optjen en score på min. 20.000 for at komme i rank guld!</span>
+              {showTooltip === "Guld" ? (
+                <>
+                  <div className={styles.tooltipPointer}></div>
+                  <span className={styles.informationTooltip}>Optjen en score på min. 20.000 for at få din klasse i guld!</span>
+                </>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           {userData.gold.map((user, index) => (
@@ -116,11 +146,19 @@ function DashboardScoreboard() {
           <div className={`${styles.scoreboardCategory} ${styles.silver}`}>
             <h3 className={styles.scoreboardCategoryName}>Sølv</h3>
             <img src="/pics/silver-medal.svg" alt="Silver Medal" className={styles.silverMedal} />
+
             <div className={styles.information}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+              <svg className={styles.tooltip} onClick={() => setShowTooltip((prevState) => (prevState !== "Sølv" ? "Sølv" : false))} onMouseOver={() => setShowTooltip("Sølv")} onMouseOut={() => setShowTooltip(false)} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
                 <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
               </svg>
-              <span className={styles.informationTooltip}>Optjen en score på min. 10.000 for at komme i rank sølv!</span>
+              {showTooltip === "Sølv" ? (
+                <>
+                  <div className={styles.tooltipPointer}></div>
+                  <span className={styles.informationTooltip}>Optjen en score på min. 10.000 for at få din klasse i sølv!</span>
+                </>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           {userData.silver.map((user, index) => (
@@ -138,11 +176,19 @@ function DashboardScoreboard() {
           <div className={`${styles.scoreboardCategory} ${styles.bronze}`}>
             <h3 className={styles.scoreboardCategoryName}>Bronze</h3>
             <img src="/pics/bronze-medal.svg" alt="Bronze Medal" className={styles.bronzeMedal} />
+
             <div className={styles.information}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+              <svg className={styles.tooltip} onClick={() => setShowTooltip((prevState) => (prevState !== "Bronze" ? "Bronze" : false))} onMouseOver={() => setShowTooltip("Bronze")} onMouseOut={() => setShowTooltip(false)} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
                 <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
               </svg>
-              <span className={styles.informationTooltip}>Optjen en score på min. 5.000 for at komme i rank bronze!</span>
+              {showTooltip === "Bronze" ? (
+                <>
+                  <div className={styles.tooltipPointer}></div>
+                  <span className={styles.informationTooltip}>Optjen en score på min. 5.000 for at få din klasse i bronze!</span>
+                </>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           {userData.bronze.map((user, index) => (
@@ -162,11 +208,17 @@ function DashboardScoreboard() {
               Novice
             </h3>
             <div className={styles.information}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+              <svg className={styles.tooltip} onClick={() => setShowTooltip((prevState) => (prevState !== "Novice" ? "Novice" : false))} onMouseOver={() => setShowTooltip("Novice")} onMouseOut={() => setShowTooltip(false)} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
                 <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
               </svg>
-              <span className={styles.informationTooltip}>Optjen en højere score for at stige i rank!</span>
-              <div class="tooltipPointer"></div>
+              {showTooltip === "Novice" ? (
+                <>
+                  <div className={styles.tooltipPointer}></div>
+                  <span className={styles.informationTooltip}>Optjen en højere score for at få din klasse i højere rang!</span>
+                </>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           {userData.all.map((user, index) => (
