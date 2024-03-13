@@ -6,6 +6,7 @@ export const SetMyContexts = createContext();
 function Contexts({ children }) {
   const [myContexts, setMyContexts] = useState({
     loginType: "login",
+    burgerMenuOpen: false,
     dashboardType: "Statistik",
     selectedClass: "",
     clickedClass: "Alle klasser",

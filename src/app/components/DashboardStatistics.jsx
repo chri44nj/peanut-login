@@ -22,6 +22,7 @@ function DashboardStatistics() {
   const [totalCorrectThisPeriod, setTotalCorrectThisPeriod] = useState(null);
   const [totalWrongThisPeriod, setTotalWrongThisPeriod] = useState(null);
   const [totalSolvedThisPeriod, setTotalSolvedThisPeriod] = useState(null);
+  const [correctPercentageThisperiod, setCorrectPercentageThisPeriod] = useState(null);
 
   /* Effects */
   const { data: session } = useSession();
@@ -153,6 +154,7 @@ function DashboardStatistics() {
       setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
+      setCorrectPercentageThisPeriod(Math.round((problemsSolved.data.totalCorrect / problemsSolved.data.totalProblemsSolved) * 100));
 
       if (fetchedOnce !== true) {
         setFetchedOnce(true);
@@ -174,6 +176,7 @@ function DashboardStatistics() {
       setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
+      setCorrectPercentageThisPeriod(Math.round((problemsSolved.data.totalCorrect / problemsSolved.data.totalProblemsSolved) * 100));
 
       if (fetchedOnce !== true) {
         setFetchedOnce(true);
@@ -195,6 +198,7 @@ function DashboardStatistics() {
       setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
+      setCorrectPercentageThisPeriod(Math.round((problemsSolved.data.totalCorrect / problemsSolved.data.totalProblemsSolved) * 100));
 
       if (fetchedOnce !== true) {
         setFetchedOnce(true);
@@ -217,6 +221,7 @@ function DashboardStatistics() {
       setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
+      setCorrectPercentageThisPeriod(Math.round((problemsSolved.data.totalCorrect / problemsSolved.data.totalProblemsSolved) * 100));
 
       if (fetchedOnce !== true) {
         setFetchedOnce(true);
@@ -239,6 +244,7 @@ function DashboardStatistics() {
       setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
       setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
       setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
+      setCorrectPercentageThisPeriod(Math.round((problemsSolved.data.totalCorrect / problemsSolved.data.totalProblemsSolved) * 100));
 
       if (fetchedOnce !== true) {
         setFetchedOnce(true);
@@ -355,15 +361,15 @@ function DashboardStatistics() {
             <div className={`${styles.classOverview} ${styles.overviewHighlight}`}>
               <div className={styles.overviewHighlightHeading}>
                 {overview20}
-                <h3>Overblik</h3>
+                <h3>Overblik ({myContexts.selectedPeriod})</h3>
               </div>
               <div className={styles.overviewHighlightGrid}>
                 <div className={styles.overviewHighlightPercentage}>
                   <div className={styles.flexColumn2}>
                     <div className={styles.percentageCircle}>
                       <CircularProgressbar
-                        value={Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100)}
-                        text={`${Math.round((totalCorrectThisPeriod / totalSolvedThisPeriod) * 100)}%`}
+                        value={correctPercentageThisperiod ? correctPercentageThisperiod : 0}
+                        text={correctPercentageThisperiod ? correctPercentageThisperiod + "%" : "-"}
                         styles={{
                           root: {},
                           path: {

@@ -104,10 +104,10 @@ function DashboardScoreboard() {
           {userData.diamond.map((user, index) => (
             <div className={`${styles.singleSchool} ${styles.diamondSchool}`} key={index}>
               <div className={styles.singleSchoolLeft}>
-                <p>{school24}</p>
+                <p className={styles.schoolIcon}>{school24}</p>
                 <p className={styles.hamsterName}>{user.name}</p>
               </div>
-              <p>{user.score.toLocaleString()}</p>
+              <p className={styles.schoolScore}>{user.score.toLocaleString()}</p>
             </div>
           ))}
         </section>
@@ -134,10 +134,10 @@ function DashboardScoreboard() {
           {userData.gold.map((user, index) => (
             <div className={`${styles.singleSchool} ${styles.goldSchool}`} key={index}>
               <div className={styles.singleSchoolLeft}>
-                <p>{school24}</p>
+                <p className={styles.schoolIcon}>{school24}</p>
                 <p className={styles.hamsterName}>{user.name}</p>
               </div>
-              <p>{user.score.toLocaleString()}</p>
+              <p className={styles.schoolScore}>{user.score.toLocaleString()}</p>
             </div>
           ))}
         </section>
@@ -164,10 +164,10 @@ function DashboardScoreboard() {
           {userData.silver.map((user, index) => (
             <div className={`${styles.singleSchool} ${styles.silverSchool}`} key={index}>
               <div className={styles.singleSchoolLeft}>
-                <p>{school24}</p>
+                <p className={styles.schoolIcon}>{school24}</p>
                 <p className={styles.hamsterName}>{user.name}</p>
               </div>
-              <p>{user.score.toLocaleString()}</p>
+              <p className={styles.schoolScore}>{user.score.toLocaleString()}</p>
             </div>
           ))}
         </section>
@@ -194,10 +194,10 @@ function DashboardScoreboard() {
           {userData.bronze.map((user, index) => (
             <div className={`${styles.singleSchool} ${styles.bronzeSchool}`} key={index}>
               <div className={styles.singleSchoolLeft}>
-                <p>{school24}</p>
+                <p className={styles.schoolIcon}>{school24}</p>
                 <p className={styles.hamsterName}>{user.name}</p>
               </div>
-              <p>{user.score.toLocaleString()}</p>
+              <p className={styles.schoolScore}>{user.score.toLocaleString()}</p>
             </div>
           ))}
         </section>
@@ -224,10 +224,10 @@ function DashboardScoreboard() {
           {userData.all.map((user, index) => (
             <div className={`${styles.singleSchool} ${styles.allSchool}`} key={index}>
               <div className={styles.singleSchoolLeft}>
-                <p>{school24}</p>
+                <p className={styles.schoolIcon}>{school24}</p>
                 <p className={styles.hamsterName}>{user.name}</p>
               </div>
-              <p>{user.score.toLocaleString()}</p>
+              <p className={styles.schoolScore}>{user.score.toLocaleString()}</p>
             </div>
           ))}
         </section>

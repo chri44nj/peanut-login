@@ -15,14 +15,19 @@ function Dashboard() {
   const myContextsDispatch = useContext(SetMyContexts);
 
   /* States */
-  const [burgerMenu, setburgerMenu] = useState(false);
 
   /* Functions */
   function burgerMenuClicked() {
-    if (!burgerMenu) {
-      setburgerMenu(true);
+    if (!myContexts.burgerMenuOpen) {
+      myContextsDispatch((old) => ({
+        ...old,
+        burgerMenuOpen: true,
+      }));
     } else {
-      setburgerMenu(false);
+      myContextsDispatch((old) => ({
+        ...old,
+        burgerMenuOpen: false,
+      }));
     }
   }
 
@@ -40,7 +45,7 @@ function Dashboard() {
 
   return (
     <div id="dashboardContainer" className={styles.dashboardContainer}>
-      <div className={`${styles.dashboardMenu} ${burgerMenu ? styles.dashboardBurger : ""}`}>
+      <div className={`${styles.dashboardMenu} ${myContexts.burgerMenuOpen ? styles.dashboardBurger : ""}`}>
         <button id={myContexts.dashboardType === "Statistik" ? styles.activeDashboard : ""} value="Statistik" onClick={() => switchDashboardType("Statistik")}>
           <a href="#dashboardContainer">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pie-chart-fill" viewBox="0 0 16 16">

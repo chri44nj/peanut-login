@@ -28,3 +28,8 @@
 .navLink:hover {
   color: var(--accent-purple-dark);
 }
+
+.accountIcon {
+  background-color: transparent;
+  border: none;
+}
