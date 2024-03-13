@@ -2,6 +2,33 @@
 .milestonesContainer {
 }
 
+.addClassContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.addClassButton {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: solid 1px var(--accent-purple-dark);
+  border-radius: 10px;
+  background-color: var(--background-color);
+  color: var(--accent-purple-dark);
+  font-weight: bold;
+  transition: 0.2s;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addClassButton:hover {
+  background-color: var(--accent-purple-dark);
+  border-color: var(--accent-purple-dark);
+  color: var(--background-color);
+}
+
 .classes {
   display: flex;
   align-items: center;
@@ -32,6 +59,10 @@
 /** TABLET **/
 
 @media only screen and (min-width: 600px) {
+  .addClassButton {
+    max-width: 300px;
+  }
+
   .chooseClass {
     display: block;
     font-weight: bold;

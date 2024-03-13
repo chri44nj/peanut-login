@@ -5,6 +5,7 @@ export const SetMyContexts = createContext();
 
 function Contexts({ children }) {
   const [myContexts, setMyContexts] = useState({
+    userAuthenticated: false,
     loginType: "login",
     burgerMenuOpen: false,
     dashboardType: "Statistik",

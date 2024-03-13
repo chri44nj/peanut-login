@@ -32,6 +32,7 @@ function Login() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredSchools, setFilteredSchools] = useState([]);
   const [dropdownHidden, setDropdownHidden] = useState(true);
+  const [loggingIn, setLoggingIn] = useState(false);
 
   /* Effects */
   useEffect(() => {
@@ -119,6 +120,7 @@ function Login() {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    setLoggingIn(true);
 
     try {
       const res = await signIn("credentials", {
@@ -129,22 +131,11 @@ function Login() {
 
       if (res.error) {
         setError("Forkert email eller adgangskode");
+        setLoggingIn(false);
         return;
-      }
-
-      if (!myContexts.loggedIn) {
-        myContextsDispatch((old) => ({
-          ...old,
-          loggedIn: true,
-        }));
       } else {
-        myContextsDispatch((old) => ({
-          ...old,
-          loggedIn: false,
-        }));
+        router.replace("/pages/dashboard");
       }
-
-      router.replace("/pages/dashboard");
     } catch (error) {
       console.log(error);
     }
@@ -158,6 +149,7 @@ function Login() {
       return;
     }
 
+    setLoggingIn(true);
     try {
       const resUserExists = await fetch("api/userExists", {
         method: "POST",
@@ -170,6 +162,7 @@ function Login() {
       const { user } = await resUserExists.json();
 
       if (user) {
+        setLoggingIn(false);
         setError("Email er allerede i brug");
         return;
       }
@@ -194,14 +187,14 @@ function Login() {
       });
 
       if (res.ok) {
-        const form = e.target;
-
         handleSignIn(e);
       } else {
+        setLoggingIn(false);
         console.log("User registration failed.");
         setError("Email er allerede i brug");
       }
     } catch (error) {
+      setLoggingIn(false);
       console.log("Error during registration: ", error);
       setError("Der opstod en ukendt fejl");
     }
@@ -308,7 +301,7 @@ function Login() {
       {myContexts.loginType === "login" ? (
         <div id="loginForm" className={styles.loginFormContainer}>
           <form onSubmit={handleSignIn} className={styles.loginForm} action="">
-            <h2>{myContexts.loginType === "login" ? "Log ind" : "Opret en bruger"}</h2>
+            <h2>{myContexts.loginType === "login" && loggingIn ? "Logger ind..." : myContexts.loginType === "login" ? "Log Ind" : "Opret en bruger"}</h2>
             <div className={styles.inputField}>
               <label htmlFor="email">Email-adresse</label>
               <input type="email" id="email" name="email" title="Indtast din email-adresse" onChange={(e) => setEmail(e.target.value.toLowerCase())} required />
@@ -345,13 +338,13 @@ function Login() {
               </button>
             </div>
 
-            <div className={styles.ellerContainer}>
+            {/*      <div className={styles.ellerContainer}>
               <hr className={styles.ellerLine} />
               <span className={styles.eller}>eller</span>
             </div>
             <p className="hover-link">Fortsæt med Google</p>
             <p className="hover-link">Fortsæt med Facebook</p>
-            <p className="hover-link">Fortsæt med Apple</p>
+            <p className="hover-link">Fortsæt med Apple</p> */}
           </form>
         </div>
       ) : (
@@ -420,7 +413,8 @@ function Login() {
             <form onSubmit={(e) => handleCreateLogin(e)} className={styles.createForm} action="">
               <div className={styles.switchButtonContainer}>
                 <h2>
-                  {myContexts.loginType === "login" ? "Log ind" : "Opret en bruger"} som <span className={styles.accountType}>{accountType}</span>
+                  {!loggingIn ? "Opret en bruger" : "Opretter en bruger"} som <span className={styles.accountType}>{accountType}</span>
+                  {loggingIn ? "..." : ""}
                 </h2>
                 {accountType ? (
                   <button type="button" className={`${styles.switchButton} hover-link`} onClick={() => chooseAccountType("")}>
@@ -520,14 +514,14 @@ function Login() {
                 </button>
               </div>
 
-              <div className={styles.ellerContainer}>
+              {/*  <div className={styles.ellerContainer}>
                 <hr className={styles.ellerLine} />
                 <span className={styles.eller}>eller</span>
               </div>
 
               <p className="hover-link">Fortsæt med Google</p>
               <p className="hover-link">Fortsæt med Facebook</p>
-              <p className="hover-link">Fortsæt med Apple</p>
+              <p className="hover-link">Fortsæt med Apple</p> */}
             </form>
           ) : (
             ""

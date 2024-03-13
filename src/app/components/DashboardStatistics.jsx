@@ -122,6 +122,7 @@ function DashboardStatistics() {
 
       myContextsDispatch((old) => ({
         ...old,
+        userAuthenticated: true,
         teacherData: {
           ...old.teacherData,
           ...updatedTeacherData,
@@ -307,41 +308,65 @@ function DashboardStatistics() {
 
   return (
     <div className={styles.statisticsContainer}>
-      <div className={styles.classes}>
-        <div className={styles.dropdownContainer}>
-          <select className={styles.dropdown} id="classes" name="classes" value={myContexts.selectedClass} onChange={handleClassChange}>
-            {myContexts.teacherData.classes
-              .sort((classA, classB) => {
-                if (classA.grade !== classB.grade) {
-                  return classA.grade - classB.grade;
-                } else {
-                  return classA.letter.localeCompare(classB.letter);
-                }
-              })
-              .map((theclass, index) => (
-                <option key={index} value={theclass._id}>
-                  {theclass.grade}.{theclass.letter}
-                </option>
-              ))}
-          </select>
-          <select className={styles.dropdown} id="subjects" name="subjects" value={myContexts.selectedPeriod} onChange={handlePeriodChange}>
-            <option>I dag</option>
-            <option>Denne uge</option>
-            <option>Denne måned</option>
-            <option>Dette år</option>
-            <option>Altid</option>
-          </select>
-          <select className={styles.dropdown} id="sortBy" name="sortBy" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-            <option value="correctPercentage">Korrekt</option>
-            <option value="totalSolved">Opgaver</option>
-            <option value="minutesSpent">Minutter</option>
-          </select>
+      {fetchedOnce === false && myContexts.teacherData.classesIDs.length > 0 ? (
+        <p className="loading">Indlæser data...</p>
+      ) : myContexts.teacherData.classesIDs.length === 0 && myContexts.teacherData.classes.length === 0 ? (
+        <div className={styles.addClassContainer}>
+          <p>Tilføj klasser til din profil, for at få adgang til dine klassers statistik!</p>
+          <button
+            className={styles.addClassButton}
+            type="button"
+            onClick={() => {
+              myContextsDispatch((prevContexts) => ({
+                ...prevContexts,
+                dashboardType: "Dine klasser",
+              }));
+            }}
+          >
+            Mine klasser
+          </button>
         </div>
+      ) : (
+        ""
+      )}
+      <div className={styles.classes}>
+        {myContexts.teacherData.classesIDs.length > 0 ? (
+          <div className={styles.dropdownContainer}>
+            <select className={styles.dropdown} id="classes" name="classes" value={myContexts.selectedClass} onChange={handleClassChange}>
+              {myContexts.teacherData.classes
+                .sort((classA, classB) => {
+                  if (classA.grade !== classB.grade) {
+                    return classA.grade - classB.grade;
+                  } else {
+                    return classA.letter.localeCompare(classB.letter);
+                  }
+                })
+                .map((theclass, index) => (
+                  <option key={index} value={theclass._id}>
+                    {theclass.grade}.{theclass.letter}
+                  </option>
+                ))}
+            </select>
+            <select className={styles.dropdown} id="subjects" name="subjects" value={myContexts.selectedPeriod} onChange={handlePeriodChange}>
+              <option>I dag</option>
+              <option>Denne uge</option>
+              <option>Denne måned</option>
+              <option>Dette år</option>
+              <option>Altid</option>
+            </select>
+            <select className={styles.dropdown} id="sortBy" name="sortBy" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+              <option value="correctPercentage">Korrekt</option>
+              <option value="totalSolved">Opgaver</option>
+              <option value="minutesSpent">Minutter</option>
+            </select>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
-      {myContexts.teacherData.classes ? (
+      {myContexts.teacherData.classesIDs.length > 0 && myContexts.teacherData.classes ? (
         <>
-          {fetchedOnce === false && <p className="loading">Indlæser data...</p>}
           <div className={styles.selectedClassContainer}>
             <div className={`${styles.classOverview} ${styles.overviewHighlight}`}>
               <div className={styles.overviewHighlightHeading}>
@@ -413,7 +438,7 @@ function DashboardStatistics() {
           </div>
         </>
       ) : (
-        <p>Det ser ud til, du ikke har nogle klasser forbundet endnu. Tilføj nu!</p>
+        ""
       )}
     </div>
   );

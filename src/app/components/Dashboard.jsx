@@ -93,7 +93,7 @@ function Dashboard() {
           onClick={() => {
             myContextsDispatch((old) => ({
               ...old,
-              loggedIn: false,
+              userAuthenticated: false,
               loginType: "login",
               dashboardType: "Hjem",
             }));

@@ -5,7 +5,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 3rem 1rem;
+  padding: 1rem;
+  min-height: 100dvh;
 }
 
 .loginForm,

@@ -57,6 +57,8 @@ function DashboardClasses() {
       school: { name: myContexts.teacherData.school, grade: grade, letter: letter },
       teacherID: myContexts.teacherData.id,
     });
+
+    updateTeacherData();
   };
 
   const fetchClasses = async () => {
@@ -88,6 +90,7 @@ function DashboardClasses() {
       ...prevContexts,
       clickedClass: "Alle klasser",
     }));
+    updateTeacherData();
     fetchClasses();
   };
 
@@ -103,6 +106,26 @@ function DashboardClasses() {
       selectedStudent: "Alle elever",
     }));
     fetchClasses();
+  };
+
+  const updateTeacherData = async () => {
+    try {
+      const response = await axios.get("https://skillzy-node.fly.dev/api/get-teacher", {
+        params: { email: myContexts.teacherData.email },
+      });
+
+      console.log("hell fucking yeah");
+
+      myContextsDispatch((old) => ({
+        ...old,
+        teacherData: {
+          ...old.teacherData,
+          classesIDs: response.data.classes,
+        },
+      }));
+    } catch (error) {
+      console.error("Error fetching teacher data:", error);
+    }
   };
 
   /* Other */
@@ -139,6 +162,7 @@ function DashboardClasses() {
 
   return (
     <>
+      {myContexts.teacherData.classesIDs.length === 0 ? <p>Ingen klasser endnu; klik på knappen herunder for at tilføje den første og få adgang til alle features!</p> : ""}
       {myContexts.clickedClass !== "Alle klasser" ? (
         <div className={styles.breadcrumb}>
           <button
@@ -189,31 +213,35 @@ function DashboardClasses() {
       )}
 
       <div id="classesContainer" className={styles.classesContainer}>
-        <div className={styles.dropdownsContainer}>
-          <select className={styles.dropdown} id="classes" name="classes" value={myContexts.clickedClass} onChange={(e) => handleClassClick(e.target.value)}>
-            <option value="Alle klasser">Alle klasser</option>
-            {myContexts.teacherData.classes
-              ? myContexts.teacherData.classes.map((theclass, index) => (
-                  <option className={styles.dropdownClass} key={index} value={theclass._id}>
-                    {theclass.grade}.{theclass.letter}
-                  </option>
-                ))
-              : ""}
-          </select>
-          {myContexts.clickedClass !== "Alle klasser" && (
-            <select className={styles.dropdown} id="students" name="students" value={myContexts.selectedStudent} onChange={(e) => handleSelectStudent(e.target.value)}>
-              <option className={styles.dropdownClass}>Alle elever</option>
-              {myContexts.clickedClass !== "Alle klasser" &&
-                myContexts.teacherData.classes
-                  .find((specificClass) => specificClass._id === myContexts.clickedClass)
-                  .students?.map((student, index) => (
-                    <option className={styles.dropdownClass} key={index} value={student}>
-                      {student}
+        {myContexts.teacherData.classesIDs.length > 0 ? (
+          <div className={styles.dropdownsContainer}>
+            <select className={styles.dropdown} id="classes" name="classes" value={myContexts.clickedClass} onChange={(e) => handleClassClick(e.target.value)}>
+              <option value="Alle klasser">Alle klasser</option>
+              {myContexts.teacherData.classes
+                ? myContexts.teacherData.classes.map((theclass, index) => (
+                    <option className={styles.dropdownClass} key={index} value={theclass._id}>
+                      {theclass.grade}.{theclass.letter}
                     </option>
-                  ))}
+                  ))
+                : ""}
             </select>
-          )}
-        </div>
+            {myContexts.clickedClass !== "Alle klasser" && (
+              <select className={styles.dropdown} id="students" name="students" value={myContexts.selectedStudent} onChange={(e) => handleSelectStudent(e.target.value)}>
+                <option className={styles.dropdownClass}>Alle elever</option>
+                {myContexts.clickedClass !== "Alle klasser" &&
+                  myContexts.teacherData.classes
+                    .find((specificClass) => specificClass._id === myContexts.clickedClass)
+                    .students?.map((student, index) => (
+                      <option className={styles.dropdownClass} key={index} value={student}>
+                        {student}
+                      </option>
+                    ))}
+              </select>
+            )}
+          </div>
+        ) : (
+          ""
+        )}
 
         {myContexts.clickedClass === "Alle klasser" && (
           <>
@@ -241,7 +269,7 @@ function DashboardClasses() {
                   ))}
               </div>
             )}
-            {myContexts.teacherData.classesIDs.length === 0 ? <p>Klik på knappen herunder for at tilføje en klasse.</p> : ""}
+
             <div className={styles.buttonContainer}>
               <button className={styles.openFormButton} type="button" onClick={() => setCreateFormVisible((old) => !old)}>
                 {createFormVisible ? "Luk" : "Tilføj klasse"}
