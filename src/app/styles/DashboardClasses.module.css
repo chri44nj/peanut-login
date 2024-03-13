@@ -434,6 +434,7 @@
   background-color: var(--accent-red);
 }
 
+.removeClass,
 .removeStudent {
   display: flex;
   flex-direction: column;
@@ -453,6 +454,7 @@
   text-align: center;
 }
 
+.removeClass p,
 .removeStudent p {
   color: var(--text-color);
   font-size: var(--font-small);
@@ -460,6 +462,7 @@
   padding-top: 1rem;
 }
 
+.removeClass .bold,
 .removeStudent .bold {
   font-weight: bold;
 }
@@ -488,6 +491,7 @@
   }
 
   .addClass,
+  .removeClass,
   .removeStudent {
     margin: auto 35%;
   }

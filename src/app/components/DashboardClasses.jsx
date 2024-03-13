@@ -21,6 +21,24 @@ function DashboardClasses() {
     fetchClasses();
   }, [myContexts.teacherData.classesIDs]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (createFormVisible && !event.target.closest(`.${styles.addClass}`)) {
+        setCreateFormVisible(false);
+      } else if (removeClassFormVisible && !event.target.closest(`.${styles.removeClass}`)) {
+        setRemoveClassFormVisible(false);
+      } else if (removeStudentFormVisible && !event.target.closest(`.${styles.removeStudent}`)) {
+        setRemoveStudentFormVisible(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [createFormVisible, removeClassFormVisible, removeStudentFormVisible]);
+
   /* Functions */
   const handleClassClick = async (classID) => {
     await myContextsDispatch((prevContexts) => ({
@@ -643,7 +661,7 @@ function DashboardClasses() {
       )}
 
       {removeClassFormVisible && (
-        <div className={styles.removeStudent}>
+        <div className={styles.removeClass}>
           {myContexts.teacherData.classes.map((theclass, index) => {
             if (theclass._id === myContexts.clickedClass) {
               return (
