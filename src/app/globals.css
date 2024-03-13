@@ -31,7 +31,9 @@
   --accent-blue: #6696ff;
   --accent-blue-alt: #c7d8ff;
   --accent-blue-alt2: #eff4ff;
-  --red: #ff3333;
+  --accent-red: #ff3333;
+  --accent-red2: #e25e5e;
+  --accent-red3: rgb(181, 43, 43);
 
   /* Font-Sizes */
   --font-smaller: 1rem;

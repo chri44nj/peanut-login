@@ -271,7 +271,7 @@
 }
 
 .error {
-  color: var(--red);
+  color: var(--accent-red);
   margin-block: 0.5rem;
 }
 

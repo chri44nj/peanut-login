@@ -406,11 +406,11 @@
 }
 
 .removeButton {
-  color: var(--red);
+  color: var(--accent-red);
   background-color: var(--background-color-alt);
   font-weight: bold;
   border-radius: 10px;
-  border: solid 1px var(--red);
+  border: solid 1px var(--accent-red);
   padding: 0.5rem 1rem;
   text-align: center;
   transition: 0.2s;
@@ -418,11 +418,11 @@
 }
 
 .removeButton2 {
-  background-color: var(--red);
+  background-color: var(--accent-red);
   color: var(--background-color-alt);
   font-weight: bold;
   border-radius: 10px;
-  border: solid 1px var(--red);
+  border: solid 1px var(--accent-red);
   padding: 0.5rem 1rem;
   width: 100%;
   text-align: center;
@@ -431,7 +431,7 @@
 
 .removeButton:hover {
   color: var(--background-color);
-  background-color: var(--red);
+  background-color: var(--accent-red);
 }
 
 .removeStudent {
@@ -475,7 +475,7 @@
 
 .redBackground {
   color: var(--background-color);
-  background-color: var(--red);
+  background-color: var(--accent-red);
 }
 /** TABLET **/
 
