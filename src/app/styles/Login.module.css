@@ -1,7 +1,8 @@
 /** MOBILE **/
 
 .loginFormContainer,
-.createFormContainer {
+.createFormContainer,
+.recoverFormContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,7 +11,8 @@
 }
 
 .loginForm,
-.createForm {
+.createForm,
+.recoverForm {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,6 +26,10 @@
 }
 
 .createForm h2 {
+  text-align: center;
+}
+
+.recoverForm {
   text-align: center;
 }
 
@@ -46,7 +52,7 @@
 
 .inputField label {
   font-weight: bold;
-  color: var(--accent-purple-dark);
+  color: var(--text-color);
 }
 
 .inputField input,
@@ -135,6 +141,7 @@
 }
 
 .loginButton,
+.loginButton2,
 .subjectsButton {
   width: 100%;
   margin: 0px auto;
@@ -147,11 +154,13 @@
   transition: 0.2s;
 }
 
-.loginButton:hover {
+.loginButton:hover,
+.subjectsButton:hover {
   cursor: not-allowed;
 }
 
-.validButton {
+.validButton,
+.loginButton2:hover {
   background-color: var(--accent-purple-dark);
   color: var(--background-color);
 }
@@ -160,39 +169,28 @@
   cursor: pointer;
 }
 
-.switchButtonContainer {
+.switchButtonContainer,
+.recoverPasswordContainer {
   text-align: center;
 }
 
+.recoverPasswordContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.forgotButton {
+  margin-top: 0.5rem;
+}
+
+.forgotButton,
+.forgotButton2,
 .switchButton {
   background-color: transparent;
   border: none;
   color: var(--accent-purple);
   transition: 0.2s;
-}
-
-.ellerContainer {
-  position: relative;
-  width: 100%;
-  margin-block: 1rem;
-}
-
-.ellerLine {
-  width: 100%;
-  background-color: var(--accent-purple-dark);
-  border-top: solid 1px var(--accent-purple-dark);
-  margin: 0;
-}
-
-.eller {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 0.5rem;
-  font-weight: bold;
-  font-size: 0.9rem;
 }
 
 .chooseAccountContainer,
@@ -269,6 +267,7 @@
 .buttonErrorContainer {
   width: 100%;
   text-align: center;
+  margin-top: 1rem;
 }
 
 .error {
@@ -317,8 +316,10 @@
 @media only screen and (min-width: 600px) {
   .loginFormContainer,
   .createFormContainer,
+  .recoverFormContainer,
   .loginForm,
   .createForm,
+  .recoverForm,
   .chooseAccountContainer,
   .chooseSubjectsContainer {
     padding: 2rem;

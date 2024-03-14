@@ -27,24 +27,45 @@ function Login() {
   const [passwordValid, setPasswordValid] = useState(false);
   const [passwordCriteria, setPasswordCriteria] = useState(false);
   const [passwordCriteria2, setPasswordCriteria2] = useState(false);
+  const [passwordCriteria3, setPasswordCriteria3] = useState(true);
   const [error, setError] = useState("");
   const [listOfSchools, setListOfSchools] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredSchools, setFilteredSchools] = useState([]);
   const [dropdownHidden, setDropdownHidden] = useState(true);
   const [loggingIn, setLoggingIn] = useState(false);
+  const [recoverPassword, setRecoverPassword] = useState(false);
+  const [recoverTokenSent, setRecoverTokenSent] = useState(false);
+  const [recoverToken, setRecoverToken] = useState("");
+  const [recoverTokenValidated, setRecoverTokenValidated] = useState(false);
+  const [passwordChangeSucces, setPasswordChangeSucces] = useState(false);
 
   /* Effects */
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w\S]*$/;
     setEmailValid(emailRegex.test(email));
     setPasswordValid(passwordRegex.test(password));
 
     const capitalNumber = /^(?=.*[A-Z])(?=.*\d)/.test(password);
     setPasswordCriteria(capitalNumber);
     setPasswordCriteria2(password.length >= 8);
+    setPasswordCriteria3(!/\s/.test(password));
   }, [email, password]);
+
+  useEffect(() => {
+    if (passwordCriteria3 === false) {
+      setError("Mellemrum ikke tilladt i adgangskoden");
+    } else {
+      setError("");
+    }
+  }, [passwordCriteria3]);
+
+  useEffect(() => {
+    if (selectedSubjects.length !== 0) {
+      setError("");
+    }
+  }, [selectedSubjects]);
 
   useEffect(() => {
     setError("");
@@ -255,6 +276,22 @@ function Login() {
     setDropdownHidden(true);
   };
 
+  const validateRecoverEmail = () => {
+    console.log("Her skal skrives kode der tjekker om emailen eksisterer i databasen");
+    setRecoverTokenSent(true);
+  };
+
+  const validateRecoverToken = () => {
+    console.log("Her skal skrives kode der tjekker om recover tokenen er gyldig");
+    setRecoverTokenValidated(true);
+  };
+
+  const handleChangePassword = (e) => {
+    e.preventDefault();
+    console.log("Her skal skrives kode der ændrer brugerens password");
+    setPasswordChangeSucces(true);
+  };
+
   /* Other Stuff */
 
   const router = useRouter();
@@ -298,9 +335,9 @@ function Login() {
 
   return (
     <div id="loginContainer">
-      {myContexts.loginType === "login" ? (
+      {myContexts.loginType === "login" && !recoverPassword ? (
         <div id="loginForm" className={styles.loginFormContainer}>
-          <form onSubmit={handleSignIn} className={styles.loginForm} action="">
+          <form onSubmit={handleSignIn} className={styles.loginForm}>
             <h2>{myContexts.loginType === "login" && loggingIn ? "Logger ind..." : myContexts.loginType === "login" ? "Log Ind" : "Opret en bruger"}</h2>
             <div className={styles.inputField}>
               <label htmlFor="email">Email-adresse</label>
@@ -313,6 +350,17 @@ function Login() {
                 <input type={passwordType} id="password" name="password" title={myContexts.loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword(e.target.value)} required />
                 <button type="button" className={styles.showPassword} onClick={showPassword}>
                   {passwordType === "password" ? notVisible : visible} <span className={styles.passwordTooltip}>{tooltipText}</span>
+                </button>
+              </div>
+              <div className={styles.forgotButtonContainer}>
+                <button
+                  type="button"
+                  className={`${styles.forgotButton} hover-link`}
+                  onClick={() => {
+                    setRecoverPassword(true);
+                  }}
+                >
+                  Glemt adgangskode?
                 </button>
               </div>
             </div>
@@ -337,21 +385,13 @@ function Login() {
                 {myContexts.loginType === "login" ? "Opret nu" : "Log ind"}
               </button>
             </div>
-
-            {/*      <div className={styles.ellerContainer}>
-              <hr className={styles.ellerLine} />
-              <span className={styles.eller}>eller</span>
-            </div>
-            <p className="hover-link">Fortsæt med Google</p>
-            <p className="hover-link">Fortsæt med Facebook</p>
-            <p className="hover-link">Fortsæt med Apple</p> */}
           </form>
         </div>
       ) : (
         ""
       )}
 
-      {myContexts.loginType === "create" ? (
+      {myContexts.loginType === "create" && !recoverPassword ? (
         <div id="createForm" className={styles.createFormContainer}>
           {!accountType ? (
             <div className={styles.chooseAccountContainer}>
@@ -410,7 +450,7 @@ function Login() {
           )}
 
           {(accountType === "lærer" && subjects.length > 0) || (accountType && accountType !== "lærer") ? (
-            <form onSubmit={(e) => handleCreateLogin(e)} className={styles.createForm} action="">
+            <form onSubmit={(e) => handleCreateLogin(e)} className={styles.createForm}>
               <div className={styles.switchButtonContainer}>
                 <h2>
                   {!loggingIn ? "Opret en bruger" : "Opretter en bruger"} som <span className={styles.accountType}>{accountType}</span>
@@ -513,19 +553,131 @@ function Login() {
                   {myContexts.loginType === "login" ? "Opret nu" : "Log ind"}
                 </button>
               </div>
-
-              {/*  <div className={styles.ellerContainer}>
-                <hr className={styles.ellerLine} />
-                <span className={styles.eller}>eller</span>
-              </div>
-
-              <p className="hover-link">Fortsæt med Google</p>
-              <p className="hover-link">Fortsæt med Facebook</p>
-              <p className="hover-link">Fortsæt med Apple</p> */}
             </form>
           ) : (
             ""
           )}
+        </div>
+      ) : (
+        ""
+      )}
+
+      {recoverPassword ? (
+        <div id="recoverForm" className={styles.recoverFormContainer}>
+          <form className={styles.recoverForm} onSubmit={(e) => handleChangePassword(e)}>
+            <h2>{!recoverTokenSent ? "Glemt adgangskode" : recoverTokenSent && !recoverTokenValidated ? "Bekræft kode" : recoverTokenSent && recoverTokenValidated && !passwordChangeSucces ? "Ny adgangskode" : "Success!"}</h2>
+            <p>{!recoverTokenSent ? "Bare rolig, vi har din ryg!" : recoverTokenSent && !recoverTokenValidated ? `Vi har sendt en gendannelseskode til ${email}` : recoverTokenSent && recoverTokenValidated && !passwordChangeSucces ? "Hvad skal den være?" : "Du har nu en ny (og meget sejere) adgangskode"}</p>
+            {!recoverTokenSent && (
+              <>
+                <div className={`${styles.inputField}`}>
+                  <label htmlFor="email">Indtast din email-adresse</label>
+                  <input type="email" id="email" name="email" title="Indtast din email-adresse" onChange={(e) => setEmail(e.target.value.toLowerCase())} required />
+                </div>
+                <div className={styles.buttonErrorContainer}>
+                  <button className={`${styles.loginButton} ${emailValid ? styles.validButton : ""}`} type="button" title={buttonTooltip} disabled={!emailValid} onClick={validateRecoverEmail}>
+                    Send gendannelseskode
+                  </button>
+                  {error && <p className={styles.error}>{error}</p>}
+                </div>
+              </>
+            )}
+
+            {recoverTokenSent && !recoverTokenValidated ? (
+              <>
+                <div className={`${styles.inputField}`}>
+                  <label htmlFor="recoverToken">Indtast din 8-cifrede gendannelseskode</label>
+                  <input type="text" id="recoverToken" maxLength={8} name="recoverToken" title="Indtast din 8-cifrede gendannelseskode" onChange={(e) => setRecoverToken(e.target.value.toLowerCase())} required />
+                </div>
+                <div className={styles.buttonErrorContainer}>
+                  <button className={`${styles.loginButton} ${recoverToken.length === 8 ? styles.validButton : ""}`} type="button" disabled={!recoverToken.length === 8} onClick={validateRecoverToken}>
+                    Bekræft kode
+                  </button>
+                  {error && <p className={styles.error}>{error}</p>}
+                </div>
+              </>
+            ) : (
+              ""
+            )}
+
+            {recoverTokenSent && recoverTokenValidated && !passwordChangeSucces ? (
+              <>
+                <div className={styles.inputField}>
+                  <label htmlFor="password">Adgangskode</label>
+                  <div className={styles.passwordContainer}>
+                    <input type={passwordType} id="password" name="password" title={myContexts.loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword(e.target.value)} required />
+                    <button type="button" className={styles.showPassword} onClick={showPassword}>
+                      {passwordType === "password" ? notVisible : visible} <span className={styles.passwordTooltip}>{tooltipText}</span>
+                    </button>
+                  </div>
+                  <div className={styles.passwordCriteria}>
+                    <div>
+                      {passwordCriteria ? checkMark : cross}
+                      <p>Minimum 1 stort bogstav og 1 tal</p>
+                    </div>
+                    <div>
+                      {passwordCriteria2 ? checkMark : cross}
+                      <p>Minimum 8 karakterer langt</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.buttonErrorContainer}>
+                  <button className={`${styles.loginButton} ${passwordValid ? styles.validButton : ""}`} type="submit" disabled={!passwordValid}>
+                    Bekræft adgangskode
+                  </button>
+                  {error && <p className={styles.error}>{error}</p>}
+                </div>
+              </>
+            ) : (
+              ""
+            )}
+
+            {passwordChangeSucces ? (
+              <>
+                <div className={styles.buttonErrorContainer}>
+                  <button
+                    name="logMeIn"
+                    className={styles.loginButton2}
+                    type="button"
+                    onClick={() => {
+                      setRecoverPassword(false);
+                      setRecoverTokenSent(false);
+                      setRecoverTokenValidated(false);
+                      setEmail("");
+                      setPassword("");
+                      setRecoverToken("");
+                      setPasswordChangeSucces(false);
+                    }}
+                  >
+                    Log ind
+                  </button>
+                  {error && <p className={styles.error}>{error}</p>}
+                </div>
+              </>
+            ) : (
+              ""
+            )}
+
+            {!passwordChangeSucces && (
+              <div className={styles.switchButtonContainer}>
+                <p>Har du husket dit password?</p>
+                <button
+                  type="button"
+                  className={`${styles.forgotButton2} hover-link`}
+                  onClick={() => {
+                    setRecoverPassword(false);
+                    setRecoverTokenSent(false);
+                    setRecoverTokenValidated(false);
+                    setEmail("");
+                    setPassword("");
+                    setRecoverToken("");
+                  }}
+                >
+                  Tilbage til log ind
+                </button>
+              </div>
+            )}
+          </form>
         </div>
       ) : (
         ""
