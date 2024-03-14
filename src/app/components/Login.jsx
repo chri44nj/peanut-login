@@ -358,6 +358,8 @@ function Login() {
                   className={`${styles.forgotButton} hover-link`}
                   onClick={() => {
                     setRecoverPassword(true);
+                    setEmail("");
+                    setPassword("");
                   }}
                 >
                   Glemt adgangskode?
