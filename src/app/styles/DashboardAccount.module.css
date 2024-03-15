@@ -23,3 +23,215 @@
 .lowercase {
   text-transform: lowercase;
 }
+
+/** Edit Account **/
+
+.editAccount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 30rem;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.passwordCriteria {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.passwordCriteria div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inputField {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputField label {
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.inputField input {
+  height: 2.5rem;
+  width: 100%;
+  border-radius: 10px;
+  border: solid 1px rgba(0, 0, 0, 0.15);
+  padding-inline: 1rem;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.inputField input:focus {
+  outline: none;
+  outline: solid 1px var(--accent-purple-dark);
+}
+
+#email input {
+  text-transform: lowercase;
+}
+
+.passwordContainer {
+  position: relative;
+}
+
+.passwordContainer input {
+  padding-right: 3rem;
+}
+
+.showPassword {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent-purple);
+}
+
+.passwordTooltip {
+  display: none;
+  visibility: hidden;
+  width: 180px;
+  background-color: #555;
+  color: var(--background-color);
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 10px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 2rem;
+  left: 50%;
+  margin-left: -90px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.passwordTooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.showPassword:hover .passwordTooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.buttonErrorContainer {
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.editAccountButtonsContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cancelButton,
+.confirmButton,
+.editAccountButton {
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.editAccountButton {
+  display: block;
+  margin-top: 2rem;
+}
+
+.confirmButton,
+.editAccountButton {
+  border: solid 1px var(--accent-purple-dark);
+  background-color: var(--background-color);
+  color: var(--accent-purple-dark);
+}
+
+.confirmButton:hover,
+.editAccountButton:hover {
+  background-color: var(--accent-purple-dark);
+  color: var(--background-color);
+}
+
+.cancelButton,
+.cancelButton:hover {
+  border: solid 1px var(--accent-red);
+  color: var(--background-color);
+  background-color: var(--accent-red);
+}
+
+.error {
+  color: var(--accent-red);
+  margin-block: 0.5rem;
+}
+
+.dropdownContainer {
+  position: relative;
+}
+
+.dropdown {
+  max-height: 125px; /* Limit the height of the dropdown */
+  overflow-y: auto; /* Add scroll functionality */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+}
+
+.dropdownHidden {
+  display: none;
+}
+
+.dropdownMenu {
+  list-style: none;
+}
+
+.dropdownMenu li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.dropdownMenu li:hover,
+.dropdownMenu li:focus {
+  background-color: #f5f5f5;
+  border: none;
+  outline: none;
+}
+
+@media only screen and (min-width: 600px) {
+  .cancelButton,
+  .confirmButton,
+  .editAccountButton {
+    max-width: 300px;
+  }
+
+  .passwordTooltip {
+    display: inline-block;
+  }
+}

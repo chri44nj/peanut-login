@@ -100,13 +100,8 @@
   transition: 0.2s;
 }
 
-.validButton {
-  background-color: var(--background-color);
-  color: var(--accent-purple-dark);
-  border-color: var(--background-color);
-}
-
-.addStudentsButton {
+.addStudentsButton,
+.addStudentButton {
   width: 100%;
   padding: 0.5rem 1rem;
   border: solid 1px var(--accent-purple-dark);
@@ -119,6 +114,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.addStudentInstructions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.validButton {
+  background-color: var(--background-color);
+  color: var(--accent-purple-dark);
+  border-color: var(--background-color);
+}
+
+.validButton2 {
+  color: var(--background-color);
+  background-color: var(--accent-purple-dark);
+  border-color: var(--accent-purple-dark);
 }
 
 .openFormButton:hover,
@@ -238,7 +251,8 @@
   padding: 1rem;
 }
 
-#closeRemoveForm {
+#closeRemoveForm,
+#closeAddStudentForm {
   background-color: transparent;
   width: fit-content;
   color: var(--accent-purple-dark);
@@ -254,7 +268,8 @@
 }
 
 #closeCreateForm:hover,
-#closeRemoveForm:hover {
+#closeRemoveForm:hover,
+#closeAddStudentForm:hover {
   opacity: 1;
 }
 
@@ -435,6 +450,7 @@
 }
 
 .removeClass,
+.addStudent,
 .removeStudent {
   display: flex;
   flex-direction: column;
@@ -455,7 +471,8 @@
 }
 
 .removeClass p,
-.removeStudent p {
+.removeStudent p,
+.addStudent p:first-of-type {
   color: var(--text-color);
   font-size: var(--font-small);
   font-weight: bold;
@@ -463,8 +480,30 @@
 }
 
 .removeClass .bold,
+.addStudent .bold,
 .removeStudent .bold {
   font-weight: bold;
+}
+
+.inputField {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputField input {
+  height: 2.5rem;
+  width: 100%;
+  border-radius: 10px;
+  border: solid 1px rgba(0, 0, 0, 0.15);
+  padding-inline: 1rem;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.inputField input:focus {
+  outline: none;
+  outline: solid 1px var(--accent-purple-dark);
 }
 
 .bigStat {
@@ -485,13 +524,16 @@
 @media only screen and (min-width: 600px) {
   .openFormButton,
   .addStudentsButton,
+  .addStudentButton,
   .removeButton,
-  .removeButton2 {
+  .removeButton2,
+  .inputField {
     max-width: 300px;
   }
 
   .addClass,
   .removeClass,
+  .addStudent,
   .removeStudent {
     margin: auto 35%;
   }

@@ -12,6 +12,8 @@ function DashboardClasses() {
   /* States */
   const [createFormVisible, setCreateFormVisible] = useState(false);
   const [removeClassFormVisible, setRemoveClassFormVisible] = useState(false);
+  const [addStudentFormVisible, setAddStudentFormVisible] = useState(false);
+  const [studentToAdd, setStudentToAdd] = useState("");
   const [removeStudentFormVisible, setRemoveStudentFormVisible] = useState(false);
   const [grade, setGrade] = useState("");
   const [letter, setLetter] = useState("");
@@ -25,9 +27,17 @@ function DashboardClasses() {
     const handleClickOutside = (event) => {
       if (createFormVisible && !event.target.closest(`.${styles.addClass}`)) {
         setCreateFormVisible(false);
-      } else if (removeClassFormVisible && !event.target.closest(`.${styles.removeClass}`)) {
+      }
+
+      if (removeClassFormVisible && !event.target.closest(`.${styles.removeClass}`)) {
         setRemoveClassFormVisible(false);
-      } else if (removeStudentFormVisible && !event.target.closest(`.${styles.removeStudent}`)) {
+      }
+
+      if (addStudentFormVisible && !event.target.closest(`.${styles.addStudent}`)) {
+        setAddStudentFormVisible(false);
+      }
+
+      if (removeStudentFormVisible && !event.target.closest(`.${styles.removeStudent}`)) {
         setRemoveStudentFormVisible(false);
       }
     };
@@ -37,7 +47,7 @@ function DashboardClasses() {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [createFormVisible, removeClassFormVisible, removeStudentFormVisible]);
+  }, [createFormVisible, removeClassFormVisible, addStudentFormVisible, removeStudentFormVisible]);
 
   /* Functions */
   const handleClassClick = async (classID) => {
@@ -60,7 +70,7 @@ function DashboardClasses() {
     }
   };
 
-  const handleFormSubmit = async (e) => {
+  const addClass = async (e) => {
     e.preventDefault();
     await postClass();
     setGrade("");
@@ -110,6 +120,12 @@ function DashboardClasses() {
     }));
     updateTeacherData();
     fetchClasses();
+  };
+
+  const addStudent = async () => {
+    console.log("Her skal skrives kode der tilføjer elev til klasse");
+    setAddStudentFormVisible(false);
+    setStudentToAdd("");
   };
 
   const removeStudent = async () => {
@@ -305,7 +321,7 @@ function DashboardClasses() {
                     <h2>
                       <span className={styles.school}>{theclass.name}</span>, {theclass.grade}.{theclass.letter}
                     </h2>
-                    {myContexts.selectedStudent === "Alle elever" ? <p>Klassekode: {myContexts.clickedClass}</p> : ""}
+                    {/*   {myContexts.selectedStudent === "Alle elever" ? <p>Klassekode: {myContexts.clickedClass}</p> : ""} */}
 
                     <section className={styles.studentsListSection}>
                       {myContexts.selectedStudent === "Alle elever" ? <h3>{theclass.students?.length === 0 ? "Der er ingen elever tilføjet til klassen" : theclass.students?.length === 1 ? "Din ene elev" : "Dine " + theclass.students?.length + " elever"} </h3> : ""}
@@ -325,11 +341,17 @@ function DashboardClasses() {
                         ""
                       )}
 
-                      {theclass.students?.length === 0 ? <p>Klik på knappen herunder eller del din klassekode med eleverne, for at tilføje dem til klassen.</p> : ""}
+                      {theclass.students?.length === 0 ? <p>Klik på knappen herunder for at tilføje elever til klassen.</p> : ""}
                       {myContexts.selectedStudent === "Alle elever" && (
                         <div className={styles.buttonContainer}>
-                          <button className={styles.addStudentsButton} type="button">
-                            Tilføj elev
+                          <button
+                            className={styles.addStudentsButton}
+                            type="button"
+                            onClick={() => {
+                              setAddStudentFormVisible((old) => !old);
+                            }}
+                          >
+                            {addStudentFormVisible ? "Luk" : "Tilføj elev"}
                           </button>
                           <button
                             className={styles.removeButton}
@@ -564,7 +586,7 @@ function DashboardClasses() {
       )}
 
       {createFormVisible && (
-        <form className={styles.addClass} onSubmit={handleFormSubmit}>
+        <form className={styles.addClass} onSubmit={addClass}>
           <div className={styles.addClassFlex}>
             <div>
               <p>Klassetrin</p>
@@ -630,6 +652,42 @@ function DashboardClasses() {
             Tilføj
           </button>
         </form>
+      )}
+
+      {addStudentFormVisible && (
+        <div className={styles.addStudent}>
+          {myContexts.teacherData.classes.map((theclass, index) => {
+            if (theclass._id === myContexts.clickedClass) {
+              return (
+                <div className={styles.addStudentInstructions} key={index}>
+                  <p>
+                    Skriv brugernavnet på den elev, du ønsker at tilføje til <span className={styles.capitalize}>{theclass.name}</span>, {theclass.grade}.{theclass.letter}
+                  </p>
+                  <p>(store/små bogstaver-sensitiv)</p>
+                </div>
+              );
+            }
+          })}
+
+          <div className={styles.inputField}>
+            <input type="name" id="name" name="name" title="Indtast dit fulde navn" onChange={(e) => setStudentToAdd(e.target.value.toLowerCase())} required />
+          </div>
+
+          <button
+            id={styles.closeAddStudentForm}
+            type="button"
+            onClick={() => {
+              setAddStudentFormVisible((old) => !old);
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+            </svg>
+          </button>
+          <button className={`${styles.addStudentButton} ${studentToAdd ? styles.validButton2 : ""}`} type="button" onClick={addStudent}>
+            Tilføj
+          </button>
+        </div>
       )}
 
       {removeStudentFormVisible && (
