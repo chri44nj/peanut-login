@@ -670,7 +670,7 @@ function DashboardClasses() {
           })}
 
           <div className={styles.inputField}>
-            <input type="name" id="name" name="name" title="Indtast dit fulde navn" onChange={(e) => setStudentToAdd(e.target.value.toLowerCase())} required />
+            <input type="name" id="name" name="name" autocapitalize="none" title="Indtast dit fulde navn" onChange={(e) => setStudentToAdd(e.target.value.toLowerCase())} required />
           </div>
 
           <button

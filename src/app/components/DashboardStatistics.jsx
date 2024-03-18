@@ -23,7 +23,7 @@ function DashboardStatistics() {
   const [totalWrongThisPeriod, setTotalWrongThisPeriod] = useState(null);
   const [totalSolvedThisPeriod, setTotalSolvedThisPeriod] = useState(null);
   const [correctPercentageThisperiod, setCorrectPercentageThisPeriod] = useState(null);
-  const [sortBy, setSortBy] = useState("correctPercentage");
+  const [sortBy, setSortBy] = useState("alphabetically");
   const [subjectData, setSubjectData] = useState({
     correctPercentage: {
       Brøker: 74,
@@ -289,13 +289,27 @@ function DashboardStatistics() {
     </svg>
   );
 
-  const subjects = Object.keys(subjectData.correctPercentage).sort((a, b) => {
-    const valueA = subjectData[sortBy][a];
-    const valueB = subjectData[sortBy][b];
-    return valueB - valueA;
+  const arrow16 = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
+    </svg>
+  );
+
+  const sortedSubjects = Object.keys(subjectData.correctPercentage).sort((a, b) => {
+    if (sortBy === "alphabetically") {
+      return a.localeCompare(b);
+    } else {
+      const valueA = subjectData[sortBy][a];
+      const valueB = subjectData[sortBy][b];
+      return valueB - valueA;
+    }
   });
 
   const findExtremeValue = (subject, dataType) => {
+    if (dataType === "alphabetically") {
+      return "";
+    }
+
     const data = subjectData[dataType][subject];
     const values = Object.values(subjectData[dataType]);
     const maxValue = Math.max(...values);
@@ -355,6 +369,7 @@ function DashboardStatistics() {
               <option>Altid</option>
             </select>
             <select className={styles.dropdown} id="sortBy" name="sortBy" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+              <option value="alphabetically">Alfabetisk</option>
               <option value="correctPercentage">Korrekt</option>
               <option value="totalSolved">Opgaver</option>
               <option value="minutesSpent">Minutter</option>
@@ -371,7 +386,7 @@ function DashboardStatistics() {
             <div className={`${styles.classOverview} ${styles.overviewHighlight}`}>
               <div className={styles.overviewHighlightHeading}>
                 {overview20}
-                <h3>Overblik ({myContexts.selectedPeriod})</h3>
+                <h3>Overblik ({myContexts.selectedPeriod.toLowerCase()})</h3>
               </div>
               <div className={styles.overviewHighlightGrid}>
                 <div className={styles.overviewHighlightPercentage}>
@@ -418,14 +433,23 @@ function DashboardStatistics() {
               </div>
             </div>
 
-            {subjects.map((subject) => (
+            {sortedSubjects.map((subject) => (
               <div key={subject} className={`${styles.classOverview} ${styles.overviewSubject} ${styles[findExtremeValue(subject, sortBy)]}`}>
                 <h3>{subject}</h3>
                 <div className={styles.overviewSubjectGrid}>
                   <div className={styles.flexColumn}>
-                    <p>Korrekt</p>
-                    <p>Opgaver</p>
-                    <p>Minutter</p>
+                    <div className={styles.flexRow}>
+                      {sortBy === "correctPercentage" && arrow16}
+                      <p>Korrekt</p>
+                    </div>
+                    <div className={styles.flexRow}>
+                      {sortBy === "totalSolved" && arrow16}
+                      <p>Opgaver</p>
+                    </div>
+                    <div className={styles.flexRow}>
+                      {sortBy === "minutesSpent" && arrow16}
+                      <p>Minutter</p>
+                    </div>
                   </div>
                   <div className={styles.flexColumn}>
                     <p>{subjectData.correctPercentage[subject] ? subjectData.correctPercentage[subject] + "%" : "-"}</p>
