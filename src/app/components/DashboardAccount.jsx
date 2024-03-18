@@ -8,21 +8,26 @@ import { MyContexts, SetMyContexts } from "./Contexts";
 function DashboardAccount() {
   /* States */
   const [editAccount, setEditAccount] = useState(false);
+  const [changePassword, setChangePassword] = useState(false);
+  const [deleteAccount, setDeleteAccount] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
+  const [passwordType2, setPasswordType2] = useState("password");
   const [tooltipText, setTooltipText] = useState("Vis adgangskode");
-  const [accountType, setAccountType] = useState("");
+  const [tooltipText2, setTooltipText2] = useState("Vis adgangskode");
   const [school, setSchool] = useState("ingen");
-  const [selectedSubjects, setSelectedSubjects] = useState([]);
-  const [subjects, setSubjects] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [email2, setEmail2] = useState("");
   const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [phone, setPhone] = useState(null);
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
+  const [deleteValid, setDeleteValid] = useState(false);
   const [passwordCriteria, setPasswordCriteria] = useState(false);
   const [passwordCriteria2, setPasswordCriteria2] = useState(false);
   const [passwordCriteria3, setPasswordCriteria3] = useState(true);
+  const [passwordCriteria4, setPasswordCriteria4] = useState(false);
   const [error, setError] = useState("");
   const [listOfSchools, setListOfSchools] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -51,13 +56,21 @@ function DashboardAccount() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w\S]*$/;
     setEmailValid(emailRegex.test(email));
-    setPasswordValid(passwordRegex.test(password));
 
     const capitalNumber = /^(?=.*[A-Z])(?=.*\d)/.test(password);
     setPasswordCriteria(capitalNumber);
     setPasswordCriteria2(password.length >= 8);
     setPasswordCriteria3(!/\s/.test(password));
-  }, [email, password]);
+    setError("");
+
+    if (password === password2 && password !== "") {
+      setPasswordCriteria4(true);
+      setPasswordValid(passwordRegex.test(password));
+    } else {
+      setPasswordCriteria4(false);
+      setPasswordValid(false);
+    }
+  }, [email, password, password2, changePassword]);
 
   useEffect(() => {
     if (passwordCriteria3 === false) {
@@ -66,6 +79,18 @@ function DashboardAccount() {
       setError("");
     }
   }, [passwordCriteria3]);
+
+  useEffect(() => {
+    if (error) {
+      setError("");
+    }
+
+    if (email2 === myContexts.teacherData.email) {
+      setDeleteValid(true);
+    } else {
+      setDeleteValid(false);
+    }
+  }, [email2]);
 
   const dropdownRef = useRef(null);
   useEffect(() => {
@@ -173,6 +198,12 @@ function DashboardAccount() {
     }
   };
 
+  const handleSchoolClick = (school) => {
+    setSchool(school);
+    setSearchTerm(school);
+    setDropdownHidden(true);
+  };
+
   const showPassword = () => {
     if (passwordType === "password") {
       setPasswordType("text");
@@ -183,19 +214,47 @@ function DashboardAccount() {
     }
   };
 
-  const handleEditAccountClick = () => {
-    if (!editAccount) {
-      setEditAccount(true);
-      setName(myContexts.teacherData.name);
-      setSearchTerm(myContexts.teacherData.school);
-      setPhone(myContexts.teacherData.phone);
-      setEmail(myContexts.teacherData.email);
+  const showPassword2 = () => {
+    if (passwordType2 === "password") {
+      setPasswordType2("text");
+      setTooltipText2("Skjul adgangskode");
     } else {
-      setEditAccount(false);
-      setName("");
-      setSearchTerm("");
-      setPhone("");
-      setEmail("");
+      setPasswordType2("password");
+      setTooltipText2("Vis adgangskode");
+    }
+  };
+
+  const handleEditAccountClick = (e) => {
+    if (e === "editAccount") {
+      if (!editAccount) {
+        setEditAccount(true);
+        setName(myContexts.teacherData.name);
+        setSearchTerm(myContexts.teacherData.school);
+        setPhone(myContexts.teacherData.phone);
+        setEmail(myContexts.teacherData.email);
+      } else {
+        setEditAccount(false);
+        setName("");
+        setSearchTerm("");
+        setPhone("");
+        setEmail("");
+      }
+    } else if (e === "changePassword") {
+      if (!changePassword) {
+        setChangePassword(true);
+      } else {
+        setChangePassword(false);
+        setPassword("");
+        setPassword2("");
+        setError("");
+      }
+    } else if (e === "deleteAccount") {
+      if (!deleteAccount) {
+        setDeleteAccount(true);
+      } else {
+        setDeleteAccount(false);
+        setEmail2("");
+      }
     }
   };
 
@@ -206,6 +265,25 @@ function DashboardAccount() {
     setSearchTerm("");
     setPhone("");
     setEmail("");
+    setPassword("");
+    setPassword2("");
+  };
+
+  const confirmChangePassword = () => {
+    if (passwordValid) {
+      console.log("Her skal være kode der ændrer brugerens adgangskode");
+      setChangePassword(false);
+      setPassword("");
+      setPassword2("");
+    } else {
+      setError("Opfyld samtlige adgangskodekriterier");
+    }
+  };
+
+  const confirmDeleteAccount = () => {
+    console.log("Her skal være kode der sletter brugerens konto");
+    setDeleteAccount(false);
+    setEmail2("");
   };
 
   /* Other */
@@ -241,14 +319,9 @@ function DashboardAccount() {
     </svg>
   );
 
-  const subjectsList = ["Matematik", "Biologi", "Kemi", "Fysik"];
-  const buttonTooltip = !emailValid ? "Indtast en korrekt emailadresse (eks: planetpeanut@hotmail.com)" : !passwordValid ? "Indtast en gyldig adgangskode (min. 8 karakterer, min. 1 stort bogstav, min. 1 tal)" : "";
-  const buttonTooltip2 = !name ? "Indtast dit navn" : school === "ingen" ? "Vælg en skole" : !emailValid ? "Indtast en korrekt emailadresse (eks: planetpeanut@hotmail.com)" : !passwordValid ? "Indtast en gyldig adgangskode (min. 8 karakterer, min. 1 stort bogstav, min. 1 tal)" : "";
-  const buttonTooltip3 = selectedSubjects.length === 0 ? "Vælg et eller flere fag" : "";
-
   return (
     <div className={styles.homeContainer}>
-      {!editAccount && (
+      {!editAccount && !changePassword && !deleteAccount ? (
         <div>
           <h2 className={styles.name}>{session?.user?.name}</h2>
           <p>{session?.user?.email}</p>
@@ -268,10 +341,18 @@ function DashboardAccount() {
           <a className="hover-link" href="#dashboardContainer" onClick={() => switchDashboardType("Dine klasser")}>
             {myContexts.teacherData.classesIDs.length} {myContexts.teacherData.classesIDs.length === 1 ? "klasse" : "klasser"}
           </a>
-          <button className={styles.editAccountButton} onClick={handleEditAccountClick}>
-            Ændre kontooplysninger
+          <button className={styles.editAccountButton} value="editAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
+            Rediger kontooplysninger
+          </button>
+          <button className={styles.editPasswordButton} value="changePassword" onClick={(e) => handleEditAccountClick(e.target.value)}>
+            Skift adgangskode
+          </button>
+          <button className={styles.deleteAccountButton} value="deleteAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
+            Slet konto
           </button>
         </div>
+      ) : (
+        ""
       )}
 
       {editAccount && (
@@ -331,12 +412,38 @@ function DashboardAccount() {
             <input type="email" id="email" name="email" title="Indtast din email-adresse" value={email} onChange={(e) => setEmail(e.target.value.toLowerCase())} required />
           </div>
 
+          <div className={styles.buttonErrorContainer}>
+            <div className={styles.editAccountButtonsContainer}>
+              <button className={styles.cancelButton} value="editAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
+                Afbryd
+              </button>
+              <button className={styles.confirmButton} onClick={confirmEditAccount}>
+                Gem ændringer
+              </button>
+            </div>
+            {error && <p className={styles.error}>{error}</p>}
+          </div>
+        </div>
+      )}
+
+      {changePassword && (
+        <div className={styles.editAccount}>
           <div className={styles.inputField}>
-            <label htmlFor="password">Adgangskode</label>
+            <label htmlFor="password">Ny adgangskode</label>
             <div className={styles.passwordContainer}>
               <input type={passwordType} id="password" name="password" title={myContexts.loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword(e.target.value)} required />
               <button type="button" className={styles.showPassword} onClick={showPassword}>
                 {passwordType === "password" ? notVisible : visible} <span className={styles.passwordTooltip}>{tooltipText}</span>
+              </button>
+            </div>
+          </div>
+
+          <div className={styles.inputField}>
+            <label htmlFor="password">Bekræft ny adgangskode</label>
+            <div className={styles.passwordContainer}>
+              <input type={passwordType2} id="passwordConfirm" name="passwordConfirm" title={myContexts.loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword2(e.target.value)} required />
+              <button type="button" className={styles.showPassword} onClick={showPassword2}>
+                {passwordType2 === "password" ? notVisible : visible} <span className={styles.passwordTooltip}>{tooltipText2}</span>
               </button>
             </div>
             <div className={styles.passwordCriteria}>
@@ -348,21 +455,49 @@ function DashboardAccount() {
                 {passwordCriteria2 ? checkMark : cross}
                 <p>Minimum 8 karakterer langt</p>
               </div>
+              <div>
+                {passwordCriteria4 ? checkMark : cross}
+                <p>Adgangskoder skal matche</p>
+              </div>
             </div>
           </div>
 
           <div className={styles.buttonErrorContainer}>
             <div className={styles.editAccountButtonsContainer}>
-              <button className={styles.cancelButton} onClick={handleEditAccountClick}>
+              <button className={styles.cancelButton} value="changePassword" onClick={(e) => handleEditAccountClick(e.target.value)}>
                 Afbryd
               </button>
-              <button className={styles.confirmButton} onClick={confirmEditAccount}>
+              <button className={styles.confirmButton} onClick={confirmChangePassword}>
                 Gem ændringer
               </button>
             </div>
             {error && <p className={styles.error}>{error}</p>}
           </div>
         </div>
+      )}
+
+      {deleteAccount && (
+        <>
+          <p className={styles.sadMessage}>Vi er kede af at miste dig! Hvis du er sikker på, du vil slette din bruger, så bekræft din email-adresse forneden og klik på &quot;Slet konto&quot;.</p>
+          <div className={styles.editAccount}>
+            <div className={styles.inputField}>
+              <label htmlFor="email">Email-adresse</label>
+              <input type="email" id="email2" name="email2" title="Indtast din email-adresse" value={email2} onChange={(e) => setEmail2(e.target.value.toLowerCase())} required />
+            </div>
+
+            <div className={styles.buttonErrorContainer}>
+              <div className={styles.editAccountButtonsContainer}>
+                <button className={styles.confirmButton} value="deleteAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
+                  Afbryd
+                </button>
+                <button className={!deleteValid ? styles.deleteButton : styles.deleteAccountButton2} onClick={!deleteValid ? () => setError("Indtast den korrekte email-adresse") : confirmDeleteAccount}>
+                  Slet konto
+                </button>
+              </div>
+              {error && <p className={styles.error}>{error}</p>}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

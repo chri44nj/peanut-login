@@ -150,7 +150,11 @@
 
 .cancelButton,
 .confirmButton,
-.editAccountButton {
+.editAccountButton,
+.editPasswordButton,
+.deleteAccountButton,
+.deleteAccountButton2,
+.deleteButton {
   width: 100%;
   height: 2.5rem;
   border-radius: 10px;
@@ -163,24 +167,48 @@
   margin-top: 2rem;
 }
 
+.editPasswordButton,
+.deleteAccountButton {
+  display: block;
+  margin-top: 0.5rem;
+}
+
 .confirmButton,
-.editAccountButton {
+.editAccountButton,
+.editPasswordButton,
+.deleteAccountButton,
+.deleteAccountButton2 {
   border: solid 1px var(--accent-purple-dark);
   background-color: var(--background-color);
   color: var(--accent-purple-dark);
 }
 
 .confirmButton:hover,
-.editAccountButton:hover {
+.editAccountButton:hover,
+.editPasswordButton:hover {
   background-color: var(--accent-purple-dark);
   color: var(--background-color);
 }
 
 .cancelButton,
-.cancelButton:hover {
+.cancelButton:hover,
+.deleteAccountButton,
+.deleteAccountButton:hover,
+.deleteAccountButton2 {
   border: solid 1px var(--accent-red);
   color: var(--background-color);
   background-color: var(--accent-red);
+}
+
+.deleteButton {
+  display: block;
+  border: solid 1px var(--accent-red);
+  color: var(--accent-red);
+  background-color: var(--background-color);
+}
+
+.deleteButton:hover {
+  cursor: not-allowed;
 }
 
 .error {
@@ -224,10 +252,17 @@
   outline: none;
 }
 
+.sadMessage {
+  margin-bottom: 1rem;
+}
+
 @media only screen and (min-width: 600px) {
   .cancelButton,
   .confirmButton,
-  .editAccountButton {
+  .editAccountButton,
+  .editPasswordButton,
+  .deleteAccountButton,
+  .deleteButton {
     max-width: 300px;
   }
 
