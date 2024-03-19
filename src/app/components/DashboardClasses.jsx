@@ -212,7 +212,7 @@ function DashboardClasses() {
 
   return (
     <>
-      {myContexts.teacherData.classesIDs.length === 0 ? <p>Ingen klasser endnu; klik på knappen herunder for at tilføje den første og få adgang til alle features!</p> : ""}
+      {myContexts.teacherData.classesIDs.length === 0 ? <p className={styles.noClassesYet}>Ingen klasser endnu; klik på knappen herunder for at tilføje den første og få adgang til alle features!</p> : ""}
 
       <div id="classesContainer" className={styles.classesContainer}>
         {myContexts.teacherData.classesIDs.length > 0 ? (

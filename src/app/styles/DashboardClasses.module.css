@@ -2,6 +2,10 @@
 .classesContainer {
 }
 
+.noClassesYet {
+  margin-bottom: 1rem;
+}
+
 .dropdownsContainer {
   display: flex;
   flex-direction: column;

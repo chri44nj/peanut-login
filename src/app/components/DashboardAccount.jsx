@@ -240,6 +240,7 @@ function DashboardAccount() {
         setEmail("");
       }
     } else if (e === "changePassword") {
+      setEditAccount(false);
       if (!changePassword) {
         setChangePassword(true);
       } else {
@@ -249,6 +250,7 @@ function DashboardAccount() {
         setError("");
       }
     } else if (e === "deleteAccount") {
+      setEditAccount(false);
       if (!deleteAccount) {
         setDeleteAccount(true);
       } else {
@@ -288,8 +290,34 @@ function DashboardAccount() {
 
   /* Other */
   const userIcon = (
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
       <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+    </svg>
+  );
+
+  const emailIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+      <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z" />
+    </svg>
+  );
+
+  const phoneIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z" />
+    </svg>
+  );
+
+  const subjectIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book-fill" viewBox="0 0 16 16">
+      <path d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z" />
+    </svg>
+  );
+
+  const classesIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+      <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+      <path fillRule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z" />
+      <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
     </svg>
   );
 
@@ -313,6 +341,12 @@ function DashboardAccount() {
     </svg>
   );
 
+  const cross2 = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#0000001A" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+    </svg>
+  );
+
   const checkMark = (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#5a31f2" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
       <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
@@ -322,33 +356,45 @@ function DashboardAccount() {
   return (
     <div className={styles.homeContainer}>
       {!editAccount && !changePassword && !deleteAccount ? (
-        <div>
+        <div className={styles.accountDetailscontainer}>
           <h2 className={styles.name}>{session?.user?.name}</h2>
-          <p>{session?.user?.email}</p>
-          <p className={styles.phone}>+45 {myContexts.teacherData.phone}</p>
-          <p className={styles.school}>
-            {myContexts.teacherData.accountType} <span className={styles.lowercase}>på</span> {myContexts.teacherData.school}
-          </p>
-          {myContexts.teacherData.subjects ? (
-            <p className={styles.subjects}>
-              {myContexts.teacherData.subjects.map((subject, index) => (
-                <span key={index}>{subject} </span>
-              ))}
-            </p>
-          ) : (
-            ""
-          )}
-          <a className="hover-link" href="#dashboardContainer" onClick={() => switchDashboardType("Klasser")}>
-            {myContexts.teacherData.classesIDs.length} {myContexts.teacherData.classesIDs.length === 1 ? "klasse" : "klasser"}
-          </a>
+          <div className={styles.accountDetails}>
+            <div className={styles.flexRow}>
+              {userIcon}
+              <p className={styles.school}>
+                {myContexts.teacherData.accountType} <span className={styles.lowercase}>på</span> {myContexts.teacherData.school}
+              </p>
+            </div>
+            <div className={styles.flexRow}>
+              {emailIcon}
+              <p>{session?.user?.email}</p>
+            </div>
+            <div className={styles.flexRow}>
+              {phoneIcon}
+              <p className={styles.phone}>+45 {myContexts.teacherData.phone}</p>
+            </div>
+            <div className={styles.flexRow}>
+              {subjectIcon}
+              {myContexts.teacherData.subjects ? (
+                <p className={styles.subjects}>
+                  {myContexts.teacherData.subjects.map((subject, index) => (
+                    <span key={index}>{subject} </span>
+                  ))}
+                </p>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className={styles.flexRow}>
+              {classesIcon}
+              <a className="hover-link" href="#dashboardContainer" onClick={() => switchDashboardType("Klasser")}>
+                {myContexts.teacherData.classesIDs.length} {myContexts.teacherData.classesIDs.length === 1 ? "klasse" : "klasser"}
+              </a>
+            </div>
+          </div>
+
           <button className={styles.editAccountButton} value="editAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
             Rediger kontooplysninger
-          </button>
-          <button className={styles.editPasswordButton} value="changePassword" onClick={(e) => handleEditAccountClick(e.target.value)}>
-            Skift adgangskode
-          </button>
-          <button className={styles.deleteAccountButton} value="deleteAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
-            Slet konto
           </button>
         </div>
       ) : (
@@ -356,74 +402,84 @@ function DashboardAccount() {
       )}
 
       {editAccount && (
-        <div className={styles.editAccount}>
-          <div className={styles.inputField}>
-            <label htmlFor="name">Fulde navn</label>
-            <input className={styles.capitalize} type="name" id="name" name="name" title="Indtast dit fulde navn" value={name} onChange={(e) => setName(e.target.value.toLowerCase())} required />
-          </div>
-
-          <div className={styles.inputField}>
+        <>
+          <div className={styles.editAccount}>
             <div className={styles.inputField}>
-              <label htmlFor="search">Skole</label>
-              <input
-                type="text"
-                id="search"
-                placeholder="Søg efter skole..."
-                value={searchTerm}
-                onChange={handleSearchInputChange}
-                onClick={() => {
-                  if (dropdownHidden) {
-                    setDropdownHidden(false);
-                  }
-                }}
-              />
-              <div className={styles.dropdownContainer} ref={dropdownRef}>
-                <div id="dropdown" className={`${styles.dropdown} ${dropdownHidden ? styles.dropdownHidden : ""}`}>
-                  <ul className={styles.dropdownMenu}>
-                    {filteredSchools.map((school, index) => (
-                      <li
-                        role="button"
-                        key={index}
-                        value={school.value}
-                        onClick={() => handleSchoolClick(school.value)}
-                        tabIndex="0"
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            handleSchoolClick(school.value);
-                          }
-                        }}
-                      >
-                        {school.value}
-                      </li>
-                    ))}
-                  </ul>
+              <label htmlFor="name">Fulde navn</label>
+              <input className={styles.capitalize} type="name" id="name" name="name" title="Indtast dit fulde navn" value={name} onChange={(e) => setName(e.target.value.toLowerCase())} required />
+            </div>
+
+            <div className={styles.inputField}>
+              <div className={styles.inputField}>
+                <label htmlFor="search">Skole</label>
+                <input
+                  type="text"
+                  id="search"
+                  placeholder="Søg efter skole..."
+                  value={searchTerm}
+                  onChange={handleSearchInputChange}
+                  onClick={() => {
+                    if (dropdownHidden) {
+                      setDropdownHidden(false);
+                    }
+                  }}
+                />
+                <div className={styles.dropdownContainer} ref={dropdownRef}>
+                  <div id="dropdown" className={`${styles.dropdown} ${dropdownHidden ? styles.dropdownHidden : ""}`}>
+                    <ul className={styles.dropdownMenu}>
+                      {filteredSchools.map((school, index) => (
+                        <li
+                          role="button"
+                          key={index}
+                          value={school.value}
+                          onClick={() => handleSchoolClick(school.value)}
+                          tabIndex="0"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleSchoolClick(school.value);
+                            }
+                          }}
+                        >
+                          {school.value}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className={styles.inputField}>
-            <label htmlFor="phone">Telefonnummer</label>
-            <input type="tel" id="phone" name="phone" title="Indtast dit telefonnummer" maxlength="8" value={phone} onChange={(e) => setPhone(e.target.value)} required />
-          </div>
+            <div className={styles.inputField}>
+              <label htmlFor="phone">Telefonnummer</label>
+              <input type="tel" id="phone" name="phone" title="Indtast dit telefonnummer" maxlength="8" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+            </div>
 
-          <div className={styles.inputField}>
-            <label htmlFor="email">Email-adresse</label>
-            <input type="email" id="email" name="email" title="Indtast din email-adresse" value={email} onChange={(e) => setEmail(e.target.value.toLowerCase())} required />
-          </div>
+            <div className={styles.inputField}>
+              <label htmlFor="email">Email-adresse</label>
+              <input type="email" id="email" name="email" title="Indtast din email-adresse" value={email} onChange={(e) => setEmail(e.target.value.toLowerCase())} required />
+            </div>
 
-          <div className={styles.buttonErrorContainer}>
-            <div className={styles.editAccountButtonsContainer}>
-              <button className={styles.cancelButton} value="editAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
-                Afbryd
+            <div className={styles.buttonErrorContainer}>
+              <div className={styles.editAccountButtonsContainer}>
+                <button className={styles.cancelButton} value="editAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
+                  Afbryd
+                </button>
+                <button className={styles.confirmButton} onClick={confirmEditAccount}>
+                  Gem ændringer
+                </button>
+              </div>
+              {error && <p className={styles.error}>{error}</p>}
+            </div>
+            <div className={styles.editDeleteContainer}>
+              <button className={styles.editPasswordButton} value="changePassword" onClick={(e) => handleEditAccountClick(e.target.value)}>
+                Skift adgangskode
               </button>
-              <button className={styles.confirmButton} onClick={confirmEditAccount}>
-                Gem ændringer
+              <button className={styles.deleteAccountButton} value="deleteAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
+                Slet konto
               </button>
             </div>
-            {error && <p className={styles.error}>{error}</p>}
           </div>
-        </div>
+        </>
       )}
 
       {changePassword && (
@@ -448,15 +504,15 @@ function DashboardAccount() {
             </div>
             <div className={styles.passwordCriteria}>
               <div>
-                {passwordCriteria ? checkMark : cross}
+                {passwordCriteria ? checkMark : !password ? cross2 : cross}
                 <p>Minimum 1 stort bogstav og 1 tal</p>
               </div>
               <div>
-                {passwordCriteria2 ? checkMark : cross}
+                {passwordCriteria2 ? checkMark : !password ? cross2 : cross}
                 <p>Minimum 8 karakterer langt</p>
               </div>
               <div>
-                {passwordCriteria4 ? checkMark : cross}
+                {passwordCriteria4 ? checkMark : !password ? cross2 : cross}
                 <p>Adgangskoder skal matche</p>
               </div>
             </div>
@@ -477,27 +533,25 @@ function DashboardAccount() {
       )}
 
       {deleteAccount && (
-        <>
-          <p className={styles.sadMessage}>Vi er kede af at miste dig! Hvis du er sikker på, du vil slette din bruger, så bekræft din email-adresse forneden og klik på &quot;Slet konto&quot;.</p>
-          <div className={styles.editAccount}>
-            <div className={styles.inputField}>
-              <label htmlFor="email">Email-adresse</label>
-              <input type="email" id="email2" name="email2" title="Indtast din email-adresse" value={email2} onChange={(e) => setEmail2(e.target.value.toLowerCase())} required />
-            </div>
-
-            <div className={styles.buttonErrorContainer}>
-              <div className={styles.editAccountButtonsContainer}>
-                <button className={styles.confirmButton} value="deleteAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
-                  Afbryd
-                </button>
-                <button className={!deleteValid ? styles.deleteButton : styles.deleteAccountButton2} onClick={!deleteValid ? () => setError("Indtast den korrekte email-adresse") : confirmDeleteAccount}>
-                  Slet konto
-                </button>
-              </div>
-              {error && <p className={styles.error}>{error}</p>}
-            </div>
+        <div className={styles.editAccount}>
+          <div className={styles.inputField}>
+            <label htmlFor="email">Email-adresse</label>
+            <input type="email" id="email2" name="email2" title="Indtast din email-adresse" value={email2} onChange={(e) => setEmail2(e.target.value.toLowerCase())} required />
           </div>
-        </>
+          <p className={styles.sadMessage}>Bekræft din email-adresse ovenfor og klik på &quot;Slet konto&quot;.</p>
+
+          <div className={styles.buttonErrorContainer}>
+            <div className={styles.editAccountButtonsContainer}>
+              <button className={styles.confirmButton} value="deleteAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
+                Afbryd
+              </button>
+              <button className={!deleteValid ? styles.deleteButton : styles.deleteAccountButton2} onClick={!deleteValid ? () => setError("Indtast den korrekte email-adresse") : confirmDeleteAccount}>
+                Slet konto
+              </button>
+            </div>
+            {error && <p className={styles.error}>{error}</p>}
+          </div>
+        </div>
       )}
     </div>
   );
