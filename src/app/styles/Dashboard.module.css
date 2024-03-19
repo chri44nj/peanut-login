@@ -16,6 +16,23 @@
 
 .dashboardHeader h1 {
   font-size: var(--font-smaller);
+  color: var(--accent-purple);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.breadcrumb button {
+  background-color: transparent;
+  border: none;
+}
+
+.breadcrumb span {
+  color: var(--accent-purple);
 }
 
 .burgerMenu {
@@ -32,7 +49,7 @@
 }
 
 .burgerMenu span {
-  background-color: var(--accent-purple-dark);
+  background-color: var(--text-color);
   width: 100%;
   height: 4px;
 }
@@ -55,7 +72,7 @@
 }
 
 .dashboardMenu * {
-  color: var(--accent-purple-dark);
+  color: var(--text-color);
 }
 
 .dashboardBurger {
@@ -78,7 +95,7 @@
 }
 
 #activeDashboard {
-  background-color: var(--accent-purple-dark);
+  background-color: var(--accent-purple);
   color: var(--background-color);
 }
 

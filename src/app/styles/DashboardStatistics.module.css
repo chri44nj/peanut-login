@@ -160,14 +160,13 @@
   background-image: linear-gradient(to right, var(--accent-green3), var(--accent-green));
 }
 
-.highest p,
-.lowest p {
+.highest p {
   color: var(--background-color);
 }
 
-.lowest {
+/* .lowest {
   background-image: linear-gradient(to right, var(--accent-red), var(--accent-red3));
-}
+} */
 
 /** TABLET **/
 

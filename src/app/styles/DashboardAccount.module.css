@@ -73,7 +73,7 @@
 
 .inputField input:focus {
   outline: none;
-  outline: solid 1px var(--accent-purple-dark);
+  outline: solid 1px var(--accent-purple);
 }
 
 #email input {
@@ -178,15 +178,15 @@
 .editPasswordButton,
 .deleteAccountButton,
 .deleteAccountButton2 {
-  border: solid 1px var(--accent-purple-dark);
+  border: solid 1px var(--accent-purple);
   background-color: var(--background-color);
-  color: var(--accent-purple-dark);
+  color: var(--accent-purple);
 }
 
 .confirmButton:hover,
 .editAccountButton:hover,
 .editPasswordButton:hover {
-  background-color: var(--accent-purple-dark);
+  background-color: var(--accent-purple);
   color: var(--background-color);
 }
 

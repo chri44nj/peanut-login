@@ -96,6 +96,8 @@ function DashboardClasses() {
       },
     });
 
+    console.log("Kig lige her", classes);
+
     myContextsDispatch((prevContexts) => ({
       ...prevContexts,
       teacherData: {
@@ -194,83 +196,53 @@ function DashboardClasses() {
     </svg>
   );
 
+  const plus48 = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+    </svg>
+  );
+
+  const minus48 = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+      <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
+    </svg>
+  );
+
   return (
     <>
       {myContexts.teacherData.classesIDs.length === 0 ? <p>Ingen klasser endnu; klik på knappen herunder for at tilføje den første og få adgang til alle features!</p> : ""}
-      {myContexts.clickedClass !== "Alle klasser" ? (
-        <div className={styles.breadcrumb}>
-          <button
-            className="hover-link"
-            type="button"
-            onClick={() => {
-              myContextsDispatch((prevContexts) => ({
-                ...prevContexts,
-                clickedClass: "Alle klasser",
-                selectedStudent: "Alle elever",
-              }));
-            }}
-          >
-            Alle klasser
-          </button>
-
-          <span> / </span>
-          <button
-            className="hover-link"
-            type="button"
-            onClick={() => {
-              myContextsDispatch((prevContexts) => ({
-                ...prevContexts,
-                selectedStudent: "Alle elever",
-              }));
-            }}
-          >
-            {myContexts.teacherData.classes.map((theclass) => {
-              if (theclass._id === myContexts.clickedClass) {
-                return `${theclass.grade}.${theclass.letter}`;
-              }
-            })}
-          </button>
-
-          {myContexts.selectedStudent !== "Alle elever" ? (
-            <>
-              <span> / </span>
-              <button className="hover-link" type="button">
-                {myContexts.selectedStudent}
-              </button>
-            </>
-          ) : (
-            ""
-          )}
-        </div>
-      ) : (
-        ""
-      )}
 
       <div id="classesContainer" className={styles.classesContainer}>
         {myContexts.teacherData.classesIDs.length > 0 ? (
           <div className={styles.dropdownsContainer}>
-            <select className={styles.dropdown} id="classes" name="classes" value={myContexts.clickedClass} onChange={(e) => handleClassClick(e.target.value)}>
-              <option value="Alle klasser">Alle klasser</option>
-              {myContexts.teacherData.classes
-                ? myContexts.teacherData.classes.map((theclass, index) => (
-                    <option className={styles.dropdownClass} key={index} value={theclass._id}>
-                      {theclass.grade}.{theclass.letter}
-                    </option>
-                  ))
-                : ""}
-            </select>
             {myContexts.clickedClass !== "Alle klasser" && (
-              <select className={styles.dropdown} id="students" name="students" value={myContexts.selectedStudent} onChange={(e) => handleSelectStudent(e.target.value)}>
-                <option className={styles.dropdownClass}>Alle elever</option>
-                {myContexts.clickedClass !== "Alle klasser" &&
-                  myContexts.teacherData.classes
-                    .find((specificClass) => specificClass._id === myContexts.clickedClass)
-                    .students?.map((student, index) => (
-                      <option className={styles.dropdownClass} key={index} value={student}>
-                        {student}
-                      </option>
-                    ))}
-              </select>
+              <>
+                <select className={styles.dropdown} id="classes" name="classes" value={myContexts.clickedClass} onChange={(e) => handleClassClick(e.target.value)}>
+                  <option value="Alle klasser">Alle klasser</option>
+                  {myContexts.teacherData.classes
+                    ? myContexts.teacherData.classes.map((theclass, index) => (
+                        <option className={styles.dropdownClass} key={index} value={theclass._id}>
+                          {theclass.grade}.{theclass.letter}
+                        </option>
+                      ))
+                    : ""}
+                </select>
+                {myContexts.selectedStudent !== "Alle elever" && (
+                  <select className={styles.dropdown} id="students" name="students" value={myContexts.selectedStudent} onChange={(e) => handleSelectStudent(e.target.value)}>
+                    <option className={styles.dropdownClass}>Alle elever</option>
+                    {myContexts.clickedClass !== "Alle klasser" &&
+                      myContexts.teacherData.classes
+                        .find((specificClass) => specificClass._id === myContexts.clickedClass)
+                        .students?.map((student, index) => (
+                          <option className={styles.dropdownClass} key={index} value={student}>
+                            {student}
+                          </option>
+                        ))}
+                  </select>
+                )}
+              </>
             )}
           </div>
         ) : (
@@ -301,14 +273,11 @@ function DashboardClasses() {
                       </p>
                     </div>
                   ))}
+                <div className={styles.addClassContainer} type="button" onClick={() => setCreateFormVisible((old) => !old)}>
+                  {createFormVisible ? minus48 : plus48}
+                </div>
               </div>
             )}
-
-            <div className={styles.buttonContainer}>
-              <button className={styles.openFormButton} type="button" onClick={() => setCreateFormVisible((old) => !old)}>
-                {createFormVisible ? "Luk" : "Tilføj klasse"}
-              </button>
-            </div>
           </>
         )}
 

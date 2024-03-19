@@ -54,7 +54,7 @@ function Dashboard() {
             Statistik
           </a>
         </button>
-        <button id={myContexts.dashboardType === "Dine klasser" ? styles.activeDashboard : ""} value="Dine klasser" onClick={() => switchDashboardType("Dine klasser")}>
+        <button id={myContexts.dashboardType === "Klasser" ? styles.activeDashboard : ""} value="Klasser" onClick={() => switchDashboardType("Klasser")}>
           <a href="#dashboardContainer">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
               <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
@@ -112,7 +112,57 @@ function Dashboard() {
 
       <div className={styles.dashboard}>
         <div id="dashboardHeader" className={styles.dashboardHeader}>
-          <h1 id={myContexts.dashboardType}>{myContexts.dashboardType}</h1>
+          <h1 id={myContexts.dashboardType}>
+            {myContexts.clickedClass === "Alle klasser" && myContexts.dashboardType}
+            {myContexts.dashboardType === "Klasser" && myContexts.clickedClass !== "Alle klasser" ? (
+              <div className={styles.breadcrumb}>
+                <button
+                  className="hover-link"
+                  type="button"
+                  onClick={() => {
+                    myContextsDispatch((prevContexts) => ({
+                      ...prevContexts,
+                      clickedClass: "Alle klasser",
+                      selectedStudent: "Alle elever",
+                    }));
+                  }}
+                >
+                  Klasser
+                </button>
+
+                <span> / </span>
+                <button
+                  className="hover-link"
+                  type="button"
+                  onClick={() => {
+                    myContextsDispatch((prevContexts) => ({
+                      ...prevContexts,
+                      selectedStudent: "Alle elever",
+                    }));
+                  }}
+                >
+                  {myContexts.teacherData.classes.map((theclass) => {
+                    if (theclass._id === myContexts.clickedClass) {
+                      return `${theclass.grade}.${theclass.letter}`;
+                    }
+                  })}
+                </button>
+
+                {myContexts.selectedStudent !== "Alle elever" ? (
+                  <>
+                    <span> / </span>
+                    <button className="hover-link" type="button">
+                      {myContexts.selectedStudent}
+                    </button>
+                  </>
+                ) : (
+                  ""
+                )}
+              </div>
+            ) : (
+              ""
+            )}
+          </h1>
           <button anchor="dashboardHeader" type="button" className={styles.burgerMenu} onClick={() => burgerMenuClicked()}>
             <span></span>
             <span></span>
@@ -121,7 +171,7 @@ function Dashboard() {
         </div>
         {myContexts.dashboardType === "Din konto" ? <DashboardAccount /> : ""}
         {myContexts.dashboardType === "Statistik" ? <DashboardStatistics /> : ""}
-        {myContexts.dashboardType === "Dine klasser" ? <DashboardClasses /> : ""}
+        {myContexts.dashboardType === "Klasser" ? <DashboardClasses /> : ""}
         {myContexts.dashboardType === "Milepæle" ? <DashboardMilestones /> : ""}
         {myContexts.dashboardType === "Scoreboard" ? <DashboardScoreboard /> : ""}
       </div>

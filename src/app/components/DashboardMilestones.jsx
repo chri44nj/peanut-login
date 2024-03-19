@@ -72,7 +72,7 @@ function DashboardMilestones() {
             onClick={() => {
               myContextsDispatch((prevContexts) => ({
                 ...prevContexts,
-                dashboardType: "Dine klasser",
+                dashboardType: "Klasser",
               }));
             }}
           >

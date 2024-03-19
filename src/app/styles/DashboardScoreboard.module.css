@@ -3,8 +3,11 @@
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  background-color: var(--background-color-alt);
-  border-radius: 10px;
+  /*   background-color: var(--background-color);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
+  padding: 1rem;
+  border-radius: 10px; */
+  max-width: 40rem;
 }
 
 .scoreboardContainer h2 {
@@ -19,9 +22,13 @@
   width: 100%;
   background-color: var(--background-color);
   border-radius: 10px;
-  font-weight: bold;
+
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
   margin-bottom: 1rem;
+}
+
+.hamsterScore * {
+  color: var(--accent-purple-dark);
 }
 
 .scoreboardCategory {
@@ -88,6 +95,10 @@
   width: 100%;
 }
 
+.information * {
+  color: white;
+}
+
 .tooltip:hover {
   cursor: pointer;
 }
@@ -100,8 +111,8 @@
   padding: 1rem;
   position: absolute;
   min-width: fit-content;
-  right: 0; /* Adjust right positioning as needed */
-  top: 100%; /* Position below the information icon */
+  right: 0;
+  top: 100%;
   z-index: 100;
   text-align: center;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
@@ -112,10 +123,10 @@
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 6px; /* Adjust the size of the pointer */
+  border-width: 6px;
   border-color: transparent transparent var(--background-color) transparent;
-  top: 2.25rem; /* Position the pointer above the tooltip */
-  right: 1.15rem; /* Adjust the position of the pointer horizontally */
+  top: 2.25rem;
+  right: 1.15rem;
 }
 
 .singleSchool {
@@ -134,6 +145,7 @@
 .schoolIcon,
 .schoolScore {
   min-width: fit-content;
+  font-weight: bold;
 }
 
 .diamondSchool:nth-child(even) {

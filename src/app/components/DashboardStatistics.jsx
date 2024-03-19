@@ -333,7 +333,7 @@ function DashboardStatistics() {
             onClick={() => {
               myContextsDispatch((prevContexts) => ({
                 ...prevContexts,
-                dashboardType: "Dine klasser",
+                dashboardType: "Klasser",
               }));
             }}
           >

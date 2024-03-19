@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: center;
   padding: 1rem;
-  margin-block: 2rem;
+  padding-block: 2rem;
 }
 
 .loginForm,
@@ -68,7 +68,7 @@
 
 .inputField input:focus {
   outline: none;
-  outline: solid 1px var(--accent-purple-dark);
+  outline: solid 1px var(--accent-purple);
 }
 
 .inputField select {
@@ -146,10 +146,10 @@
   width: 100%;
   margin: 0px auto;
   height: 2.5rem;
-  border: solid 1px var(--accent-purple-dark);
+  border: solid 1px var(--accent-purple);
   border-radius: 10px;
   background-color: var(--background-color);
-  color: var(--accent-purple-dark);
+  color: var(--accent-purple);
   font-weight: bold;
   transition: 0.2s;
 }
@@ -161,7 +161,7 @@
 
 .validButton,
 .loginButton2:hover {
-  background-color: var(--accent-purple-dark);
+  background-color: var(--accent-purple);
   color: var(--background-color);
 }
 
@@ -250,11 +250,11 @@
 }
 
 .subjectsContainer li:focus {
-  outline: solid 1px var(--accent-purple-dark);
+  outline: solid 1px var(--accent-purple);
 }
 
 .subjectsContainer li.selectedSubject {
-  background-color: var(--accent-purple-dark);
+  background-color: var(--accent-purple);
   color: var(--background-color);
   cursor: pointer;
   border-color: transparent;

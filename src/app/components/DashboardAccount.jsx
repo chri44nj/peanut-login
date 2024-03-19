@@ -338,7 +338,7 @@ function DashboardAccount() {
           ) : (
             ""
           )}
-          <a className="hover-link" href="#dashboardContainer" onClick={() => switchDashboardType("Dine klasser")}>
+          <a className="hover-link" href="#dashboardContainer" onClick={() => switchDashboardType("Klasser")}>
             {myContexts.teacherData.classesIDs.length} {myContexts.teacherData.classesIDs.length === 1 ? "klasse" : "klasser"}
           </a>
           <button className={styles.editAccountButton} value="editAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
