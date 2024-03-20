@@ -33,6 +33,10 @@
   text-align: center;
 }
 
+.recoverFormHeadings {
+  margin-bottom: 1rem;
+}
+
 .passwordCriteria {
   width: 100%;
   margin-top: 0.5rem;
@@ -48,6 +52,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  text-align: start;
 }
 
 .inputField label {
@@ -268,6 +273,11 @@
   width: 100%;
   text-align: center;
   margin-top: 1rem;
+}
+
+.buttonErrorContainer2 {
+  width: 100%;
+  text-align: center;
 }
 
 .error {

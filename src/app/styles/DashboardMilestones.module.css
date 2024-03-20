@@ -11,10 +11,10 @@
 .addClassButton {
   width: 100%;
   padding: 0.5rem 1rem;
-  border: solid 1px var(--accent-purple-dark);
+  border: solid 1px var(--accent-purple);
   border-radius: 10px;
   background-color: var(--background-color);
-  color: var(--accent-purple-dark);
+  color: var(--accent-purple);
   font-weight: bold;
   transition: 0.2s;
   font-weight: bold;
@@ -24,8 +24,8 @@
 }
 
 .addClassButton:hover {
-  background-color: var(--accent-purple-dark);
-  border-color: var(--accent-purple-dark);
+  background-color: var(--accent-purple);
+  border-color: var(--accent-purple);
   color: var(--background-color);
 }
 

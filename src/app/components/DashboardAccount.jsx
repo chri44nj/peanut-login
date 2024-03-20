@@ -2,6 +2,7 @@
 import { useState, useContext, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import { signOut } from "next-auth/react";
 import styles from "../styles/DashboardAccount.module.css";
 import { MyContexts, SetMyContexts } from "./Contexts";
 
@@ -395,6 +396,21 @@ function DashboardAccount() {
 
           <button className={styles.editAccountButton} value="editAccount" onClick={(e) => handleEditAccountClick(e.target.value)}>
             Rediger kontooplysninger
+          </button>
+          <button
+            className={styles.logoutButton}
+            onClick={() => {
+              myContextsDispatch((old) => ({
+                ...old,
+                userAuthenticated: false,
+                loginType: "login",
+                dashboardType: "Hjem",
+              }));
+              signOut();
+              burgerMenuClicked();
+            }}
+          >
+            Log ud
           </button>
         </div>
       ) : (

@@ -165,6 +165,7 @@
 .cancelButton,
 .confirmButton,
 .editAccountButton,
+.logoutButton,
 .editPasswordButton,
 .deleteAccountButton,
 .deleteAccountButton2,
@@ -193,6 +194,7 @@
 
 .confirmButton,
 .editAccountButton,
+.logoutButton,
 .editPasswordButton,
 .deleteAccountButton,
 .deleteAccountButton2 {
@@ -203,6 +205,7 @@
 
 .confirmButton,
 .editAccountButton:hover,
+.logoutButton:hover,
 .editPasswordButton:hover {
   background-color: var(--accent-purple);
   color: var(--background-color);
@@ -277,6 +280,7 @@
   .cancelButton,
   .confirmButton,
   .editAccountButton,
+  .logoutButton,
   .editPasswordButton,
   .deleteAccountButton,
   .deleteButton {

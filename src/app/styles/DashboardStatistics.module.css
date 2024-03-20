@@ -26,10 +26,10 @@
 .addClassButton {
   width: 100%;
   padding: 0.5rem 1rem;
-  border: solid 1px var(--accent-purple-dark);
+  border: solid 1px var(--accent-purple);
   border-radius: 10px;
   background-color: var(--background-color);
-  color: var(--accent-purple-dark);
+  color: var(--accent-purple);
   font-weight: bold;
   transition: 0.2s;
   font-weight: bold;
@@ -39,8 +39,8 @@
 }
 
 .addClassButton:hover {
-  background-color: var(--accent-purple-dark);
-  border-color: var(--accent-purple-dark);
+  background-color: var(--accent-purple);
+  border-color: var(--accent-purple);
   color: var(--background-color);
 }
 
@@ -75,7 +75,7 @@
 }
 
 .overviewHighlight * {
-  color: var(--background-color);
+  color: var(--text-color);
 }
 
 .overviewHighlight p {
@@ -105,7 +105,8 @@
 }
 
 .overviewHighlightNumbers p {
-  color: var(--text-color);
+  color: var(--background-color);
+  font-weight: bold;
 }
 
 .percentageCircle {
@@ -140,6 +141,7 @@
 .flexRow {
   display: flex;
   align-items: center;
+  gap: 0.25em;
 }
 
 .flexColumn {
@@ -160,7 +162,7 @@
   background-image: linear-gradient(to right, var(--accent-green3), var(--accent-green));
 }
 
-.highest p {
+.highest * {
   color: var(--background-color);
 }
 

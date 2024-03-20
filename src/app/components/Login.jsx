@@ -14,7 +14,9 @@ function Login() {
 
   /* States */
   const [passwordType, setPasswordType] = useState("password");
+  const [passwordType2, setPasswordType2] = useState("password");
   const [tooltipText, setTooltipText] = useState("Vis adgangskode");
+  const [tooltipText2, setTooltipText2] = useState("Vis adgangskode");
   const [accountType, setAccountType] = useState("");
   const [school, setSchool] = useState("ingen");
   const [selectedSubjects, setSelectedSubjects] = useState([]);
@@ -22,12 +24,14 @@ function Login() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [phone, setPhone] = useState(null);
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [passwordCriteria, setPasswordCriteria] = useState(false);
   const [passwordCriteria2, setPasswordCriteria2] = useState(false);
   const [passwordCriteria3, setPasswordCriteria3] = useState(true);
+  const [passwordCriteria4, setPasswordCriteria4] = useState(false);
   const [error, setError] = useState("");
   const [listOfSchools, setListOfSchools] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -45,13 +49,23 @@ function Login() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w\S]*$/;
     setEmailValid(emailRegex.test(email));
-    setPasswordValid(passwordRegex.test(password));
+    if (passwordCriteria3) {
+      setPasswordValid(passwordRegex.test(password));
+    }
 
     const capitalNumber = /^(?=.*[A-Z])(?=.*\d)/.test(password);
     setPasswordCriteria(capitalNumber);
     setPasswordCriteria2(password.length >= 8);
     setPasswordCriteria3(!/\s/.test(password));
-  }, [email, password]);
+
+    if (password === password2 && password !== "") {
+      setPasswordCriteria4(true);
+      setPasswordValid(passwordRegex.test(password));
+    } else {
+      setPasswordCriteria4(false);
+      setPasswordValid(false);
+    }
+  }, [email, password, password2]);
 
   useEffect(() => {
     if (passwordCriteria3 === false) {
@@ -104,6 +118,16 @@ function Login() {
       setTooltipText("Vis adgangskode");
     }
   }
+
+  const showPassword2 = () => {
+    if (passwordType2 === "password") {
+      setPasswordType2("text");
+      setTooltipText2("Skjul adgangskode");
+    } else {
+      setPasswordType2("password");
+      setTooltipText2("Vis adgangskode");
+    }
+  };
 
   function switchLogin() {
     setName("");
@@ -573,15 +597,17 @@ function Login() {
       {recoverPassword ? (
         <div id="recoverForm" className={styles.recoverFormContainer}>
           <form className={styles.recoverForm} onSubmit={(e) => handleChangePassword(e)}>
-            <h2>{!recoverTokenSent ? "Glemt adgangskode" : recoverTokenSent && !recoverTokenValidated ? "Bekræft kode" : recoverTokenSent && recoverTokenValidated && !passwordChangeSucces ? "Ny adgangskode" : "Success!"}</h2>
-            <p>{!recoverTokenSent ? "Bare rolig, vi har din ryg!" : recoverTokenSent && !recoverTokenValidated ? `Vi har sendt en gendannelseskode til ${email}` : recoverTokenSent && recoverTokenValidated && !passwordChangeSucces ? "Hvad skal den være?" : "Du har nu en ny (og meget sejere) adgangskode"}</p>
+            <div className={styles.recoverFormHeadings}>
+              <h2>{!recoverTokenSent ? "Glemt adgangskode" : recoverTokenSent && !recoverTokenValidated ? "Bekræft kode" : recoverTokenSent && recoverTokenValidated && !passwordChangeSucces ? "Ny adgangskode" : "Success!"}</h2>
+              <p>{!recoverTokenSent ? "Indtast din email-adresse forneden" : recoverTokenSent && !recoverTokenValidated ? `Indtast forneden den 8-cifrede gendannelseskode, som er sendt til ${email}` : recoverTokenSent && recoverTokenValidated && !passwordChangeSucces ? "Indtast din ønskede adgangskode forneden" : "Du er nu klar til at logge ind"}</p>
+            </div>
             {!recoverTokenSent && (
               <>
                 <div className={`${styles.inputField}`}>
-                  <label htmlFor="email">Indtast din email-adresse</label>
+                  <label htmlFor="email">Email-adresse</label>
                   <input type="email" id="email" name="email" title="Indtast din email-adresse" onChange={(e) => setEmail(e.target.value.toLowerCase())} required />
                 </div>
-                <div className={styles.buttonErrorContainer}>
+                <div className={styles.buttonErrorContainer2}>
                   <button className={`${styles.loginButton} ${emailValid ? styles.validButton : ""}`} type="button" title={buttonTooltip} disabled={!emailValid} onClick={validateRecoverEmail}>
                     Send gendannelseskode
                   </button>
@@ -593,11 +619,11 @@ function Login() {
             {recoverTokenSent && !recoverTokenValidated ? (
               <>
                 <div className={`${styles.inputField}`}>
-                  <label htmlFor="recoverToken">Indtast din 8-cifrede gendannelseskode</label>
+                  <label htmlFor="recoverToken">Gendannelseskode</label>
                   <input type="text" id="recoverToken" maxLength={8} name="recoverToken" title="Indtast din 8-cifrede gendannelseskode" onChange={(e) => setRecoverToken(e.target.value.toLowerCase())} required />
                 </div>
-                <div className={styles.buttonErrorContainer}>
-                  <button className={`${styles.loginButton} ${recoverToken.length === 8 ? styles.validButton : ""}`} type="button" disabled={!recoverToken.length === 8} onClick={validateRecoverToken}>
+                <div className={styles.buttonErrorContainer2}>
+                  <button className={`${styles.loginButton} ${recoverToken.length === 8 ? styles.validButton : ""}`} type="button" onClick={validateRecoverToken} disabled={!(recoverToken.length === 8)}>
                     Bekræft kode
                   </button>
                   {error && <p className={styles.error}>{error}</p>}
@@ -610,11 +636,21 @@ function Login() {
             {recoverTokenSent && recoverTokenValidated && !passwordChangeSucces ? (
               <>
                 <div className={styles.inputField}>
-                  <label htmlFor="password">Adgangskode</label>
+                  <label htmlFor="password">Ny adgangskode</label>
                   <div className={styles.passwordContainer}>
                     <input type={passwordType} id="password" name="password" title={myContexts.loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword(e.target.value)} required />
                     <button type="button" className={styles.showPassword} onClick={showPassword}>
                       {passwordType === "password" ? notVisible : visible} <span className={styles.passwordTooltip}>{tooltipText}</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className={styles.inputField}>
+                  <label htmlFor="password">Bekræft ny adgangskode</label>
+                  <div className={styles.passwordContainer}>
+                    <input type={passwordType2} id="passwordConfirm" name="passwordConfirm" title={myContexts.loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setPassword2(e.target.value)} required />
+                    <button type="button" className={styles.showPassword} onClick={showPassword2}>
+                      {passwordType2 === "password" ? notVisible : visible} <span className={styles.passwordTooltip}>{tooltipText2}</span>
                     </button>
                   </div>
                   <div className={styles.passwordCriteria}>
@@ -626,12 +662,16 @@ function Login() {
                       {passwordCriteria2 ? checkMark : !password ? cross2 : cross}
                       <p>Minimum 8 karakterer langt</p>
                     </div>
+                    <div>
+                      {passwordCriteria4 ? checkMark : !password ? cross2 : cross}
+                      <p>Adgangskoder skal matche</p>
+                    </div>
                   </div>
                 </div>
 
-                <div className={styles.buttonErrorContainer}>
+                <div className={styles.buttonErrorContainer2}>
                   <button className={`${styles.loginButton} ${passwordValid ? styles.validButton : ""}`} type="submit" disabled={!passwordValid}>
-                    Bekræft adgangskode
+                    Gem adgangskode
                   </button>
                   {error && <p className={styles.error}>{error}</p>}
                 </div>
@@ -642,7 +682,7 @@ function Login() {
 
             {passwordChangeSucces ? (
               <>
-                <div className={styles.buttonErrorContainer}>
+                <div className={styles.buttonErrorContainer2}>
                   <button
                     name="logMeIn"
                     className={styles.loginButton2}
@@ -668,7 +708,6 @@ function Login() {
 
             {!passwordChangeSucces && (
               <div className={styles.switchButtonContainer}>
-                <p>Har du husket dit password?</p>
                 <button
                   type="button"
                   className={`${styles.forgotButton2} hover-link`}

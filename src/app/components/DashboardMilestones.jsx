@@ -65,7 +65,7 @@ function DashboardMilestones() {
         </div>
       ) : (
         <div className={styles.addClassContainer}>
-          <p>Tilføj klasser til din profil, for at kunne tilføje milepæle for dine klasser!</p>
+          <p>Tilføj klasser til din profil, for at kunne sætte milepæle for dine klasser!</p>
           <button
             className={styles.addClassButton}
             type="button"
