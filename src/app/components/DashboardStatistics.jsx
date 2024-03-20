@@ -400,7 +400,7 @@ function DashboardStatistics() {
                     <div className={styles.percentageCircle}>
                       <CircularProgressbar
                         value={correctPercentageThisperiod ? correctPercentageThisperiod : 0}
-                        text={correctPercentageThisperiod ? correctPercentageThisperiod + "%" : "5"}
+                        text={correctPercentageThisperiod ? correctPercentageThisperiod + "%" : "-"}
                         styles={{
                           root: {},
                           path: {
@@ -409,7 +409,7 @@ function DashboardStatistics() {
                             transition: "stroke-dashoffset 1s ease 0s",
                           },
                           trail: {
-                            stroke: "#232b2b",
+                            stroke: "#e8a328",
                             strokeLinecap: "butt",
                             transform: "rotate(0.25turn)",
                             transformOrigin: "center center",

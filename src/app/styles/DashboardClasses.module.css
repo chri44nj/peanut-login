@@ -290,7 +290,7 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
   padding: 1rem;
   border-radius: 10px;
-  max-width: 40rem;
+  max-width: 30rem;
 }
 
 .singleClassDetails h2 {
@@ -326,6 +326,11 @@
   cursor: pointer;
   background-color: var(--accent-purple);
   color: var(--background-color);
+}
+
+.singleStudentName {
+  font-size: var(--font-small);
+  margin-bottom: 2rem;
 }
 
 .buttonContainer {

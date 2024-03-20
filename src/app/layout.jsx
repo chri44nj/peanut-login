@@ -14,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="dk">
-      {/*   <Contexts>
+      <Contexts>
         <AuthProvider>
           <Body>
             <Header />
@@ -22,8 +22,8 @@ export default function RootLayout({ children }) {
             <Footer />
           </Body>
         </AuthProvider>
-      </Contexts> */}
-      <div>Under maintenance</div>
+      </Contexts>
+      {/*    <div>Under maintenance</div> */}
     </html>
   );
 }
