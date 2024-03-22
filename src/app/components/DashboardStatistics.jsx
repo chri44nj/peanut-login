@@ -15,6 +15,7 @@ function DashboardStatistics() {
 
   /* States */
   const [fetchedOnce, setFetchedOnce] = useState(false);
+  const [classSelectedOnce, setClassSelectedOnce] = useState(false);
 
   const [numberOfStudents, setNumberOfStudents] = useState(0);
   const [activeStudentsThisPeriod, setActiveStudentsThisPeriod] = useState(0);
@@ -80,17 +81,19 @@ function DashboardStatistics() {
   }, [myContexts.selectedClass]);
 
   useEffect(() => {
-    if (!myContexts.selectedClass && myContexts.teacherData.classes.length > 0) {
+    if (myContexts.teacherData.classes.length > 0 && classSelectedOnce === false) {
       myContextsDispatch((old) => ({
         ...old,
         selectedClass: myContexts.teacherData.classes[0]._id,
       }));
+      setClassSelectedOnce(true);
     }
 
     if (myContexts.selectedPeriod === "I dag") {
       fetchProblemsSolvedToday();
     } else if (myContexts.selectedPeriod === "Denne uge") {
       fetchProblemsSolvedThisWeek();
+      console.log("wtf??", subjectData);
     } else if (myContexts.selectedPeriod === "Denne måned") {
       fetchProblemsSolvedThisMonth();
     } else if (myContexts.selectedPeriod === "Dette år") {
@@ -170,113 +173,217 @@ function DashboardStatistics() {
 
   const fetchProblemsSolvedToday = async () => {
     if (myContexts.selectedClass) {
-      const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-today`, {
-        params: {
-          classID: myContexts.selectedClass,
-        },
-      });
+      try {
+        const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-today`, {
+          params: {
+            classID: myContexts.selectedClass,
+          },
+        });
 
-      setActiveStudentsThisPeriod(problemsSolved.data.activeStudents);
-      setTotalTimeThisPeriod(problemsSolved.data.time);
-      setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
-      setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
-      setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
-      setCorrectPercentageThisPeriod(Math.round((problemsSolved.data.totalCorrect / problemsSolved.data.totalProblemsSolved) * 100));
+        const allSubjectsData = problemsSolved.data.find((item) => item._id === "allSubjects");
+        const individualSubjectsData = problemsSolved.data.filter((item) => item._id !== "allSubjects");
 
-      if (fetchedOnce !== true) {
-        setFetchedOnce(true);
+        // Set state for "allSubjects" data
+        setActiveStudentsThisPeriod(allSubjectsData.activeStudents.length);
+        setTotalTimeThisPeriod(allSubjectsData.time);
+        setTotalCorrectThisPeriod(allSubjectsData.totalCorrect);
+        setTotalWrongThisPeriod(allSubjectsData.totalWrong);
+        setTotalSolvedThisPeriod(allSubjectsData.totalProblemsSolved);
+        setCorrectPercentageThisPeriod(Math.round((allSubjectsData.totalCorrect / allSubjectsData.totalProblemsSolved) * 100));
+
+        // Set state for individual subjects
+        const subjectData = {};
+        individualSubjectsData.forEach((subject) => {
+          subjectData[subject._id] = {
+            correctPercentage: Math.round((subject.totalCorrect / subject.totalProblemsSolved) * 100),
+            totalSolved: subject.totalProblemsSolved,
+            minutesSpent: subject.time,
+            activeStudents: subject.activeStudents,
+          };
+        });
+        setSubjectData(subjectData);
+
+        if (!fetchedOnce) {
+          setFetchedOnce(true);
+        }
+        console.log("I dag", problemsSolved.data);
+      } catch (error) {
+        console.error("Error occurred while fetching problems solved this week:", error);
+        // Handle error appropriately
       }
-      console.log("I dag", problemsSolved.data);
     }
   };
 
   const fetchProblemsSolvedThisWeek = async () => {
     if (myContexts.selectedClass) {
-      const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-this-week`, {
-        params: {
-          classID: myContexts.selectedClass,
-        },
-      });
+      try {
+        const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-this-week`, {
+          params: {
+            classID: myContexts.selectedClass,
+          },
+        });
 
-      setActiveStudentsThisPeriod(problemsSolved.data.activeStudents);
-      setTotalTimeThisPeriod(problemsSolved.data.time);
-      setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
-      setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
-      setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
-      setCorrectPercentageThisPeriod(Math.round((problemsSolved.data.totalCorrect / problemsSolved.data.totalProblemsSolved) * 100));
+        const allSubjectsData = problemsSolved.data.find((item) => item._id === "allSubjects");
+        const individualSubjectsData = problemsSolved.data.filter((item) => item._id !== "allSubjects");
 
-      if (fetchedOnce !== true) {
-        setFetchedOnce(true);
+        // Set state for "allSubjects" data
+        setActiveStudentsThisPeriod(allSubjectsData.activeStudents.length);
+        setTotalTimeThisPeriod(allSubjectsData.time);
+        setTotalCorrectThisPeriod(allSubjectsData.totalCorrect);
+        setTotalWrongThisPeriod(allSubjectsData.totalWrong);
+        setTotalSolvedThisPeriod(allSubjectsData.totalProblemsSolved);
+        setCorrectPercentageThisPeriod(Math.round((allSubjectsData.totalCorrect / allSubjectsData.totalProblemsSolved) * 100));
+
+        // Set state for individual subjects
+        const subjectData = {};
+        individualSubjectsData.forEach((subject) => {
+          subjectData[subject._id] = {
+            correctPercentage: Math.round((subject.totalCorrect / subject.totalProblemsSolved) * 100),
+            totalSolved: subject.totalProblemsSolved,
+            minutesSpent: subject.time,
+            activeStudents: subject.activeStudents,
+          };
+        });
+        setSubjectData(subjectData);
+
+        if (!fetchedOnce) {
+          setFetchedOnce(true);
+        }
+        console.log("Denne uge", problemsSolved.data);
+      } catch (error) {
+        console.error("Error occurred while fetching problems solved this week:", error);
+        // Handle error appropriately
       }
-      console.log("Denne uge", problemsSolved.data);
     }
   };
 
   const fetchProblemsSolvedThisMonth = async () => {
     if (myContexts.selectedClass) {
-      const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-this-month`, {
-        params: {
-          classID: myContexts.selectedClass,
-        },
-      });
+      try {
+        const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-this-month`, {
+          params: {
+            classID: myContexts.selectedClass,
+          },
+        });
 
-      setActiveStudentsThisPeriod(problemsSolved.data.activeStudents);
-      setTotalTimeThisPeriod(problemsSolved.data.time);
-      setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
-      setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
-      setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
-      setCorrectPercentageThisPeriod(Math.round((problemsSolved.data.totalCorrect / problemsSolved.data.totalProblemsSolved) * 100));
+        const allSubjectsData = problemsSolved.data.find((item) => item._id === "allSubjects");
+        const individualSubjectsData = problemsSolved.data.filter((item) => item._id !== "allSubjects");
 
-      if (fetchedOnce !== true) {
-        setFetchedOnce(true);
+        setActiveStudentsThisPeriod(allSubjectsData.activeStudents.length);
+        setTotalTimeThisPeriod(allSubjectsData.time);
+        setTotalCorrectThisPeriod(allSubjectsData.totalCorrect);
+        setTotalWrongThisPeriod(allSubjectsData.totalWrong);
+        setTotalSolvedThisPeriod(allSubjectsData.totalProblemsSolved);
+        setCorrectPercentageThisPeriod(Math.round((allSubjectsData.totalCorrect / allSubjectsData.totalProblemsSolved) * 100));
+
+        const subjectData = {};
+        individualSubjectsData.forEach((subject) => {
+          subjectData[subject._id] = {
+            correctPercentage: Math.round((subject.totalCorrect / subject.totalProblemsSolved) * 100),
+            totalSolved: subject.totalProblemsSolved,
+            minutesSpent: subject.time,
+            activeStudents: subject.activeStudents,
+          };
+        });
+        setSubjectData(subjectData);
+
+        if (!fetchedOnce) {
+          setFetchedOnce(true);
+        }
+
+        console.log("Denne måned", problemsSolved.data);
+      } catch (error) {
+        console.error("Error occurred while fetching problems solved this month:", error);
+        // Handle error appropriately
       }
-
-      console.log("Denne måned", problemsSolved.data);
     }
   };
 
   const fetchProblemsSolvedThisYear = async () => {
     if (myContexts.selectedClass) {
-      const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-this-year`, {
-        params: {
-          classID: myContexts.selectedClass,
-        },
-      });
+      try {
+        const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-this-year`, {
+          params: {
+            classID: myContexts.selectedClass,
+          },
+        });
 
-      setActiveStudentsThisPeriod(problemsSolved.data.activeStudents);
-      setTotalTimeThisPeriod(problemsSolved.data.time);
-      setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
-      setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
-      setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
-      setCorrectPercentageThisPeriod(Math.round((problemsSolved.data.totalCorrect / problemsSolved.data.totalProblemsSolved) * 100));
+        const allSubjectsData = problemsSolved.data.find((item) => item._id === "allSubjects");
+        const individualSubjectsData = problemsSolved.data.filter((item) => item._id !== "allSubjects");
 
-      if (fetchedOnce !== true) {
-        setFetchedOnce(true);
+        // Set state for "allSubjects" data
+        setActiveStudentsThisPeriod(allSubjectsData.activeStudents.length);
+        setTotalTimeThisPeriod(allSubjectsData.time);
+        setTotalCorrectThisPeriod(allSubjectsData.totalCorrect);
+        setTotalWrongThisPeriod(allSubjectsData.totalWrong);
+        setTotalSolvedThisPeriod(allSubjectsData.totalProblemsSolved);
+        setCorrectPercentageThisPeriod(Math.round((allSubjectsData.totalCorrect / allSubjectsData.totalProblemsSolved) * 100));
+
+        // Set state for individual subjects
+        const subjectData = {};
+        individualSubjectsData.forEach((subject) => {
+          subjectData[subject._id] = {
+            correctPercentage: Math.round((subject.totalCorrect / subject.totalProblemsSolved) * 100),
+            totalSolved: subject.totalProblemsSolved,
+            minutesSpent: subject.time,
+            activeStudents: subject.activeStudents,
+          };
+        });
+        setSubjectData(subjectData);
+
+        if (!fetchedOnce) {
+          setFetchedOnce(true);
+        }
+
+        console.log("Dette år", problemsSolved.data);
+      } catch (error) {
+        console.error("Error occurred while fetching problems solved this year:", error);
+        // Handle error appropriately
       }
-
-      console.log("Dette år", problemsSolved.data);
     }
   };
 
   const fetchProblemsSolvedAllTime = async () => {
     if (myContexts.selectedClass) {
-      const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-all-time`, {
-        params: {
-          classID: myContexts.selectedClass,
-        },
-      });
+      try {
+        const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-all-time`, {
+          params: {
+            classID: myContexts.selectedClass,
+          },
+        });
 
-      setActiveStudentsThisPeriod(problemsSolved.data.activeStudents);
-      setTotalTimeThisPeriod(problemsSolved.data.time);
-      setTotalCorrectThisPeriod(problemsSolved.data.totalCorrect);
-      setTotalWrongThisPeriod(problemsSolved.data.totalWrong);
-      setTotalSolvedThisPeriod(problemsSolved.data.totalProblemsSolved);
-      setCorrectPercentageThisPeriod(Math.round((problemsSolved.data.totalCorrect / problemsSolved.data.totalProblemsSolved) * 100));
+        const allSubjectsData = problemsSolved.data.find((item) => item._id === "allSubjects");
+        const individualSubjectsData = problemsSolved.data.filter((item) => item._id !== "allSubjects");
 
-      if (fetchedOnce !== true) {
-        setFetchedOnce(true);
+        // Set state for "allSubjects" data
+        setActiveStudentsThisPeriod(allSubjectsData.activeStudents.length);
+        setTotalTimeThisPeriod(allSubjectsData.time);
+        setTotalCorrectThisPeriod(allSubjectsData.totalCorrect);
+        setTotalWrongThisPeriod(allSubjectsData.totalWrong);
+        setTotalSolvedThisPeriod(allSubjectsData.totalProblemsSolved);
+        setCorrectPercentageThisPeriod(Math.round((allSubjectsData.totalCorrect / allSubjectsData.totalProblemsSolved) * 100));
+
+        // Set state for individual subjects
+        const subjectData = {};
+        individualSubjectsData.forEach((subject) => {
+          subjectData[subject._id] = {
+            correctPercentage: Math.round((subject.totalCorrect / subject.totalProblemsSolved) * 100),
+            totalSolved: subject.totalProblemsSolved,
+            minutesSpent: subject.time,
+            activeStudents: subject.activeStudents,
+          };
+        });
+        setSubjectData(subjectData);
+
+        if (!fetchedOnce) {
+          setFetchedOnce(true);
+        }
+
+        console.log("Altid", problemsSolved.data);
+      } catch (error) {
+        console.error("Error occurred while fetching problems solved all-time:", error);
+        // Handle error appropriately
       }
-      console.log("Altid", problemsSolved.data);
     }
   };
 
@@ -301,23 +408,22 @@ function DashboardStatistics() {
     </svg>
   );
 
-  const sortedSubjects = Object.keys(subjectData.correctPercentage).sort((a, b) => {
+  const subjectDataArray = Object.entries(subjectData).map(([subject, data]) => ({ subject, ...data }));
+
+  subjectDataArray.sort((a, b) => {
     if (sortBy === "alphabetically") {
-      return a.localeCompare(b);
+      return a.subject.localeCompare(b.subject);
     } else {
-      const valueA = subjectData[sortBy][a];
-      const valueB = subjectData[sortBy][b];
-      return valueB - valueA;
+      return b[sortBy] - a[sortBy];
     }
   });
-
   const findExtremeValue = (subject, dataType) => {
     if (dataType === "alphabetically") {
       return "";
     }
 
-    const data = subjectData[dataType][subject];
-    const values = Object.values(subjectData[dataType]);
+    const data = subject[dataType];
+    const values = subjectDataArray.map((item) => item[dataType]);
     const maxValue = Math.max(...values);
     const minValue = Math.min(...values);
 
@@ -440,13 +546,12 @@ function DashboardStatistics() {
               </div>
             </div>
 
-            {sortedSubjects.map((subject) => (
-              <div key={subject} className={`${styles.classOverview} ${styles.overviewSubject} ${styles[findExtremeValue(subject, sortBy)]}`}>
+            {subjectDataArray.map((subjectObj) => (
+              <div key={subjectObj.subject} className={`${styles.classOverview} ${styles.overviewSubject} ${styles[findExtremeValue(subjectObj.subject, sortBy)]}`}>
                 <div className={styles.flexRow}>
                   {book16}
-                  <h3>{subject}</h3>
+                  <h3>{subjectObj.subject}</h3>
                 </div>
-
                 <div className={styles.overviewSubjectGrid}>
                   <div className={styles.flexColumn}>
                     <div className={styles.flexRow}>
@@ -463,9 +568,9 @@ function DashboardStatistics() {
                     </div>
                   </div>
                   <div className={styles.flexColumn}>
-                    <p>{subjectData.correctPercentage[subject] ? subjectData.correctPercentage[subject] + "%" : "-"}</p>
-                    <p>{subjectData.totalSolved[subject] ? subjectData.totalSolved[subject] : "-"}</p>
-                    <p>{subjectData.minutesSpent[subject] ? subjectData.minutesSpent[subject] : "-"}</p>
+                    <p>{subjectObj.correctPercentage ? Math.round(subjectObj.correctPercentage) + "%" : "-"}</p>
+                    <p>{subjectObj.totalSolved ? subjectObj.totalSolved : "-"}</p>
+                    <p>{subjectObj.minutesSpent ? Math.ceil(subjectObj.minutesSpent) : "-"}</p>
                   </div>
                 </div>
               </div>
