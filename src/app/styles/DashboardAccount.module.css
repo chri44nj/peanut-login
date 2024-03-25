@@ -176,6 +176,7 @@
   border-radius: 10px;
   font-weight: bold;
   transition: 0.2s;
+  padding-inline: 1rem;
 }
 
 /* .editPasswordButton,
@@ -275,6 +276,10 @@
 
 .sadMessage {
   width: 100%;
+}
+
+.loggingOut {
+  color: var(--accent-purple);
 }
 
 @media only screen and (min-width: 600px) {

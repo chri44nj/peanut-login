@@ -47,7 +47,8 @@ function Login() {
   /* Effects */
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w\S]*$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[\w\S]*$/;
+
     setEmailValid(emailRegex.test(email));
     if (passwordCriteria3) {
       setPasswordValid(passwordRegex.test(password));

@@ -2,6 +2,7 @@
 import { useState, useContext, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import bcrypt from "bcryptjs";
 import { signOut } from "next-auth/react";
 import styles from "../styles/DashboardAccount.module.css";
 import { MyContexts, SetMyContexts } from "./Contexts";
@@ -13,14 +14,17 @@ function DashboardAccount() {
   const [deleteAccount, setDeleteAccount] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
   const [passwordType2, setPasswordType2] = useState("password");
+  const [passwordType3, setPasswordType3] = useState("password");
   const [tooltipText, setTooltipText] = useState("Vis adgangskode");
   const [tooltipText2, setTooltipText2] = useState("Vis adgangskode");
+  const [tooltipText3, setTooltipText3] = useState("Vis adgangskode");
   const [school, setSchool] = useState("ingen");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [email2, setEmail2] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
   const [phone, setPhone] = useState(null);
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
@@ -34,6 +38,7 @@ function DashboardAccount() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredSchools, setFilteredSchools] = useState([]);
   const [dropdownHidden, setDropdownHidden] = useState(true);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   /* Contexts */
   const myContexts = useContext(MyContexts);
@@ -55,7 +60,8 @@ function DashboardAccount() {
 
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w\S]*$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[\w\S]*$/;
+
     setEmailValid(emailRegex.test(email));
 
     const capitalNumber = /^(?=.*[A-Z])(?=.*\d)/.test(password);
@@ -119,7 +125,7 @@ function DashboardAccount() {
   const fetchTeacherData = async () => {
     try {
       const response = await axios.get("https://skillzy-node.fly.dev/api/get-teacher", {
-        params: { email: session?.user?.email },
+        params: { email: myContexts.userAuthenticated === false ? session?.user?.email : myContexts.teacherData.email },
       });
 
       const updatedTeacherData = {
@@ -137,6 +143,7 @@ function DashboardAccount() {
 
       myContextsDispatch((old) => ({
         ...old,
+        userAuthenticated: true,
         teacherData: {
           ...old.teacherData,
           ...updatedTeacherData,
@@ -225,17 +232,29 @@ function DashboardAccount() {
     }
   };
 
+  const showPassword3 = () => {
+    if (passwordType3 === "password") {
+      setPasswordType3("text");
+      setTooltipText3("Skjul adgangskode");
+    } else {
+      setPasswordType3("password");
+      setTooltipText3("Vis adgangskode");
+    }
+  };
+
   const handleEditAccountClick = (e) => {
     if (e === "editAccount") {
       if (!editAccount) {
         setEditAccount(true);
         setName(myContexts.teacherData.name);
+        setSchool(myContexts.teacherData.school);
         setSearchTerm(myContexts.teacherData.school);
         setPhone(myContexts.teacherData.phone);
         setEmail(myContexts.teacherData.email);
       } else {
         setEditAccount(false);
         setName("");
+        setSchool("");
         setSearchTerm("");
         setPhone("");
         setEmail("");
@@ -261,32 +280,81 @@ function DashboardAccount() {
     }
   };
 
-  const confirmEditAccount = () => {
-    console.log("Her skal være kode der ændrer brugerens kontooplysninger");
-    setEditAccount(false);
-    setName("");
-    setSearchTerm("");
-    setPhone("");
-    setEmail("");
-    setPassword("");
-    setPassword2("");
+  const confirmEditAccount = async () => {
+    try {
+      const response = await axios.put(`http://localhost:8000/api/update-teacher/${myContexts.teacherData.email}`, {
+        name: name,
+        newEmail: email,
+        phone: phone,
+        school: school,
+      });
+
+      console.log("Account updated successfully:", response.data.updatedTeacher);
+
+      myContextsDispatch((old) => ({
+        ...old,
+        teacherData: {
+          ...old.teacherData,
+          name: response.data.updatedTeacher.name,
+          email: response.data.updatedTeacher.email,
+          phone: response.data.updatedTeacher.phone,
+          school: response.data.updatedTeacher.school,
+          // Update other fields as needed
+        },
+      }));
+    } catch (error) {
+      console.error("Error updating account:", error.message);
+    } finally {
+      setEditAccount(false);
+      setName("");
+      setSchool("");
+      setSearchTerm("");
+      setPhone("");
+      setEmail("");
+    }
   };
 
-  const confirmChangePassword = () => {
+  const confirmChangePassword = async () => {
     if (passwordValid) {
-      console.log("Her skal være kode der ændrer brugerens adgangskode");
-      setChangePassword(false);
-      setPassword("");
-      setPassword2("");
+      try {
+        const response = await axios.put(`http://localhost:8000/api/change-teacher-password/${myContexts.teacherData.email}`, {
+          oldPassword: oldPassword,
+          newPassword: password2,
+        });
+      } catch (error) {
+        console.error("Error updating account:", error.message);
+      } finally {
+        console.log("Her skal være kode der ændrer brugerens adgangskode");
+        setChangePassword(false);
+        setPassword("");
+        setPassword2("");
+      }
     } else {
       setError("Opfyld samtlige adgangskodekriterier");
     }
   };
 
-  const confirmDeleteAccount = () => {
-    console.log("Her skal være kode der sletter brugerens konto");
-    setDeleteAccount(false);
-    setEmail2("");
+  const confirmDeleteAccount = async () => {
+    try {
+      const response = await axios.post("http://localhost:8000/api/delete-teacher", {
+        email: email, // Sending email in the request body
+      });
+      if (response.data.deleted) {
+        console.log("Teacher deleted successfully");
+      } else {
+        console.error("Failed to delete teacher");
+      }
+    } catch (error) {
+      console.error("Error deleting teacher:", error.message);
+    } finally {
+      myContextsDispatch((old) => ({
+        ...old,
+        userAuthenticated: false,
+      }));
+      setDeleteAccount(false);
+      setEmail("");
+      signOut();
+    }
   };
 
   /* Other */
@@ -358,7 +426,7 @@ function DashboardAccount() {
     <div className={styles.homeContainer}>
       {!editAccount && !changePassword && !deleteAccount ? (
         <div className={styles.accountDetailscontainer}>
-          <h2 className={styles.name}>{session?.user?.name}</h2>
+          <h2 className={styles.name}>{myContexts.teacherData.name}</h2>
           <div className={styles.accountDetails}>
             <div className={styles.flexRow}>
               {userIcon}
@@ -368,7 +436,7 @@ function DashboardAccount() {
             </div>
             <div className={styles.flexRow}>
               {emailIcon}
-              <p>{session?.user?.email}</p>
+              <p>{myContexts.teacherData.email}</p>
             </div>
             <div className={styles.flexRow}>
               {phoneIcon}
@@ -404,14 +472,15 @@ function DashboardAccount() {
                 ...old,
                 userAuthenticated: false,
                 loginType: "login",
-                dashboardType: "Hjem",
               }));
+              setLoggingOut(true);
               signOut();
               burgerMenuClicked();
             }}
           >
             Log ud
           </button>
+          {loggingOut && <p className={styles.loggingOut}>Logger ud...</p>}
         </div>
       ) : (
         ""
@@ -467,7 +536,7 @@ function DashboardAccount() {
 
             <div className={styles.inputField}>
               <label htmlFor="phone">Telefonnummer</label>
-              <input type="tel" id="phone" name="phone" title="Indtast dit telefonnummer" maxlength="8" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+              <input type="tel" id="phone" name="phone" title="Indtast dit telefonnummer" maxLength="8" value={phone} onChange={(e) => setPhone(e.target.value)} required />
             </div>
 
             <div className={styles.inputField}>
@@ -500,6 +569,16 @@ function DashboardAccount() {
 
       {changePassword && (
         <div className={styles.editAccount}>
+          <div className={styles.inputField}>
+            <label htmlFor="oldPassword">Nuværende adgangskode</label>
+            <div className={styles.passwordContainer}>
+              <input type={passwordType3} id="oldPassword" name="oldPassword" title={myContexts.loginType === "login" ? "Indtast din adgangskode" : "Indtast din ønskede adgangskode"} onChange={(e) => setOldPassword(e.target.value)} required />
+              <button type="button" className={styles.showPassword} onClick={showPassword3}>
+                {passwordType3 === "password" ? notVisible : visible} <span className={styles.passwordTooltip}>{tooltipText3}</span>
+              </button>
+            </div>
+          </div>
+
           <div className={styles.inputField}>
             <label htmlFor="password">Ny adgangskode</label>
             <div className={styles.passwordContainer}>

@@ -105,34 +105,38 @@ function DashboardStatistics() {
 
   /* Functions */
   const fetchTeacherData = async () => {
-    try {
-      const response = await axios.get("https://skillzy-node.fly.dev/api/get-teacher", {
-        params: { email: session?.user?.email },
-      });
+    if (myContexts.userAuthenticated === false) {
+      try {
+        const response = await axios.get("https://skillzy-node.fly.dev/api/get-teacher", {
+          params: { email: session?.user?.email },
+        });
 
-      const updatedTeacherData = {
-        id: response.data._id,
-        name: response.data.name,
-        email: response.data.email,
-        phone: response.data.phone,
-        school: response.data.school,
-        subjects: response.data.subjects,
-        classesIDs: response.data.classes,
-        accountType: response.data.accountType,
-      };
+        const updatedTeacherData = {
+          id: response.data._id,
+          name: response.data.name,
+          email: response.data.email,
+          phone: response.data.phone,
+          school: response.data.school,
+          subjects: response.data.subjects,
+          classesIDs: response.data.classes,
+          accountType: response.data.accountType,
+        };
 
-      console.log("hell fucking yeah");
+        console.log("hell fucking yeah");
 
-      myContextsDispatch((old) => ({
-        ...old,
-        userAuthenticated: true,
-        teacherData: {
-          ...old.teacherData,
-          ...updatedTeacherData,
-        },
-      }));
-    } catch (error) {
-      console.error("Error fetching teacher data:", error);
+        myContextsDispatch((old) => ({
+          ...old,
+          userAuthenticated: true,
+          teacherData: {
+            ...old.teacherData,
+            ...updatedTeacherData,
+          },
+        }));
+      } catch (error) {
+        console.error("Error fetching teacher data:", error);
+      }
+    } else {
+      console.log("Teacher data already fetched");
     }
   };
 
@@ -197,7 +201,7 @@ function DashboardStatistics() {
           subjectData[subject._id] = {
             correctPercentage: Math.round((subject.totalCorrect / subject.totalProblemsSolved) * 100),
             totalSolved: subject.totalProblemsSolved,
-            minutesSpent: subject.time,
+            minutesSpent: Math.ceil(subject.time / 60),
             activeStudents: subject.activeStudents,
           };
         });
@@ -240,7 +244,7 @@ function DashboardStatistics() {
           subjectData[subject._id] = {
             correctPercentage: Math.round((subject.totalCorrect / subject.totalProblemsSolved) * 100),
             totalSolved: subject.totalProblemsSolved,
-            minutesSpent: subject.time,
+            minutesSpent: Math.ceil(subject.time / 60),
             activeStudents: subject.activeStudents,
           };
         });
@@ -281,7 +285,7 @@ function DashboardStatistics() {
           subjectData[subject._id] = {
             correctPercentage: Math.round((subject.totalCorrect / subject.totalProblemsSolved) * 100),
             totalSolved: subject.totalProblemsSolved,
-            minutesSpent: subject.time,
+            minutesSpent: Math.ceil(subject.time / 60),
             activeStudents: subject.activeStudents,
           };
         });
@@ -325,7 +329,7 @@ function DashboardStatistics() {
           subjectData[subject._id] = {
             correctPercentage: Math.round((subject.totalCorrect / subject.totalProblemsSolved) * 100),
             totalSolved: subject.totalProblemsSolved,
-            minutesSpent: subject.time,
+            minutesSpent: Math.ceil(subject.time / 60),
             activeStudents: subject.activeStudents,
           };
         });
@@ -369,7 +373,7 @@ function DashboardStatistics() {
           subjectData[subject._id] = {
             correctPercentage: Math.round((subject.totalCorrect / subject.totalProblemsSolved) * 100),
             totalSolved: subject.totalProblemsSolved,
-            minutesSpent: subject.time,
+            minutesSpent: Math.ceil(subject.time / 60),
             activeStudents: subject.activeStudents,
           };
         });
@@ -568,9 +572,9 @@ function DashboardStatistics() {
                     </div>
                   </div>
                   <div className={styles.flexColumn}>
-                    <p>{subjectObj.correctPercentage ? Math.round(subjectObj.correctPercentage) + "%" : "-"}</p>
+                    <p>{subjectObj.correctPercentage ? subjectObj.correctPercentage + "%" : "-"}</p>
                     <p>{subjectObj.totalSolved ? subjectObj.totalSolved : "-"}</p>
-                    <p>{subjectObj.minutesSpent ? Math.ceil(subjectObj.minutesSpent) : "-"}</p>
+                    <p>{subjectObj.minutesSpent ? subjectObj.minutesSpent : "-"}</p>
                   </div>
                 </div>
               </div>
