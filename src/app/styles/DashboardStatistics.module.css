@@ -115,7 +115,15 @@
 }
 
 .overviewSubject {
+  min-width: 0;
   background-image: linear-gradient(to right, var(--background-color), var(--background-color-alt));
+}
+
+.overviewSubjectHeading {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .overviewSubjectGrid {

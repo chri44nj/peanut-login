@@ -553,8 +553,7 @@ function DashboardStatistics() {
             {subjectDataArray.map((subjectObj) => (
               <div key={subjectObj.subject} className={`${styles.classOverview} ${styles.overviewSubject} ${styles[findExtremeValue(subjectObj.subject, sortBy)]}`}>
                 <div className={styles.flexRow}>
-                  {book16}
-                  <h3>{subjectObj.subject}</h3>
+                  <h3 className={styles.overviewSubjectHeading}>{subjectObj.subject}</h3>
                 </div>
                 <div className={styles.overviewSubjectGrid}>
                   <div className={styles.flexColumn}>
