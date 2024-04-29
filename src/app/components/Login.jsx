@@ -59,12 +59,14 @@ function Login() {
     setPasswordCriteria2(password.length >= 8);
     setPasswordCriteria3(!/\s/.test(password));
 
-    if (password === password2 && password !== "") {
-      setPasswordCriteria4(true);
-      setPasswordValid(passwordRegex.test(password));
-    } else {
-      setPasswordCriteria4(false);
-      setPasswordValid(false);
+    if (myContexts.loginType === "recover") {
+      if (password === password2 && password !== "") {
+        setPasswordCriteria4(true);
+        setPasswordValid(passwordRegex.test(password));
+      } else {
+        setPasswordCriteria4(false);
+        setPasswordValid(false);
+      }
     }
   }, [email, password, password2]);
 
@@ -391,6 +393,10 @@ function Login() {
                     setRecoverPassword(true);
                     setEmail("");
                     setPassword("");
+                    myContextsDispatch((old) => ({
+                      ...old,
+                      loginType: "recover",
+                    }));
                   }}
                 >
                   Glemt adgangskode?
@@ -574,7 +580,7 @@ function Login() {
               </div>
 
               <div className={styles.buttonErrorContainer}>
-                <button className={`${styles.loginButton} ${emailValid && passwordValid && name && school !== "ingen" ? styles.validButton : ""}`} type="submit" title={buttonTooltip2} disabled={!emailValid || !passwordValid}>
+                <button className={`${styles.loginButton} ${emailValid && passwordValid && passwordCriteria && passwordCriteria2 && name && school !== "ingen" ? styles.validButton : ""}`} type="submit" title={buttonTooltip2} disabled={!emailValid || !passwordValid}>
                   {myContexts.loginType === "login" ? "Log ind" : "Opret"}
                 </button>
                 {error && <p className={styles.error}>{error}</p>}
@@ -595,7 +601,7 @@ function Login() {
         ""
       )}
 
-      {recoverPassword ? (
+      {recoverPassword && myContexts.loginType === "recover" ? (
         <div id="recoverForm" className={styles.recoverFormContainer}>
           <form className={styles.recoverForm} onSubmit={(e) => handleChangePassword(e)}>
             <div className={styles.recoverFormHeadings}>
@@ -696,6 +702,10 @@ function Login() {
                       setPassword("");
                       setRecoverToken("");
                       setPasswordChangeSucces(false);
+                      myContextsDispatch((old) => ({
+                        ...old,
+                        loginType: "login",
+                      }));
                     }}
                   >
                     Log ind
@@ -719,6 +729,10 @@ function Login() {
                     setEmail("");
                     setPassword("");
                     setRecoverToken("");
+                    myContextsDispatch((old) => ({
+                      ...old,
+                      loginType: "login",
+                    }));
                   }}
                 >
                   Tilbage til log ind
