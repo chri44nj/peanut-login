@@ -107,7 +107,7 @@ function DashboardStatistics() {
   const fetchTeacherData = async () => {
     if (myContexts.userAuthenticated === false) {
       try {
-        const response = await axios.get("https://skillzy-node.fly.dev/api/get-teacher", {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-teacher`, {
           params: { email: session?.user?.email },
         });
 
@@ -142,7 +142,7 @@ function DashboardStatistics() {
 
   const fetchClasses = async () => {
     if (myContexts.teacherData.id) {
-      const classes = await axios.get(`https://skillzy-node.fly.dev/api/get-teacher-classes`, {
+      const classes = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-teacher-classes`, {
         params: {
           teacherID: myContexts.teacherData.id,
         },
@@ -178,7 +178,7 @@ function DashboardStatistics() {
   const fetchProblemsSolvedToday = async () => {
     if (myContexts.selectedClass) {
       try {
-        const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-today`, {
+        const problemsSolved = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-problems-solved-today`, {
           params: {
             classID: myContexts.selectedClass,
           },
@@ -221,7 +221,7 @@ function DashboardStatistics() {
   const fetchProblemsSolvedThisWeek = async () => {
     if (myContexts.selectedClass) {
       try {
-        const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-this-week`, {
+        const problemsSolved = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-problems-solved-this-week`, {
           params: {
             classID: myContexts.selectedClass,
           },
@@ -264,7 +264,7 @@ function DashboardStatistics() {
   const fetchProblemsSolvedThisMonth = async () => {
     if (myContexts.selectedClass) {
       try {
-        const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-this-month`, {
+        const problemsSolved = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-problems-solved-this-month`, {
           params: {
             classID: myContexts.selectedClass,
           },
@@ -306,7 +306,7 @@ function DashboardStatistics() {
   const fetchProblemsSolvedThisYear = async () => {
     if (myContexts.selectedClass) {
       try {
-        const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-this-year`, {
+        const problemsSolved = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-problems-solved-this-year`, {
           params: {
             classID: myContexts.selectedClass,
           },
@@ -350,7 +350,7 @@ function DashboardStatistics() {
   const fetchProblemsSolvedAllTime = async () => {
     if (myContexts.selectedClass) {
       try {
-        const problemsSolved = await axios.get(`http://localhost:8000/api/get-problems-solved-all-time`, {
+        const problemsSolved = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-problems-solved-all-time`, {
           params: {
             classID: myContexts.selectedClass,
           },

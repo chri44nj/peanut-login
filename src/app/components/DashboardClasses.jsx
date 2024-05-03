@@ -81,7 +81,7 @@ function DashboardClasses() {
   };
 
   const postClass = async () => {
-    const res = await axios.post(`https://skillzy-node.fly.dev/api/create-class`, {
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}create-class`, {
       school: { name: myContexts.teacherData.school, grade: grade, letter: letter },
       teacherID: myContexts.teacherData.id,
     });
@@ -90,7 +90,7 @@ function DashboardClasses() {
   };
 
   const fetchClasses = async () => {
-    const classes = await axios.get(`https://skillzy-node.fly.dev/api/get-teacher-classes`, {
+    const classes = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-teacher-classes`, {
       params: {
         teacherID: myContexts.teacherData.id,
       },
@@ -110,7 +110,7 @@ function DashboardClasses() {
   };
 
   const removeClass = async () => {
-    const res = await axios.post(`https://skillzy-node.fly.dev/api/remove-class-from-teacher`, {
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}remove-class-from-teacher`, {
       classID: myContexts.clickedClass,
       teacherID: myContexts.teacherData.id,
     });
@@ -131,7 +131,7 @@ function DashboardClasses() {
   };
 
   const removeStudent = async () => {
-    const res = await axios.post(`https://skillzy-node.fly.dev/api/remove-student-from-class`, {
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}remove-student-from-class`, {
       classID: myContexts.clickedClass,
       username: myContexts.selectedStudent,
     });
@@ -146,7 +146,7 @@ function DashboardClasses() {
 
   const updateTeacherData = async () => {
     try {
-      const response = await axios.get("https://skillzy-node.fly.dev/api/get-teacher", {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-teacher`, {
         params: { email: myContexts.teacherData.email },
       });
 

@@ -26,7 +26,7 @@ function DashboardMilestones() {
   };
 
   const fetchClasses = async () => {
-    const classes = await axios.get(`https://skillzy-node.fly.dev/api/get-teacher-classes`, {
+    const classes = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-teacher-classes`, {
       params: {
         teacherID: myContexts.teacherData.id,
       },

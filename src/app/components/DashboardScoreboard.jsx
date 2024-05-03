@@ -39,7 +39,7 @@ function DashboardScoreboard() {
   async function loadData() {
     const info = { range: "today", n: amount };
     try {
-      const res = await axios.get(`https://skillzy-node.fly.dev/api/get-classes-scoreboard-week`, {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-classes-scoreboard-week`, {
         params: info,
       });
       console.log(res);

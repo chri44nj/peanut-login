@@ -270,7 +270,7 @@ function Login() {
       Accept: "application/json",
     };
 
-    let response = await fetch("https://skillzy-node.fly.dev/api/list-of-schools", {
+    let response = await fetch(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}list-of-schools`, {
       method: "GET",
       headers: headersList,
     });

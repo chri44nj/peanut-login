@@ -124,7 +124,7 @@ function DashboardAccount() {
 
   const fetchTeacherData = async () => {
     try {
-      const response = await axios.get("https://skillzy-node.fly.dev/api/get-teacher", {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-teacher`, {
         params: { email: myContexts.userAuthenticated === false ? session?.user?.email : myContexts.teacherData.email },
       });
 
@@ -156,7 +156,7 @@ function DashboardAccount() {
 
   const fetchClasses = async () => {
     if (myContexts.teacherData.id) {
-      const classes = await axios.get(`https://skillzy-node.fly.dev/api/get-teacher-classes`, {
+      const classes = await axios.get(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}get-teacher-classes`, {
         params: {
           teacherID: myContexts.teacherData.id,
         },
@@ -179,7 +179,7 @@ function DashboardAccount() {
       Accept: "application/json",
     };
 
-    let response = await fetch("https://skillzy-node.fly.dev/api/list-of-schools", {
+    let response = await fetch(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}list-of-schools`, {
       method: "GET",
       headers: headersList,
     });
@@ -282,7 +282,7 @@ function DashboardAccount() {
 
   const confirmEditAccount = async () => {
     try {
-      const response = await axios.put(`http://localhost:8000/api/update-teacher/${myContexts.teacherData.email}`, {
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}update-teacher/${myContexts.teacherData.email}`, {
         name: name,
         newEmail: email,
         phone: phone,
@@ -317,7 +317,7 @@ function DashboardAccount() {
   const confirmChangePassword = async () => {
     if (passwordValid) {
       try {
-        const response = await axios.put(`http://localhost:8000/api/change-teacher-password/${myContexts.teacherData.email}`, {
+        const response = await axios.put(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}change-teacher-password/${myContexts.teacherData.email}`, {
           oldPassword: oldPassword,
           newPassword: password2,
         });
@@ -336,7 +336,7 @@ function DashboardAccount() {
 
   const confirmDeleteAccount = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/api/delete-teacher", {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SKILLZY_SERVER}delete-teacher`, {
         email: email, // Sending email in the request body
       });
       if (response.data.deleted) {
