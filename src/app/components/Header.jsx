@@ -36,7 +36,7 @@ function Header() {
   return (
     <header className={styles.header}>
       <nav className={styles.headerNav}>
-        <a className={`${styles.navLink} hover-link`} href="https://planetpeanut.io/da/" target="_blank">
+        <a className={`${styles.navLink} hover-link`} href="https://planetpeanut.io/" target="_blank">
           Planet Peanut
         </a>
         <div>
