@@ -96,7 +96,7 @@ function DashboardClasses() {
       },
     });
 
-    console.log("Kig lige her", classes);
+    console.log("Prøver at fetche classes:", classes);
 
     myContextsDispatch((prevContexts) => ({
       ...prevContexts,

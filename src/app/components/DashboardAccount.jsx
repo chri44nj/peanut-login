@@ -128,6 +128,8 @@ function DashboardAccount() {
         params: { email: myContexts.userAuthenticated === false ? session?.user?.email : myContexts.teacherData.email },
       });
 
+      console.log("Prøver at fetche teacher data:", response);
+
       const updatedTeacherData = {
         id: response.data._id,
         name: response.data.name,
@@ -139,7 +141,7 @@ function DashboardAccount() {
         accountType: response.data.accountType,
       };
 
-      console.log("Heell yeah?");
+      console.log("Prøver at opdatere teacher data:", updatedTeacherData);
 
       myContextsDispatch((old) => ({
         ...old,

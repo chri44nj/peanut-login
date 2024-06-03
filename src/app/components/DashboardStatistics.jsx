@@ -253,7 +253,7 @@ function DashboardStatistics() {
         if (!fetchedOnce) {
           setFetchedOnce(true);
         }
-        console.log("Denne uge", problemsSolved.data);
+        console.log("Prøver at fetche denne uges data:", problemsSolved.data);
       } catch (error) {
         console.error("Error occurred while fetching problems solved this week:", error);
         // Handle error appropriately
