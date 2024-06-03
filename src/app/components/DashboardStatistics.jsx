@@ -122,7 +122,7 @@ function DashboardStatistics() {
           accountType: response.data.accountType,
         };
 
-        console.log("hell fucking yeah");
+        console.log("Boom goes the dynamite!");
 
         myContextsDispatch((old) => ({
           ...old,
